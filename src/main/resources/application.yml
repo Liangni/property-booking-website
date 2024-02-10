@@ -7,3 +7,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/booking-system-db
     username: postgres
     password: password
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
