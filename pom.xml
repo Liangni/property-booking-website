@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.penny</groupId>
-	<artifactId>property-booking-webite</artifactId>
+	<artifactId>property-booking-website</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>property-booking-webite</name>
 	<description>Demo project for Spring Boot</description>
