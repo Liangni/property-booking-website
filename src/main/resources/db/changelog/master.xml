@@ -11,5 +11,11 @@
     <include file="/db/scripts/03_add_constraint_fk_ec_user_country.sql"/>
     <include file="/db/scripts/04_insert_data_country.sql"/>
     <include file="/db/scripts/05_insert_data_ec_user.sql"/>
+    <include file="/db/scripts/06_create_property_group_table.sql"/>
+    <include file="/db/scripts/07_insert_data_property_group.sql"/>
+    <include file="/db/scripts/08_create_property_type_table.sql"/>
+    <include file="/db/scripts/09_insert_data_property_type.sql"/>
+    <include file="/db/scripts/10_create_property_group_type_table.sql"/>
+    <include file="/db/scripts/11_insert_data_property_group_type.sql"/>
 
 </databaseChangeLog>
