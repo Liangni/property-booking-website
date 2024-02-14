@@ -17,5 +17,7 @@
     <include file="/db/scripts/09_insert_data_property_type.sql"/>
     <include file="/db/scripts/10_create_property_group_type_table.sql"/>
     <include file="/db/scripts/11_insert_data_property_group_type.sql"/>
+    <include file="/db/scripts/12_create_room_type_table.sql"/>
+    <include file="/db/scripts/13_insert_data_room_type.sql"/>
 
 </databaseChangeLog>
