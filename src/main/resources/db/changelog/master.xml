@@ -6,10 +6,10 @@
    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
    http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include file="/db/scripts/create-ec-user-table.sql"/>
-    <include file="/db/scripts/create-country-table.sql"/>
-    <include file="/db/scripts/add-constraint-fk-ec-user-country.sql"/>
-    <include file="db/scripts/insert-data-country.sql"/>
-    <include file="/db/scripts/insert-data-ec-user.sql"/>
+    <include file="/db/scripts/01_create_ec_user_table.sql"/>
+    <include file="/db/scripts/02_create_country_table.sql"/>
+    <include file="/db/scripts/03_add_constraint_fk_ec_user_country.sql"/>
+    <include file="/db/scripts/04_insert_data_country.sql"/>
+    <include file="/db/scripts/05_insert_data_ec_user.sql"/>
 
 </databaseChangeLog>
