@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="application-dev.properties"/>
+    <classPathEntry location="/Users/pennypan/.m2/repository/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar" />
+    <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 這個插件给生成的Java model object增加了equals和hashCode方法 -->
+        <!-- <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
+
+        <!-- 註釋 -->
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!-- 資料庫連線設定 -->
+        <jdbcConnection
+                driverClass="${spring.datasource.driver-class-name}"
+                connectionURL="${spring.datasource.url}"
+                userId="${spring.datasource.username}"
+                password="${spring.datasource.password}"/>
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!--是否使用bigDecimal，默認false。
+                false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+                true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal-->
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 要產生的model位置，targetProject的值為專案的Source folder，所以是 src/main/java -->
+        <javaModelGenerator
+                targetPackage="com.penny.vo.base"
+                targetProject="src/main/java">
+            <!-- 是否讓schema作為 package 的后缀，默認為false -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 是否針對string類型的字串在set方法中進行修剪，默認為false -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 要產生的MyBatis Mapper位置 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 要產生的MyBatis Dao位置 -->
+        <javaClientGenerator
+                targetPackage="com.penny.dao"
+                targetProject="src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+    </context>
+</generatorConfiguration>
