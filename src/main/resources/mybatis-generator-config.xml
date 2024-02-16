@@ -33,8 +33,9 @@
 
         <!-- 要產生的model位置，targetProject的值為專案的Source folder，所以是 src/main/java -->
         <javaModelGenerator
-                targetPackage="com.penny.vo"
+                targetPackage="com.penny.vo.base"
                 targetProject="src/main/java">
+            <property name="constructorBased" value="true" />
             <!-- 是否讓schema作為 package 的后缀，默認為false -->
             <property name="enableSubPackages" value="false" />
             <!-- 是否針對string類型的字串在set方法中進行修剪，默認為false -->
@@ -42,21 +43,21 @@
         </javaModelGenerator>
 
         <!-- 要產生的MyBatis Mapper位置 -->
-        <sqlMapGenerator targetPackage="mapper"
+        <sqlMapGenerator targetPackage="mapper.base"
                          targetProject="src/main/resources">
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
 
         <!-- 要產生的MyBatis Dao位置 -->
         <javaClientGenerator
-                targetPackage="com.penny.dao"
+                targetPackage="com.penny.dao.base"
                 targetProject="src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 
         <!-- 要生成的資料表 -->
         <table schema="" tableName="ec_user"
-               domainObjectName="EcUser" enableCountByExample="false"
+               domainObjectName="EcUserBaseVo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <!--是否使用實際列名,默認為false-->
