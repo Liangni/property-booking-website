@@ -17,6 +17,7 @@ class EcUserBaseVoMapperTest {
 
     EcUserBaseVo ecUser = null;
     Integer insertResult = null;
+    Long insertedEcUserId = null;
 
     @BeforeEach
     void setup() {
@@ -27,7 +28,8 @@ class EcUserBaseVoMapperTest {
                 "test hashed password 1",
                 "test introduction 1");
 
-        insertResult = ecUserBaseVoMapper.insertSelective(ecUser);
+        insertResult = ecUserBaseVoMapper.insert(ecUser);
+        insertedEcUserId = (long) ecUser.getEcUserId();
     }
 
     @Test
@@ -39,7 +41,8 @@ class EcUserBaseVoMapperTest {
     @Test
     @DisplayName("用 id 搜尋會員資料")
     void getEcUserByIdTest(){
-        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(1L);
+        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(insertedEcUserId);
+
         // 資料庫回應搜尋結果應為一筆資料，且內容與 ecUser 資料相同
         Assertions.assertNotNull(foundEcUser);
         Assertions.assertEquals(ecUser, foundEcUser);
@@ -49,7 +52,7 @@ class EcUserBaseVoMapperTest {
     @DisplayName("更新會員資料")
     void updateEcUserTest(){
         EcUserBaseVo updatedEcUserData = new EcUserBaseVo(
-                1L,
+                insertedEcUserId,
                 "updated test name",
                 "updated test email",
                 "updated test hashed password",
@@ -63,7 +66,7 @@ class EcUserBaseVoMapperTest {
         Assertions.assertEquals(1, updateResult);
 
         // 搜尋該筆資料
-        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(1L);
+        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(insertedEcUserId);
         // 資料庫回應搜尋結果應為一筆資料，且內容與 updatedEcUserData 相同
         Assertions.assertNotNull(foundEcUser);
         Assertions.assertEquals(updatedEcUserData, foundEcUser);
@@ -72,18 +75,18 @@ class EcUserBaseVoMapperTest {
     @Test
     @DisplayName("更新會員 email")
     void updateEcUserEmailTest(){
-        EcUserBaseVo updatedEcUserData = new EcUserBaseVo();
-        updatedEcUserData.setEcUserId(1L);
-        updatedEcUserData.setEmail("updated test email");
+        EcUserBaseVo newEcUserData = new EcUserBaseVo();
+        newEcUserData.setEcUserId(insertedEcUserId);
+        newEcUserData.setEmail("updated test email");
 
         // 更新會員資料
-        Integer updateResult = ecUserBaseVoMapper.updateByPrimaryKeySelective(updatedEcUserData);
+        Integer updateResult = ecUserBaseVoMapper.updateByPrimaryKeySelective(newEcUserData);
         // 資料庫回應更新結果應為 1
         Assertions.assertNotNull(updateResult);
         Assertions.assertEquals(1, updateResult);
 
         // 搜尋該筆資料
-        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(1L);
+        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(insertedEcUserId);
         // 搜尋到的物件 email 和 ecUser email 不同
         Assertions.assertNotEquals(foundEcUser.getEmail(), ecUser.getEmail());
 
@@ -97,10 +100,10 @@ class EcUserBaseVoMapperTest {
     @Test
     @DisplayName("刪除會員資料")
     void deleteEcUserTest(){
-        Integer deleteResult = ecUserBaseVoMapper.deleteByPrimaryKey(1L);
+        Integer deleteResult = ecUserBaseVoMapper.deleteByPrimaryKey(insertedEcUserId);
         Assertions.assertNotNull(deleteResult);
 
-        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(1L);
+        EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(insertedEcUserId);
         Assertions.assertNull(foundEcUser);
     }
 
