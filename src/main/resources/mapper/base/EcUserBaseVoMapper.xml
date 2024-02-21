@@ -23,18 +23,15 @@
     delete from ec_user
     where ec_user_id = #{ecUserId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.penny.vo.base.EcUserBaseVo">
-    insert into ec_user (ec_user_id, ec_user_name, email, 
-      hashed_password, ec_user_introduction)
-    values (#{ecUserId,jdbcType=BIGINT}, #{ecUserName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{hashedPassword,jdbcType=VARCHAR}, #{ecUserIntroduction,jdbcType=VARCHAR})
+  <insert id="insert" keyColumn="ec_user_id" keyProperty="ecUserId" parameterType="com.penny.vo.base.EcUserBaseVo" useGeneratedKeys="true">
+    insert into ec_user (ec_user_name, email, hashed_password, 
+      ec_user_introduction)
+    values (#{ecUserName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{hashedPassword,jdbcType=VARCHAR}, 
+      #{ecUserIntroduction,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.penny.vo.base.EcUserBaseVo">
+  <insert id="insertSelective" keyColumn="ec_user_id" keyProperty="ecUserId" parameterType="com.penny.vo.base.EcUserBaseVo" useGeneratedKeys="true">
     insert into ec_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="ecUserId != null">
-        ec_user_id,
-      </if>
       <if test="ecUserName != null">
         ec_user_name,
       </if>
@@ -49,9 +46,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="ecUserId != null">
-        #{ecUserId,jdbcType=BIGINT},
-      </if>
       <if test="ecUserName != null">
         #{ecUserName,jdbcType=VARCHAR},
       </if>
