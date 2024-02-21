@@ -1,45 +1,42 @@
 package com.penny.vo.base;
 
 public class EcUserBaseVo {
-    private Long userId;
+    private Long ecUserId;
 
-    private String name;
+    private String ecUserName;
 
     private String email;
 
-    private String password;
+    private String hashedPassword;
 
-    private String city;
+    private String ecUserIntroduction;
 
-    private Long countryId;
-
-    public EcUserBaseVo(Long userId, String name, String email, String password, String city, Long countryId) {
-        this.userId = userId;
-        this.name = name;
+    public EcUserBaseVo(Long ecUserId, String ecUserName, String email, String hashedPassword, String ecUserIntroduction) {
+        this.ecUserId = ecUserId;
+        this.ecUserName = ecUserName;
         this.email = email;
-        this.password = password;
-        this.city = city;
-        this.countryId = countryId;
+        this.hashedPassword = hashedPassword;
+        this.ecUserIntroduction = ecUserIntroduction;
     }
 
     public EcUserBaseVo() {
         super();
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getEcUserId() {
+        return ecUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setEcUserId(Long ecUserId) {
+        this.ecUserId = ecUserId;
     }
 
-    public String getName() {
-        return name;
+    public String getEcUserName() {
+        return ecUserName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEcUserName(String ecUserName) {
+        this.ecUserName = ecUserName;
     }
 
     public String getEmail() {
@@ -50,27 +47,19 @@ public class EcUserBaseVo {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
-    public String getCity() {
-        return city;
+    public String getEcUserIntroduction() {
+        return ecUserIntroduction;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Long getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(Long countryId) {
-        this.countryId = countryId;
+    public void setEcUserIntroduction(String ecUserIntroduction) {
+        this.ecUserIntroduction = ecUserIntroduction;
     }
 }

@@ -3,106 +3,173 @@
 <mapper namespace="com.penny.dao.base.EcUserBaseVoMapper">
   <resultMap id="BaseResultMap" type="com.penny.vo.base.EcUserBaseVo">
     <constructor>
-      <idArg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <idArg column="ec_user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="ec_user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="city" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="country_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="hashed_password" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ec_user_introduction" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    user_id, name, email, password, city, country_id
+    ec_user_id, ec_user_name, email, hashed_password, ec_user_introduction
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from ec_user
-    where user_id = #{userId,jdbcType=BIGINT}
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from ec_user
-    where user_id = #{userId,jdbcType=BIGINT}
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.penny.vo.base.EcUserBaseVo">
-    insert into ec_user (user_id, name, email, 
-      password, city, country_id
-      )
-    values (#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{countryId,jdbcType=BIGINT}
-      )
+    insert into ec_user (ec_user_id, ec_user_name, email, 
+      hashed_password, ec_user_introduction)
+    values (#{ecUserId,jdbcType=BIGINT}, #{ecUserName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{hashedPassword,jdbcType=VARCHAR}, #{ecUserIntroduction,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.penny.vo.base.EcUserBaseVo">
     insert into ec_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
+      <if test="ecUserId != null">
+        ec_user_id,
       </if>
-      <if test="name != null">
-        name,
+      <if test="ecUserName != null">
+        ec_user_name,
       </if>
       <if test="email != null">
         email,
       </if>
-      <if test="password != null">
-        password,
+      <if test="hashedPassword != null">
+        hashed_password,
       </if>
-      <if test="city != null">
-        city,
-      </if>
-      <if test="countryId != null">
-        country_id,
+      <if test="ecUserIntroduction != null">
+        ec_user_introduction,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
+      <if test="ecUserId != null">
+        #{ecUserId,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="ecUserName != null">
+        #{ecUserName,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="hashedPassword != null">
+        #{hashedPassword,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
-        #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="countryId != null">
-        #{countryId,jdbcType=BIGINT},
+      <if test="ecUserIntroduction != null">
+        #{ecUserIntroduction,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.EcUserBaseVo">
     update ec_user
     <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="ecUserName != null">
+        ec_user_name = #{ecUserName,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="hashedPassword != null">
+        hashed_password = #{hashedPassword,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
-        city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="countryId != null">
-        country_id = #{countryId,jdbcType=BIGINT},
+      <if test="ecUserIntroduction != null">
+        ec_user_introduction = #{ecUserIntroduction,jdbcType=VARCHAR},
       </if>
     </set>
-    where user_id = #{userId,jdbcType=BIGINT}
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.EcUserBaseVo">
     update ec_user
-    set name = #{name,jdbcType=VARCHAR},
+    set ec_user_name = #{ecUserName,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      country_id = #{countryId,jdbcType=BIGINT}
-    where user_id = #{userId,jdbcType=BIGINT}
+      hashed_password = #{hashedPassword,jdbcType=VARCHAR},
+      ec_user_introduction = #{ecUserIntroduction,jdbcType=VARCHAR}
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.EcUserBaseVo">
+    <constructor>
+      <idArg column="ec_user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="ec_user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="hashed_password" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ec_user_id, ec_user_name, email, hashed_password
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ec_user
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ec_user
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.penny.vo.base.EcUserBaseVo">
+    insert into ec_user (ec_user_id, ec_user_name, email, 
+      hashed_password)
+    values (#{ecUserId,jdbcType=BIGINT}, #{ecUserName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{hashedPassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.penny.vo.base.EcUserBaseVo">
+    insert into ec_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ecUserId != null">
+        ec_user_id,
+      </if>
+      <if test="ecUserName != null">
+        ec_user_name,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="hashedPassword != null">
+        hashed_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ecUserId != null">
+        #{ecUserId,jdbcType=BIGINT},
+      </if>
+      <if test="ecUserName != null">
+        #{ecUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="hashedPassword != null">
+        #{hashedPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.EcUserBaseVo">
+    update ec_user
+    <set>
+      <if test="ecUserName != null">
+        ec_user_name = #{ecUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="hashedPassword != null">
+        hashed_password = #{hashedPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.EcUserBaseVo">
+    update ec_user
+    set ec_user_name = #{ecUserName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      hashed_password = #{hashedPassword,jdbcType=VARCHAR}
+    where ec_user_id = #{ecUserId,jdbcType=BIGINT}
   </update>
 </mapper>
