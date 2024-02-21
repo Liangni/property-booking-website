@@ -1,4 +1,4 @@
-INSERT INTO property_group (name) VALUES
+INSERT INTO property_group (property_group_name) VALUES
 ('公寓'),
 ('獨棟房屋'),
 ('附屬建築'),

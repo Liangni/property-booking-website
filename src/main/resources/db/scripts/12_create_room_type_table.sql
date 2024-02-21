@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS room_type
-(
-    room_type_id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);

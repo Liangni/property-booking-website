@@ -6,19 +6,19 @@
    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
    http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include file="/db/scripts/01_create_ec_user_table.sql"/>
-    <include file="/db/scripts/02_create_country_table.sql"/>
-    <include file="/db/scripts/03_add_constraint_fk_ec_user_country.sql"/>
-    <include file="/db/scripts/04_insert_data_country.sql"/>
-    <include file="/db/scripts/05_insert_data_ec_user.sql"/>
-    <include file="/db/scripts/06_create_property_group_table.sql"/>
-    <include file="/db/scripts/07_insert_data_property_group.sql"/>
-    <include file="/db/scripts/08_create_property_type_table.sql"/>
-    <include file="/db/scripts/09_insert_data_property_type.sql"/>
-    <include file="/db/scripts/10_create_property_group_type_table.sql"/>
-    <include file="/db/scripts/11_insert_data_property_group_type.sql"/>
-    <include file="/db/scripts/12_create_room_type_table.sql"/>
-    <include file="/db/scripts/13_insert_data_room_type.sql"/>
-    <include file="/db/scripts/14_create_address_table.sql"/>
+    <!-- schema -->
+    <include file="/db/scripts/schema/01_create_ec_user_table.sql"/>
+    <include file="/db/scripts/schema/02_create_property_group_table.sql"/>
+    <include file="/db/scripts/schema/03_create_property_type_table.sql"/>
+    <include file="/db/scripts/schema/04_create_property_group_type_table.sql"/>
+    <include file="/db/scripts/schema/05_create_share_type_table.sql"/>
+    <include file="/db/scripts/schema/06_create_district_table.sql"/>
+    <include file="/db/scripts/schema/07_create_address_table.sql"/>
+
+    <!--  initial data-->
+    <include file="/db/scripts/initial_data/01_insert_data_property_group.sql"/>
+    <include file="/db/scripts/initial_data/02_insert_data_property_type.sql"/>
+    <include file="/db/scripts/initial_data/03_insert_data_property_group_type.sql"/>
+    <include file="/db/scripts/initial_data/04_insert_data_share_type.sql"/>
 
 </databaseChangeLog>
