@@ -8,7 +8,9 @@
     <classPathEntry location="/Users/pennypan/.m2/repository/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar" />
     <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- 這個插件给生成的Java model object增加了equals和hashCode方法 -->
-        <!-- <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
 
         <!-- 註釋 -->
         <commentGenerator>

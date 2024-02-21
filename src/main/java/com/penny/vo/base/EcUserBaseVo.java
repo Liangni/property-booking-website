@@ -62,4 +62,50 @@ public class EcUserBaseVo {
     public void setEcUserIntroduction(String ecUserIntroduction) {
         this.ecUserIntroduction = ecUserIntroduction;
     }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        EcUserBaseVo other = (EcUserBaseVo) that;
+        return (this.getEcUserId() == null ? other.getEcUserId() == null : this.getEcUserId().equals(other.getEcUserId()))
+            && (this.getEcUserName() == null ? other.getEcUserName() == null : this.getEcUserName().equals(other.getEcUserName()))
+            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
+            && (this.getHashedPassword() == null ? other.getHashedPassword() == null : this.getHashedPassword().equals(other.getHashedPassword()))
+            && (this.getEcUserIntroduction() == null ? other.getEcUserIntroduction() == null : this.getEcUserIntroduction().equals(other.getEcUserIntroduction()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getEcUserId() == null) ? 0 : getEcUserId().hashCode());
+        result = prime * result + ((getEcUserName() == null) ? 0 : getEcUserName().hashCode());
+        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
+        result = prime * result + ((getHashedPassword() == null) ? 0 : getHashedPassword().hashCode());
+        result = prime * result + ((getEcUserIntroduction() == null) ? 0 : getEcUserIntroduction().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", ecUserId=").append(ecUserId);
+        sb.append(", ecUserName=").append(ecUserName);
+        sb.append(", email=").append(email);
+        sb.append(", hashedPassword=").append(hashedPassword);
+        sb.append(", ecUserIntroduction=").append(ecUserIntroduction);
+        sb.append("]");
+        return sb.toString();
+    }
 }
