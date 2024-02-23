@@ -1,7 +1,9 @@
 package com.penny.dao.base;
 
 import com.penny.vo.base.EcUserBaseVo;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface EcUserBaseVoMapper {
     int deleteByPrimaryKey(Long ecUserId);
 

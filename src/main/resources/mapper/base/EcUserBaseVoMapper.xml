@@ -2,13 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.penny.dao.base.EcUserBaseVoMapper">
   <resultMap id="BaseResultMap" type="com.penny.vo.base.EcUserBaseVo">
-    <constructor>
-      <idArg column="ec_user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="ec_user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="ec_user_email" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="ec_user_hashed_password" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="ec_user_introduction" javaType="java.lang.String" jdbcType="VARCHAR" />
-    </constructor>
+    <id column="ec_user_id" jdbcType="BIGINT" property="ecUserId" />
+    <result column="ec_user_name" jdbcType="VARCHAR" property="ecUserName" />
+    <result column="ec_user_email" jdbcType="VARCHAR" property="ecUserEmail" />
+    <result column="ec_user_hashed_password" jdbcType="VARCHAR" property="ecUserHashedPassword" />
+    <result column="ec_user_introduction" jdbcType="VARCHAR" property="ecUserIntroduction" />
   </resultMap>
   <sql id="Base_Column_List">
     ec_user_id, ec_user_name, ec_user_email, ec_user_hashed_password, ec_user_introduction
