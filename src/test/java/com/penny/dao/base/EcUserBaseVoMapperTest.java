@@ -21,12 +21,13 @@ class EcUserBaseVoMapperTest {
 
     @BeforeEach
     void setup() {
-        ecUser = new EcUserBaseVo(
-                null,
-                "test name 1",
-                "test email 1",
-                "test hashed password 1",
-                "test introduction 1");
+        ecUser = EcUserBaseVo.builder()
+                .ecUserId(null)
+                .ecUserName("test name")
+                .ecUserEmail("test email")
+                .ecUserHashedPassword("test hashed password")
+                .ecUserIntroduction("test introduction")
+                .build();
 
         insertResult = ecUserBaseVoMapper.insert(ecUser);
         insertedEcUserId = (long) ecUser.getEcUserId();
@@ -51,13 +52,14 @@ class EcUserBaseVoMapperTest {
     @Test
     @DisplayName("更新會員資料")
     void updateEcUserTest(){
-        EcUserBaseVo updatedEcUserData = new EcUserBaseVo(
-                insertedEcUserId,
-                "updated test name",
-                "updated test email",
-                "updated test hashed password",
-                "updated test introduction"
-        );
+        EcUserBaseVo updatedEcUserData = EcUserBaseVo.builder()
+                .ecUserId(insertedEcUserId)
+                .ecUserName("updated test name")
+                .ecUserEmail("updated test email")
+                .ecUserHashedPassword("updated test hashed password")
+                .ecUserIntroduction("updated test introduction")
+                .build();
+
 
         // 更新會員資料
         Integer updateResult = ecUserBaseVoMapper.updateByPrimaryKey(updatedEcUserData);
@@ -75,7 +77,7 @@ class EcUserBaseVoMapperTest {
     @Test
     @DisplayName("更新會員 email")
     void updateEcUserEmailTest(){
-        EcUserBaseVo newEcUserData = new EcUserBaseVo();
+        EcUserBaseVo newEcUserData = EcUserBaseVo.builder().build();
         newEcUserData.setEcUserId(insertedEcUserId);
         newEcUserData.setEcUserEmail("updated test email");
 
