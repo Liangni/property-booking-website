@@ -77,7 +77,7 @@ class EcUserBaseVoMapperTest {
     void updateEcUserEmailTest(){
         EcUserBaseVo newEcUserData = new EcUserBaseVo();
         newEcUserData.setEcUserId(insertedEcUserId);
-        newEcUserData.setEmail("updated test email");
+        newEcUserData.setEcUserEmail("updated test email");
 
         // 更新會員資料
         Integer updateResult = ecUserBaseVoMapper.updateByPrimaryKeySelective(newEcUserData);
@@ -88,12 +88,12 @@ class EcUserBaseVoMapperTest {
         // 搜尋該筆資料
         EcUserBaseVo foundEcUser = ecUserBaseVoMapper.selectByPrimaryKey(insertedEcUserId);
         // 搜尋到的物件 email 和 ecUser email 不同
-        Assertions.assertNotEquals(foundEcUser.getEmail(), ecUser.getEmail());
+        Assertions.assertNotEquals(foundEcUser.getEcUserEmail(), ecUser.getEcUserEmail());
 
         // 搜尋到的物件 email 以外屬性資料 和 ecUser 仍相同
         Assertions.assertEquals(foundEcUser.getEcUserId(), ecUser.getEcUserId());
         Assertions.assertEquals(foundEcUser.getEcUserName(), ecUser.getEcUserName());
-        Assertions.assertEquals(foundEcUser.getHashedPassword(), ecUser.getHashedPassword());
+        Assertions.assertEquals(foundEcUser.getEcUserHashedPassword(), ecUser.getEcUserHashedPassword());
         Assertions.assertEquals(foundEcUser.getEcUserIntroduction(), ecUser.getEcUserIntroduction());
     }
 

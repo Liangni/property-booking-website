@@ -5,17 +5,17 @@ public class EcUserBaseVo {
 
     private String ecUserName;
 
-    private String email;
+    private String ecUserEmail;
 
-    private String hashedPassword;
+    private String ecUserHashedPassword;
 
     private String ecUserIntroduction;
 
-    public EcUserBaseVo(Long ecUserId, String ecUserName, String email, String hashedPassword, String ecUserIntroduction) {
+    public EcUserBaseVo(Long ecUserId, String ecUserName, String ecUserEmail, String ecUserHashedPassword, String ecUserIntroduction) {
         this.ecUserId = ecUserId;
         this.ecUserName = ecUserName;
-        this.email = email;
-        this.hashedPassword = hashedPassword;
+        this.ecUserEmail = ecUserEmail;
+        this.ecUserHashedPassword = ecUserHashedPassword;
         this.ecUserIntroduction = ecUserIntroduction;
     }
 
@@ -39,20 +39,20 @@ public class EcUserBaseVo {
         this.ecUserName = ecUserName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEcUserEmail() {
+        return ecUserEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEcUserEmail(String ecUserEmail) {
+        this.ecUserEmail = ecUserEmail;
     }
 
-    public String getHashedPassword() {
-        return hashedPassword;
+    public String getEcUserHashedPassword() {
+        return ecUserHashedPassword;
     }
 
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
+    public void setEcUserHashedPassword(String ecUserHashedPassword) {
+        this.ecUserHashedPassword = ecUserHashedPassword;
     }
 
     public String getEcUserIntroduction() {
@@ -77,8 +77,8 @@ public class EcUserBaseVo {
         EcUserBaseVo other = (EcUserBaseVo) that;
         return (this.getEcUserId() == null ? other.getEcUserId() == null : this.getEcUserId().equals(other.getEcUserId()))
             && (this.getEcUserName() == null ? other.getEcUserName() == null : this.getEcUserName().equals(other.getEcUserName()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-            && (this.getHashedPassword() == null ? other.getHashedPassword() == null : this.getHashedPassword().equals(other.getHashedPassword()))
+            && (this.getEcUserEmail() == null ? other.getEcUserEmail() == null : this.getEcUserEmail().equals(other.getEcUserEmail()))
+            && (this.getEcUserHashedPassword() == null ? other.getEcUserHashedPassword() == null : this.getEcUserHashedPassword().equals(other.getEcUserHashedPassword()))
             && (this.getEcUserIntroduction() == null ? other.getEcUserIntroduction() == null : this.getEcUserIntroduction().equals(other.getEcUserIntroduction()));
     }
 
@@ -88,8 +88,8 @@ public class EcUserBaseVo {
         int result = 1;
         result = prime * result + ((getEcUserId() == null) ? 0 : getEcUserId().hashCode());
         result = prime * result + ((getEcUserName() == null) ? 0 : getEcUserName().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
-        result = prime * result + ((getHashedPassword() == null) ? 0 : getHashedPassword().hashCode());
+        result = prime * result + ((getEcUserEmail() == null) ? 0 : getEcUserEmail().hashCode());
+        result = prime * result + ((getEcUserHashedPassword() == null) ? 0 : getEcUserHashedPassword().hashCode());
         result = prime * result + ((getEcUserIntroduction() == null) ? 0 : getEcUserIntroduction().hashCode());
         return result;
     }
@@ -102,8 +102,8 @@ public class EcUserBaseVo {
         sb.append("Hash = ").append(hashCode());
         sb.append(", ecUserId=").append(ecUserId);
         sb.append(", ecUserName=").append(ecUserName);
-        sb.append(", email=").append(email);
-        sb.append(", hashedPassword=").append(hashedPassword);
+        sb.append(", ecUserEmail=").append(ecUserEmail);
+        sb.append(", ecUserHashedPassword=").append(ecUserHashedPassword);
         sb.append(", ecUserIntroduction=").append(ecUserIntroduction);
         sb.append("]");
         return sb.toString();
