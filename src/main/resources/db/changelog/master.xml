@@ -21,5 +21,8 @@
     <include file="/db/scripts/initial_data/02_insert_data_property_type.sql"/>
     <include file="/db/scripts/initial_data/03_insert_data_property_group_type.sql"/>
     <include file="/db/scripts/initial_data/04_insert_data_share_type.sql"/>
+    <include file="/db/scripts/initial_data/05_insert_data_administrative_area.sql"/>
+    <include file="/db/scripts/initial_data/06_insert_data_district_1.sql"/>
+    <include file="/db/scripts/initial_data/07_insert_data_district_2.sql"/>
 
 </databaseChangeLog>
