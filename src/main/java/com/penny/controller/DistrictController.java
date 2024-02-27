@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/districts")
@@ -19,7 +20,7 @@ public class DistrictController {
     }
 
     @PostMapping("search")
-    public List<DistrictVo> getDistrictsByKeyword(
+    public Map<String, Object> getDistrictsByKeyword(
             @RequestBody DistrictSearchRequest districtSearchRequest,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "limit", required = false, defaultValue = "5") Integer limit

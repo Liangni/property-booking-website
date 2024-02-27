@@ -21,12 +21,25 @@ public class DistrictService {
         this.districtVoMapper = districtVoMapper;
     }
 
-    public List<DistrictVo> getDistrictsByKeyword(String keyword, int page, int limit){
+    public Map<String, Object> getDistrictsByKeyword(String keyword, int page, int limit){
         int offset = (page - 1) * limit;
-        List<DistrictVo> result = districtVoMapper.selectByNameKeyword(keyword, offset, limit);
-        if (result.isEmpty()) throw new ResourceNotFoundException("district with name [%s] not found".formatted(keyword));
 
-        return result;
+        List<DistrictVo> results = districtVoMapper.selectByNameKeyword(keyword, offset, limit);
+        if (results.isEmpty()) throw new ResourceNotFoundException("district with name [%s] not found".formatted(keyword));
+
+        int totalResultCount = districtVoMapper.countSelectByNameKeyword(keyword);
+        int totalPages = (int) Math.ceil((double) totalResultCount / limit);
+        Map<String, Object> pagination = new HashMap<>();
+        pagination.put("totalResults", totalResultCount);
+        pagination.put("currentPage", page);
+        pagination.put("totalPages", totalPages);
+        pagination.put("pageSize", limit);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("results", results);
+        response.put("pagination", pagination);
+
+        return response;
     }
 
 }
