@@ -23,8 +23,10 @@
             <!-- annotation's option(array of String) -->
             <property name="accessors.prefix" value="m_, _"/>
 
+            <property name="allArgsConstructor" value="true"/>
+
             <!-- disable annotations -->
-            <property name="allArgsConstructor" value="false"/>
+            <!-- <property name="allArgsConstructor" value="false"/>-->
         </plugin>
 
 
