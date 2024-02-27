@@ -83,6 +83,14 @@
             <!--<property name="useActualColumnNames" value="false" />-->
             <generatedKey column="ec_user_id" sqlStatement="JDBC" identity="true"/>
         </table>
+        <table schema="" tableName="district"
+               domainObjectName="DistrictBaseVo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--是否使用實際列名,默認為false-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <generatedKey column="district_id" sqlStatement="JDBC" identity="true"/>
+        </table>
 
     </context>
 </generatorConfiguration>
