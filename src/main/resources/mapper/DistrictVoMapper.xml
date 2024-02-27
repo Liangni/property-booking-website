@@ -20,4 +20,11 @@
             limit #{limit} offset #{offset}
         </if>
     </select>
+    <select id="countSelectByNameKeyword" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <bind name="pattern" value="'%' + districtName + '%'" />
+        select
+            count(district_id)
+        from district
+        where district_name like #{pattern, jdbcType=VARCHAR}
+    </select>
 </mapper>

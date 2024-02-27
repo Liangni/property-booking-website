@@ -28,4 +28,13 @@ public class DistrictVoMapperTest {
         Assertions.assertNotNull(districtVoList);
         Assertions.assertEquals(districtVoList.size(), 5);
     }
+
+    @Test
+    @DisplayName("計算用 district_name 關鍵字搜尋地區所找到的資料筆數")
+    void selectAndCountByNameKeywordTest(){
+        Integer count = districtVoMapper.countSelectByNameKeyword("縣");
+
+        Assertions.assertNotNull(count);
+        Assertions.assertNotEquals(0, count);
+    }
 }
