@@ -22,7 +22,7 @@ public class DistrictVoMapperTest {
 
     @Test
     @DisplayName("用 district_name 關鍵字搜尋地區")
-    void getDistrictById(){
+    void selectByNameKeywordTest(){
         List<DistrictVo> districtVoList = districtVoMapper.selectByNameKeyword("縣", 0, 5);
 
         Assertions.assertNotNull(districtVoList);
