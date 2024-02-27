@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @Transactional
@@ -21,10 +23,9 @@ public class DistrictVoMapperTest {
     @Test
     @DisplayName("用 district_name 關鍵字搜尋地區")
     void getDistrictById(){
-        String testPattern = "縣";
-        List<DistrictVo> districtVoList = districtVoMapper.selectByNameKeyword(testPattern);
+        List<DistrictVo> districtVoList = districtVoMapper.selectByNameKeyword("縣", 0, 5);
 
         Assertions.assertNotNull(districtVoList);
-        Assertions.assertEquals(districtVoList.size(), 13);
+        Assertions.assertEquals(districtVoList.size(), 5);
     }
 }

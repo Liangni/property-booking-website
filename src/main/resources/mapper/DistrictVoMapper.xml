@@ -10,11 +10,14 @@
     <sql id="Base_Column_List">
         district_id, district_name, administrative_area_id, parent_district_id
     </sql>
-    <select id="selectByNameKeyword" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByNameKeyword"  resultMap="BaseResultMap">
         <bind name="pattern" value="'%' + districtName + '%'" />
         select
         <include refid="Base_Column_List" />
         from district
         where district_name like #{pattern, jdbcType=VARCHAR}
+        <if test="offset != null and limit != null">
+            limit #{limit} offset #{offset}
+        </if>
     </select>
 </mapper>

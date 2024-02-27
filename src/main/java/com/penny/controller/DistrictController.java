@@ -19,7 +19,11 @@ public class DistrictController {
     }
 
     @PostMapping("search")
-    public List<DistrictVo> getDistrictsByKeyword(@RequestBody DistrictSearchRequest districtSearchRequest) {
-        return districtService.getDistrictsByKeyword(districtSearchRequest.getKeyword());
+    public List<DistrictVo> getDistrictsByKeyword(
+            @RequestBody DistrictSearchRequest districtSearchRequest,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "limit", required = false, defaultValue = "5") Integer limit
+    ) {
+        return districtService.getDistrictsByKeyword(districtSearchRequest.getKeyword(), page, limit);
     }
 }
