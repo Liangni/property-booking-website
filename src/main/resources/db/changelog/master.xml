@@ -16,6 +16,7 @@
     <include file="/db/scripts/schema/07_create_district_table.sql"/>
     <include file="/db/scripts/schema/08_create_address_table.sql"/>
     <include file="/db/scripts/schema/09_create_property_table.sql"/>
+    <include file="/db/scripts/schema/10_create_amenity_type_table.sql"/>
 
     <!--  initial data-->
     <include file="/db/scripts/initial_data/01_insert_data_property_group.sql"/>
@@ -25,5 +26,6 @@
     <include file="/db/scripts/initial_data/05_insert_data_administrative_area.sql"/>
     <include file="/db/scripts/initial_data/06_insert_data_district_1.sql"/>
     <include file="/db/scripts/initial_data/07_insert_data_district_2.sql"/>
+    <include file="/db/scripts/initial_data/08_insert_data_amenity_type.sql"/>
 
 </databaseChangeLog>
