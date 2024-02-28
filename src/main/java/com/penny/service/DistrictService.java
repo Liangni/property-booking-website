@@ -22,23 +22,42 @@ public class DistrictService {
     }
 
     public Map<String, Object> getDistrictsByKeyword(String keyword, int page, int limit){
-        int offset = (page - 1) * limit;
+        int offset = calculateOffset(page, limit);
 
-        List<DistrictVo> results = districtVoMapper.selectByNameKeyword(keyword, offset, limit);
-        if (results.isEmpty()) throw new ResourceNotFoundException("district with name [%s] not found".formatted(keyword));
+        List<DistrictVo> fetchResults = districtVoMapper.selectByNameKeyword(keyword, offset, limit);
+        if (fetchResults.isEmpty()) {
+            throw new ResourceNotFoundException("district with name [" + keyword + "] not found");
+        }
 
         int totalResultCount = districtVoMapper.countSelectByNameKeyword(keyword);
-        int totalPages = (int) Math.ceil((double) totalResultCount / limit);
+        int totalPages = calculateTotalPages(totalResultCount, limit);
+
+        Map<String, Object> pagination = buildPaginationMap(totalResultCount, page, totalPages, limit);
+
+        return buildResponseMap(fetchResults, pagination);
+    }
+
+    private int calculateOffset(int page, int limit) {
+        return (page - 1) * limit;
+    }
+
+    private int calculateTotalPages(int totalResultCount, int limit) {
+        return (int) Math.ceil((double) totalResultCount / limit);
+    }
+
+    private Map<String, Object> buildPaginationMap(int totalResultCount, int page, int totalPages, int limit) {
         Map<String, Object> pagination = new HashMap<>();
         pagination.put("totalResults", totalResultCount);
         pagination.put("currentPage", page);
         pagination.put("totalPages", totalPages);
         pagination.put("pageSize", limit);
+        return pagination;
+    }
 
+    private Map<String, Object> buildResponseMap(List<DistrictVo> results, Map<String, Object> pagination) {
         Map<String, Object> response = new HashMap<>();
         response.put("results", results);
         response.put("pagination", pagination);
-
         return response;
     }
 
