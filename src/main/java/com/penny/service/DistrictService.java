@@ -30,7 +30,7 @@ public class DistrictService {
             throw new ResourceNotFoundException("district with name [" + keyword + "] not found");
         }
 
-        int totalResultCount = districtVoMapper.countSelectByNameKeyword(keyword);
+        int totalResultCount = districtVoMapper.countSelectByNameKeyword(replaced);
         int totalPages = calculateTotalPages(totalResultCount, limit);
 
         Map<String, Object> pagination = buildPaginationMap(totalResultCount, page, totalPages, limit);
