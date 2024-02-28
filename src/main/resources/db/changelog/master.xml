@@ -20,6 +20,9 @@
     <include file="/db/scripts/schema/11_create_amenity_table.sql"/>
     <include file="/db/scripts/schema/12_create_property_amenity_table.sql"/>
     <include file="/db/scripts/schema/13_create_bedroom_table.sql"/>
+    <include file="/db/scripts/schema/14_create_picture_table.sql"/>
+    <include file="/db/scripts/schema/15_create_picture_dt_table.sql"/>
+    <include file="/db/scripts/schema/16_create_property_picture_table.sql"/>
 
     <!--  initial data-->
     <include file="/db/scripts/initial_data/01_insert_data_property_group.sql"/>

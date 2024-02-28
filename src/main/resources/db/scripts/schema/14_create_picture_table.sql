@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS picture
+(
+    picture_id BIGSERIAL PRIMARY KEY NOT NULL,
+    picture_url VARCHAR(200) NOT NULL
+)
