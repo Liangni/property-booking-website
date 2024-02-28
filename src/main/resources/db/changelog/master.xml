@@ -23,6 +23,7 @@
     <include file="/db/scripts/schema/14_create_picture_table.sql"/>
     <include file="/db/scripts/schema/15_create_picture_dt_table.sql"/>
     <include file="/db/scripts/schema/16_create_property_picture_table.sql"/>
+    <include file="/db/scripts/schema/17_create_property_review_table.sql"/>
 
     <!--  initial data-->
     <include file="/db/scripts/initial_data/01_insert_data_property_group.sql"/>
