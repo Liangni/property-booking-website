@@ -37,10 +37,10 @@ public class DistrictService {
 
         int offset = calculateOffset(page, limit);
 
-        List<DistrictVo> fetchResults = Optional.ofNullable(districtVoMapper.selectByNameKeyword(replaced, offset, limit))
+        List<DistrictVo> fetchResults = Optional.ofNullable(districtVoMapper.listByNameKeyword(replaced, offset, limit))
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("district with name [%s] not found", keyword)));
 
-        int totalResultCount = districtVoMapper.countSelectByNameKeyword(replaced);
+        int totalResultCount = districtVoMapper.countByNameKeyword(replaced);
         int totalPages = calculateTotalPages(totalResultCount, limit);
 
         Map<String, Object> pagination = buildPaginationMap(totalResultCount, page, totalPages, limit);

@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Mapper
 public interface DistrictVoMapper {
-    List<DistrictVo> selectByNameKeyword(String districtName, Integer offset, Integer limit);
+    List<DistrictVo> listByNameKeyword(String districtName, Integer offset, Integer limit);
 
-    Integer countSelectByNameKeyword(String districtName);
+    Integer countByNameKeyword(String districtName);
 }
