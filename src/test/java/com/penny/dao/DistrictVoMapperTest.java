@@ -30,6 +30,10 @@ public class DistrictVoMapperTest {
 
     String testKeyword = "test";
 
+    /**
+     * 在每個測試方法執行之前設置初始狀態。
+     * 新增行政區劃分層級資料和相關的地區資料以供測試使用。
+     */
     @BeforeEach
     void setup(){
         // 新增行政區劃分層級資料
@@ -51,7 +55,9 @@ public class DistrictVoMapperTest {
         districtBaseVoMapper.insertSelective(district);
     }
 
-
+    /**
+     * 測試根據地區名稱關鍵字搜尋地區的方法。
+     */
     @Test
     @DisplayName("用 district_name 關鍵字搜尋地區")
     void listByNameKeywordTest(){
@@ -61,6 +67,9 @@ public class DistrictVoMapperTest {
         Assertions.assertNotEquals(0, districtVoList.size());
     }
 
+    /**
+     * 測試計算根據地區名稱關鍵字搜尋地區所找到的資料筆數的方法。
+     */
     @Test
     @DisplayName("計算用 district_name 關鍵字搜尋地區所找到的資料筆數")
     void countByNameKeywordTest(){

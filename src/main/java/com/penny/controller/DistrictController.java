@@ -16,6 +16,12 @@ import java.util.Map;
 public class DistrictController {
     private final DistrictService districtService;
 
+    /**
+     * 通過關鍵字搜尋行政區的端點。
+     *
+     * @param districtSearchRequest 行政區搜尋請求物件，包含搜尋關鍵字、分頁等資訊。
+     * @return 包含符合條件的行政區資訊和分頁資訊的 map。
+     */
     @PostMapping("search")
     public Map<String, Object> getDistrictsByKeyword(
             @RequestBody DistrictSearchRequest districtSearchRequest

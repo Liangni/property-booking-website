@@ -27,6 +27,13 @@ public class DistrictService {
         this.districtVoMapper = districtVoMapper;
     }
 
+    /**
+     * 根據提供的行政區搜尋請求參數，返回符合條件的行政區資訊。
+     *
+     * @param districtSearchRequest 行政區搜尋請求物件，包含搜尋關鍵字、分頁等資訊。
+     * @return 包含符合條件的行政區資訊和分頁資訊的 map。
+     * @throws ResourceNotFoundException 如果根據關鍵字未找到相應的行政區資源時拋出。
+     */
     public Map<String, Object> getDistrictsByKeyword(DistrictSearchRequest districtSearchRequest){
         Map<String, Object> resultMap = new HashMap<>();
         String keyword = districtSearchRequest.getKeyword();
@@ -50,14 +57,37 @@ public class DistrictService {
         return resultMap;
     }
 
+    /**
+     * 根據頁碼和每頁數量計算分頁查詢時的偏移量。
+     *
+     * @param page  目標頁碼。
+     * @param limit 每頁數量。
+     * @return 分頁查詢時的偏移量。
+     */
     private int calculateOffset(int page, int limit) {
         return (page - 1) * limit;
     }
 
+    /**
+     * 根據總記錄數和每頁數量計算總頁數。
+     *
+     * @param totalResultCount 總記錄數。
+     * @param limit            每頁數量。
+     * @return 總頁數。
+     */
     private int calculateTotalPages(int totalResultCount, int limit) {
         return (int) Math.ceil((double) totalResultCount / limit);
     }
 
+    /**
+     * 構建分頁資訊的 map。
+     *
+     * @param totalResultCount 總記錄數。
+     * @param page             目前頁碼。
+     * @param totalPages       總頁數。
+     * @param limit            每頁數量。
+     * @return 紀錄分頁資訊的map。
+     */
     private Map<String, Object> buildPaginationMap(int totalResultCount, int page, int totalPages, int limit) {
         Map<String, Object> pagination = new HashMap<>();
         pagination.put("totalResults", totalResultCount);
