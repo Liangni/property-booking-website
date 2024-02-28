@@ -4,6 +4,7 @@ package com.penny.service;
 
 import com.penny.dao.DistrictVoMapper;
 import com.penny.exception.ResourceNotFoundException;
+import com.penny.request.district.DistrictSearchRequest;
 import com.penny.vo.DistrictVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class DistrictService {
+    private static final int DEFAULT_PAGE = 1;
+
+    private static final int DEFAULT_LIMIT = 10;
+
     private final DistrictVoMapper districtVoMapper;
 
     @Autowired
@@ -21,21 +27,27 @@ public class DistrictService {
         this.districtVoMapper = districtVoMapper;
     }
 
-    public Map<String, Object> getDistrictsByKeyword(String keyword, int page, int limit){
+    public Map<String, Object> getDistrictsByKeyword(DistrictSearchRequest districtSearchRequest){
+        Map<String, Object> resultMap = new HashMap<>();
+        String keyword = districtSearchRequest.getKeyword();
+        int page = Optional.ofNullable(districtSearchRequest.getPage()).orElse(DEFAULT_PAGE);
+        int limit = Optional.ofNullable(districtSearchRequest.getLimit()).orElse(DEFAULT_LIMIT);
+
         String replaced = keyword.replace("台", "臺");
+
         int offset = calculateOffset(page, limit);
 
-        List<DistrictVo> fetchResults = districtVoMapper.selectByNameKeyword(replaced, offset, limit);
-        if (fetchResults.isEmpty()) {
-            throw new ResourceNotFoundException("district with name [" + keyword + "] not found");
-        }
+        List<DistrictVo> fetchResults = Optional.ofNullable(districtVoMapper.selectByNameKeyword(replaced, offset, limit))
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("district with name [%s] not found", keyword)));
 
         int totalResultCount = districtVoMapper.countSelectByNameKeyword(replaced);
         int totalPages = calculateTotalPages(totalResultCount, limit);
 
         Map<String, Object> pagination = buildPaginationMap(totalResultCount, page, totalPages, limit);
 
-        return buildResponseMap(fetchResults, pagination);
+        resultMap.put("results", fetchResults);
+        resultMap.put("pagination", pagination);
+        return resultMap;
     }
 
     private int calculateOffset(int page, int limit) {
@@ -53,13 +65,6 @@ public class DistrictService {
         pagination.put("totalPages", totalPages);
         pagination.put("pageSize", limit);
         return pagination;
-    }
-
-    private Map<String, Object> buildResponseMap(List<DistrictVo> results, Map<String, Object> pagination) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("results", results);
-        response.put("pagination", pagination);
-        return response;
     }
 
 }
