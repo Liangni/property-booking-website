@@ -22,9 +22,10 @@ public class DistrictService {
     }
 
     public Map<String, Object> getDistrictsByKeyword(String keyword, int page, int limit){
+        String replaced = keyword.replace("台", "臺");
         int offset = calculateOffset(page, limit);
 
-        List<DistrictVo> fetchResults = districtVoMapper.selectByNameKeyword(keyword, offset, limit);
+        List<DistrictVo> fetchResults = districtVoMapper.selectByNameKeyword(replaced, offset, limit);
         if (fetchResults.isEmpty()) {
             throw new ResourceNotFoundException("district with name [" + keyword + "] not found");
         }
