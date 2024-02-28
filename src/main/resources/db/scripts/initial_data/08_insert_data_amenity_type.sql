@@ -1,5 +1,4 @@
 INSERT INTO amenity_type (amenity_type_name) VALUES
-('基本設備'),
 ('衛浴'),
 ('臥室和洗衣'),
 ('娛樂'),
