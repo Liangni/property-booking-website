@@ -18,17 +18,27 @@ FROM dates;
 WITH second_week_dates AS (
     SELECT s AS date
     FROM generate_series(current_date + INTERVAL '7 days', current_date + INTERVAL '13 days', '1 day') AS s
+),
+
+-- 更新第四周的可用性
+forth_week_dates AS (
+    SELECT s AS date
+    FROM generate_series(current_date + INTERVAL '21 days', current_date + INTERVAL '25 days', '1 day') AS s
 )
 
 -- 更新預訂可用性表
 -- 將房源1第二周的日期標記為「可用」
 UPDATE booking_availability
 SET booking_availability_status = 'available'
-WHERE booking_availability_date >= (SELECT min(date) FROM second_week_dates)
+WHERE (booking_availability_date >= (SELECT min(date) FROM second_week_dates)
   AND booking_availability_date <= (SELECT max(date) FROM second_week_dates)
-  AND property_id = 1;
+  AND property_id = 1) OR
+    (booking_availability_date >= (SELECT min(date) FROM forth_week_dates)
+        AND booking_availability_date <= (SELECT max(date) FROM forth_week_dates)
+        AND property_id = 1)
+;
 
--- 更新第二周的可用性
+-- 更新第三周的可用性
 WITH third_week_dates AS (
     SELECT s2 AS date
     FROM generate_series(current_date + INTERVAL '14 days', current_date + INTERVAL '20 days', '1 day') AS s2
@@ -41,6 +51,9 @@ SET booking_availability_status = 'available'
 WHERE booking_availability_date >= (SELECT min(date) FROM third_week_dates)
   AND booking_availability_date <= (SELECT max(date) FROM third_week_dates)
   AND property_id = 2;
+
+
+SELECT * FROM booking_availability order by property_id, booking_availability_date;
 
 
 
