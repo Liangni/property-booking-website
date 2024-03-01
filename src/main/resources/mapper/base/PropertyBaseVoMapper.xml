@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.PropertyBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.PropertyBaseVo">
+    <id column="property_id" jdbcType="BIGINT" property="propertyId" />
+    <result column="property_title" jdbcType="VARCHAR" property="propertyTitle" />
+    <result column="property_description" jdbcType="VARCHAR" property="propertyDescription" />
+    <result column="max_num_of_guests" jdbcType="INTEGER" property="maxNumOfGuests" />
+    <result column="num_of_bedrooms" jdbcType="INTEGER" property="numOfBedrooms" />
+    <result column="num_of_beds" jdbcType="INTEGER" property="numOfBeds" />
+    <result column="num_of_bathrooms" jdbcType="INTEGER" property="numOfBathrooms" />
+    <result column="price_on_weekdays" jdbcType="BIGINT" property="priceOnWeekdays" />
+    <result column="price_on_weekends" jdbcType="BIGINT" property="priceOnWeekends" />
+    <result column="is_published" jdbcType="BIT" property="isPublished" />
+    <result column="average_rating" jdbcType="DOUBLE" property="averageRating" />
+    <result column="property_group_type_id" jdbcType="BIGINT" property="propertyGroupTypeId" />
+    <result column="property_share_type_id" jdbcType="BIGINT" property="propertyShareTypeId" />
+    <result column="address_id" jdbcType="BIGINT" property="addressId" />
+    <result column="host_id" jdbcType="BIGINT" property="hostId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    property_id, property_title, property_description, max_num_of_guests, num_of_bedrooms, 
+    num_of_beds, num_of_bathrooms, price_on_weekdays, price_on_weekends, is_published, 
+    average_rating, property_group_type_id, property_share_type_id, address_id, host_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from property
+    where property_id = #{propertyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from property
+    where property_id = #{propertyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="property_id" keyProperty="propertyId" parameterType="com.penny.vo.base.PropertyBaseVo" useGeneratedKeys="true">
+    insert into property (property_title, property_description, 
+      max_num_of_guests, num_of_bedrooms, num_of_beds, 
+      num_of_bathrooms, price_on_weekdays, price_on_weekends, 
+      is_published, average_rating, property_group_type_id, 
+      property_share_type_id, address_id, host_id
+      )
+    values (#{propertyTitle,jdbcType=VARCHAR}, #{propertyDescription,jdbcType=VARCHAR}, 
+      #{maxNumOfGuests,jdbcType=INTEGER}, #{numOfBedrooms,jdbcType=INTEGER}, #{numOfBeds,jdbcType=INTEGER}, 
+      #{numOfBathrooms,jdbcType=INTEGER}, #{priceOnWeekdays,jdbcType=BIGINT}, #{priceOnWeekends,jdbcType=BIGINT}, 
+      #{isPublished,jdbcType=BIT}, #{averageRating,jdbcType=DOUBLE}, #{propertyGroupTypeId,jdbcType=BIGINT}, 
+      #{propertyShareTypeId,jdbcType=BIGINT}, #{addressId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="property_id" keyProperty="propertyId" parameterType="com.penny.vo.base.PropertyBaseVo" useGeneratedKeys="true">
+    insert into property
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="propertyTitle != null">
+        property_title,
+      </if>
+      <if test="propertyDescription != null">
+        property_description,
+      </if>
+      <if test="maxNumOfGuests != null">
+        max_num_of_guests,
+      </if>
+      <if test="numOfBedrooms != null">
+        num_of_bedrooms,
+      </if>
+      <if test="numOfBeds != null">
+        num_of_beds,
+      </if>
+      <if test="numOfBathrooms != null">
+        num_of_bathrooms,
+      </if>
+      <if test="priceOnWeekdays != null">
+        price_on_weekdays,
+      </if>
+      <if test="priceOnWeekends != null">
+        price_on_weekends,
+      </if>
+      <if test="isPublished != null">
+        is_published,
+      </if>
+      <if test="averageRating != null">
+        average_rating,
+      </if>
+      <if test="propertyGroupTypeId != null">
+        property_group_type_id,
+      </if>
+      <if test="propertyShareTypeId != null">
+        property_share_type_id,
+      </if>
+      <if test="addressId != null">
+        address_id,
+      </if>
+      <if test="hostId != null">
+        host_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="propertyTitle != null">
+        #{propertyTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyDescription != null">
+        #{propertyDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="maxNumOfGuests != null">
+        #{maxNumOfGuests,jdbcType=INTEGER},
+      </if>
+      <if test="numOfBedrooms != null">
+        #{numOfBedrooms,jdbcType=INTEGER},
+      </if>
+      <if test="numOfBeds != null">
+        #{numOfBeds,jdbcType=INTEGER},
+      </if>
+      <if test="numOfBathrooms != null">
+        #{numOfBathrooms,jdbcType=INTEGER},
+      </if>
+      <if test="priceOnWeekdays != null">
+        #{priceOnWeekdays,jdbcType=BIGINT},
+      </if>
+      <if test="priceOnWeekends != null">
+        #{priceOnWeekends,jdbcType=BIGINT},
+      </if>
+      <if test="isPublished != null">
+        #{isPublished,jdbcType=BIT},
+      </if>
+      <if test="averageRating != null">
+        #{averageRating,jdbcType=DOUBLE},
+      </if>
+      <if test="propertyGroupTypeId != null">
+        #{propertyGroupTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="propertyShareTypeId != null">
+        #{propertyShareTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="addressId != null">
+        #{addressId,jdbcType=BIGINT},
+      </if>
+      <if test="hostId != null">
+        #{hostId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PropertyBaseVo">
+    update property
+    <set>
+      <if test="propertyTitle != null">
+        property_title = #{propertyTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyDescription != null">
+        property_description = #{propertyDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="maxNumOfGuests != null">
+        max_num_of_guests = #{maxNumOfGuests,jdbcType=INTEGER},
+      </if>
+      <if test="numOfBedrooms != null">
+        num_of_bedrooms = #{numOfBedrooms,jdbcType=INTEGER},
+      </if>
+      <if test="numOfBeds != null">
+        num_of_beds = #{numOfBeds,jdbcType=INTEGER},
+      </if>
+      <if test="numOfBathrooms != null">
+        num_of_bathrooms = #{numOfBathrooms,jdbcType=INTEGER},
+      </if>
+      <if test="priceOnWeekdays != null">
+        price_on_weekdays = #{priceOnWeekdays,jdbcType=BIGINT},
+      </if>
+      <if test="priceOnWeekends != null">
+        price_on_weekends = #{priceOnWeekends,jdbcType=BIGINT},
+      </if>
+      <if test="isPublished != null">
+        is_published = #{isPublished,jdbcType=BIT},
+      </if>
+      <if test="averageRating != null">
+        average_rating = #{averageRating,jdbcType=DOUBLE},
+      </if>
+      <if test="propertyGroupTypeId != null">
+        property_group_type_id = #{propertyGroupTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="propertyShareTypeId != null">
+        property_share_type_id = #{propertyShareTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="addressId != null">
+        address_id = #{addressId,jdbcType=BIGINT},
+      </if>
+      <if test="hostId != null">
+        host_id = #{hostId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where property_id = #{propertyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PropertyBaseVo">
+    update property
+    set property_title = #{propertyTitle,jdbcType=VARCHAR},
+      property_description = #{propertyDescription,jdbcType=VARCHAR},
+      max_num_of_guests = #{maxNumOfGuests,jdbcType=INTEGER},
+      num_of_bedrooms = #{numOfBedrooms,jdbcType=INTEGER},
+      num_of_beds = #{numOfBeds,jdbcType=INTEGER},
+      num_of_bathrooms = #{numOfBathrooms,jdbcType=INTEGER},
+      price_on_weekdays = #{priceOnWeekdays,jdbcType=BIGINT},
+      price_on_weekends = #{priceOnWeekends,jdbcType=BIGINT},
+      is_published = #{isPublished,jdbcType=BIT},
+      average_rating = #{averageRating,jdbcType=DOUBLE},
+      property_group_type_id = #{propertyGroupTypeId,jdbcType=BIGINT},
+      property_share_type_id = #{propertyShareTypeId,jdbcType=BIGINT},
+      address_id = #{addressId,jdbcType=BIGINT},
+      host_id = #{hostId,jdbcType=BIGINT}
+    where property_id = #{propertyId,jdbcType=BIGINT}
+  </update>
+</mapper>

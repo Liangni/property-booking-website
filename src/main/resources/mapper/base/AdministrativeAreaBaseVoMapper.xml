@@ -62,4 +62,65 @@
       administrative_area_level = #{administrativeAreaLevel,jdbcType=BIGINT}
     where administrative_area_id = #{administrativeAreaId,jdbcType=BIGINT}
   </update>
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.AdministrativeAreaBaseVo">
+    <id column="administrative_area_id" jdbcType="BIGINT" property="administrativeAreaId" />
+    <result column="administrative_area_name" jdbcType="VARCHAR" property="administrativeAreaName" />
+    <result column="administrative_area_level" jdbcType="BIGINT" property="administrativeAreaLevel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    administrative_area_id, administrative_area_name, administrative_area_level
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from administrative_area
+    where administrative_area_id = #{administrativeAreaId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from administrative_area
+    where administrative_area_id = #{administrativeAreaId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="administrative_area_id" keyProperty="administrativeAreaId" parameterType="com.penny.vo.base.AdministrativeAreaBaseVo" useGeneratedKeys="true">
+    insert into administrative_area (administrative_area_name, administrative_area_level
+      )
+    values (#{administrativeAreaName,jdbcType=VARCHAR}, #{administrativeAreaLevel,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="administrative_area_id" keyProperty="administrativeAreaId" parameterType="com.penny.vo.base.AdministrativeAreaBaseVo" useGeneratedKeys="true">
+    insert into administrative_area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="administrativeAreaName != null">
+        administrative_area_name,
+      </if>
+      <if test="administrativeAreaLevel != null">
+        administrative_area_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="administrativeAreaName != null">
+        #{administrativeAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="administrativeAreaLevel != null">
+        #{administrativeAreaLevel,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.AdministrativeAreaBaseVo">
+    update administrative_area
+    <set>
+      <if test="administrativeAreaName != null">
+        administrative_area_name = #{administrativeAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="administrativeAreaLevel != null">
+        administrative_area_level = #{administrativeAreaLevel,jdbcType=BIGINT},
+      </if>
+    </set>
+    where administrative_area_id = #{administrativeAreaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.AdministrativeAreaBaseVo">
+    update administrative_area
+    set administrative_area_name = #{administrativeAreaName,jdbcType=VARCHAR},
+      administrative_area_level = #{administrativeAreaLevel,jdbcType=BIGINT}
+    where administrative_area_id = #{administrativeAreaId,jdbcType=BIGINT}
+  </update>
 </mapper>

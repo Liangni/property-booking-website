@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DistrictBaseVoMapper {
     int deleteByPrimaryKey(Long districtId);
-
     int insert(DistrictBaseVo record);
 
     int insertSelective(DistrictBaseVo record);
