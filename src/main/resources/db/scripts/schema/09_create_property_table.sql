@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS property
     num_of_bathrooms INT,
     price_on_weekdays BIGINT,
     price_on_weekends BIGINT,
-    is_published BOOLEAN,
+    is_published BOOLEAN NOT NULL DEFAULT false,
     average_rating DOUBLE PRECISION,
     property_group_type_id BIGINT,
     property_share_type_id BIGINT,
