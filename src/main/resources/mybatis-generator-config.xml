@@ -85,6 +85,7 @@
             <!--<property name="useActualColumnNames" value="false" />-->
             <generatedKey column="ec_user_id" sqlStatement="JDBC" identity="true"/>
         </table>
+
         <table schema="" tableName="district"
                domainObjectName="DistrictBaseVo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
@@ -93,6 +94,7 @@
             <!--<property name="useActualColumnNames" value="false" />-->
             <generatedKey column="district_id" sqlStatement="JDBC" identity="true"/>
         </table>
+
         <table schema="" tableName="administrative_area"
                domainObjectName="AdministrativeAreaBaseVo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
@@ -101,6 +103,16 @@
             <!--<property name="useActualColumnNames" value="false" />-->
             <generatedKey column="administrative_area_id" sqlStatement="JDBC" identity="true"/>
         </table>
+
+        <table schema="" tableName="address"
+               domainObjectName="AddressBaseVo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--是否使用實際列名,默認為false-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <generatedKey column="address_id" sqlStatement="JDBC" identity="true"/>
+        </table>
+
         <table schema="" tableName="property"
                domainObjectName="PropertyBaseVo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
