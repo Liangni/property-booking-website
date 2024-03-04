@@ -92,13 +92,13 @@ public class PropertyVoMapperTest {
         // 新增子地區
         DistrictBaseVo district1Child = DistrictBaseVo.builder()
                 .districtName("test district 1's child")
-                .administrativeAreaId(administrativeArea103Id)
+                .administrativeAreaId(administrativeArea103Id) // 帶入行政區劃分層級資料 id
                 .parentDistrictId(district1Id)
                 .build();
 
         DistrictBaseVo district2Child = DistrictBaseVo.builder()
                 .districtName("test district 2's child")
-                .administrativeAreaId(administrativeArea103Id)
+                .administrativeAreaId(administrativeArea103Id) // 帶入行政區劃分層級資料 id
                 .parentDistrictId(district2Id)
                 .build();
 
@@ -112,14 +112,14 @@ public class PropertyVoMapperTest {
         // 新增地址資料
         AddressBaseVo address1 = AddressBaseVo.builder()
                 .street("test street 1")
-                .adminAreaLevel1DistrictId(district1Id)
-                .adminAreaLevel3DistrictId(district1ChildId)
+                .adminAreaLevel1DistrictId(district1Id) // 帶入地區資料 id
+                .adminAreaLevel3DistrictId(district1ChildId) // 帶入子地區資料 id
                 .build();
 
         AddressBaseVo address2 = AddressBaseVo.builder()
                 .street("test street 2")
-                .adminAreaLevel2DistrictId(district2Id)
-                .adminAreaLevel3DistrictId(district2ChildId)
+                .adminAreaLevel2DistrictId(district2Id) // 帶入地區資料 id
+                .adminAreaLevel3DistrictId(district2ChildId) // 帶入子地區資料 id
                 .build();
 
         // 獲取地址資料 id
@@ -144,24 +144,24 @@ public class PropertyVoMapperTest {
         // 房源1, 3 共享同個地址
         PropertyBaseVo property1 = PropertyBaseVo.builder()
                 .propertyTitle("Property 1")
-                .addressId(address1Id)
-                .hostId(ecUserId)
+                .addressId(address1Id) // 帶入地址資料 id
+                .hostId(ecUserId) // 帶入使用者資料 id
                 .build();
 
         PropertyBaseVo property3 = PropertyBaseVo.builder()
                 .propertyTitle("Property 3")
-                .addressId(address1Id)
-                .hostId(ecUserId)
+                .addressId(address1Id) // 帶入地址資料 id
+                .hostId(ecUserId) // 帶入使用者資料 id
                 .build();
 
         // 房源2 與其他兩者不同地址
         PropertyBaseVo property2 = PropertyBaseVo.builder()
                 .propertyTitle("Property 2")
-                .addressId(address2Id)
-                .hostId(ecUserId)
+                .addressId(address2Id) // 帶入地址資料 id
+                .hostId(ecUserId) // 帶入使用者資料 id
                 .build();
 
-
+        // 獲取房源資料 id
         propertyBaseVoMapper.insertSelective(property1);
         property1Id = (long) property1.getPropertyId();
         propertyBaseVoMapper.insertSelective(property2);
@@ -176,19 +176,22 @@ public class PropertyVoMapperTest {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
+        // 定義包含三個房源ID和對應可預訂日期範圍的列表
         List<Long> propertyIds = Arrays.asList(property1Id, property2Id, property3Id);
         List<List<Integer>> availableRanges = Arrays.asList(Arrays.asList(2,5), Arrays.asList(2, 5), Arrays.asList(7,10));
 
+        // 對每個日期進行迭代
         for (int i = 0; i < 10; i ++) {
+            // 對每個房源進行迭代
             for (int j = 0; j < propertyIds.size(); j++) {
                 String bookingStatus = "booked";
                 Long propertyId = propertyIds.get(j);
                 List<Integer> range = availableRanges.get(j);
-
+                // 檢查日期是否在可預訂範圍內，並根據情況設置預定狀態
                 if (i >= range.get(0) && i <= range.get(1)) {
                     bookingStatus = "available";
                 }
-
+                // 構建預定資料物件並插入資料庫
                 BookingAvailabilityBaseVo bookingAvailabilityBaseVo = BookingAvailabilityBaseVo.builder()
                         .propertyId(propertyId)
                         .bookingAvailabilityDate(currentDate)
@@ -197,7 +200,7 @@ public class PropertyVoMapperTest {
 
                 bookingAvailabilityBaseVoMapper.insertSelective(bookingAvailabilityBaseVo);
             }
-
+            // 將日期向前推進一天
             calendar.add(Calendar.DATE, 1);
             currentDate = calendar.getTime();
         }
