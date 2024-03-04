@@ -59,7 +59,7 @@
 
     </sql>
 
-    <select id="listByNumOfAvailableDays" parameterType="com.penny.daoParameter.ListByNumOfAvailableDaysParam" resultMap="BaseResultMap">
+    <select id="listByNumOfAvailableDays" parameterType="com.penny.daoParameter.propertyVoMapper.ListByNumOfAvailableDaysParam" resultMap="BaseResultMap">
         <!-- 定義 available_periods 公用表達式（CTE），用於計算每個房源每個日期所在的連續可預定天數 -->
         WITH available_periods AS (
             <include refid="available_periods_sql"/>

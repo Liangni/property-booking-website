@@ -1,4 +1,4 @@
-package com.penny.daoParameter;
+package com.penny.daoParameter.propertyVoMapper;
 
 import lombok.Builder;
 import lombok.Data;

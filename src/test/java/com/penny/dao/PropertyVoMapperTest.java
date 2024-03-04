@@ -1,7 +1,7 @@
 package com.penny.dao;
 
 import com.penny.dao.base.*;
-import com.penny.daoParameter.ListByNumOfAvailableDaysParam;
+import com.penny.daoParameter.propertyVoMapper.ListByNumOfAvailableDaysParam;
 import com.penny.vo.PropertyVo;
 import com.penny.vo.base.*;
 import org.junit.jupiter.api.Assertions;
