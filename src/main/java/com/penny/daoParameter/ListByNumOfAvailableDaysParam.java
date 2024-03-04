@@ -63,10 +63,27 @@ public class ListByNumOfAvailableDaysParam {
         }
 
     }
+    public enum SortOrderEnum {
+        ASC("asc"),
+        DESC("desc");
+
+        private final String label;
+
+        SortOrderEnum(String label) {
+            this.label = label;
+        }
+    }
+
+    @Data
+    @Builder
+    public class SortObject {
+        private final SortFieldEnum field;
+        private final SortOrderEnum order;
+    }
 
     private Integer numOfAvailableDay;
-    private List<String> returnFieldList;
-    private List<String> sortFieldList;
+    private List<String> returnFieldList; // 希望是[${ReturnFieldEnum}]
+    private List<String> sortFieldList; // 希望是 [{ field: ${SortFieldEnum}, order: ${SortOrderEnum}}]
     private Integer offset;
     private Integer limit;
 
