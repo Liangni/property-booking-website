@@ -1,7 +1,7 @@
 package com.penny.dao;
 
 import com.penny.dao.base.*;
-import com.penny.daoParameter.propertyVoMapper.ListByNumOfAvailableDaysParam;
+import com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam;
 import com.penny.vo.PropertyVo;
 import com.penny.vo.base.*;
 import org.junit.jupiter.api.Assertions;
@@ -218,19 +218,24 @@ public class PropertyVoMapperTest {
     void listByNumOfAvailableDaysTest(){
         // 準備要返回和排序的 field 列表
         List<String> returnFieldList = new ArrayList<>();
-        returnFieldList.add(ListByNumOfAvailableDaysParam.ReturnFieldEnum.ADDRESS.getLabel());
-        returnFieldList.add(ListByNumOfAvailableDaysParam.ReturnFieldEnum.DISTRICT.getLabel());
-        returnFieldList.add(ListByNumOfAvailableDaysParam.ReturnFieldEnum.PROPERTY_ID.getLabel());
+        returnFieldList.add("address");
+        returnFieldList.add("district");
+        returnFieldList.add("propertyId");
 
         List<String> sortFieldList = new ArrayList<>();
-        sortFieldList.add(ListByNumOfAvailableDaysParam.SortFieldEnum.DISTRICT.getLabel());
-        sortFieldList.add(ListByNumOfAvailableDaysParam.SortFieldEnum.NEAREST_AVAILABLE_DAY.getLabel());
+        sortFieldList.add("district");
+        sortFieldList.add("nearestAvailableDate");
+
+        List<String> sortOrderList = new ArrayList<>();
+        sortOrderList.add("asc");
+        sortOrderList.add("asc");
 
         // 準備要要使用的參數物件
         ListByNumOfAvailableDaysParam param = ListByNumOfAvailableDaysParam.builder()
                 .numOfAvailableDay(3)
                 .returnFieldList(returnFieldList)
                 .sortFieldList(sortFieldList)
+                .sortOrderList(sortOrderList)
                 .offset(0)
                 .limit(10)
                 .build();

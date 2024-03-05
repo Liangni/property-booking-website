@@ -1,6 +1,6 @@
 package com.penny.dao;
 
-import com.penny.daoParameter.propertyVoMapper.ListByNumOfAvailableDaysParam;
+import com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam;
 import com.penny.vo.PropertyVo;
 import org.apache.ibatis.annotations.Mapper;
 
