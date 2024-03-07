@@ -42,4 +42,6 @@
     <include file="/db/scripts/example_data/02_insert_example_address.sql"/>
     <include file="/db/scripts/example_data/03_insert_example_property.sql"/>
     <include file="/db/scripts/example_data/04_insert_example_booking_availability.sql"/>
+    <include file="/db/scripts/example_data/05_insert_example_picture.sql"/>
+    <include file="/db/scripts/example_data/06_insert_example_picture_dt.sql"/>
 </databaseChangeLog>
