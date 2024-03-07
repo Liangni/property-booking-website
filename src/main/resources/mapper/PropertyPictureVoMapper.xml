@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.PropertyPictureVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.PropertyPictureVo">
+        <id column="property_picture_id" jdbcType="BIGINT" property="propertyPictureId" />
+        <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+        <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
+        <result column="property_picture_order" jdbcType="BIGINT" property="propertyPictureOrder" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        property_picture_id, property_id, picture_id, property_picture_order
+    </sql>
+
+    <select id="ListByPropertyIdList" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from property_picture
+        where property_picture_id in (
+            <foreach collection="propertyIdList" item="propertyId" separator="," close="">#{propertyId, jdbcType=BIGINT}</foreach>
+            );
+    </select>
+
+</mapper>
