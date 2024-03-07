@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.PropertyPictureBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.PropertyPictureBaseVo">
+    <id column="property_picture_id" jdbcType="BIGINT" property="propertyPictureId" />
+    <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+    <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
+    <result column="property_picture_order" jdbcType="BIGINT" property="propertyPictureOrder" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    property_picture_id, property_id, picture_id, property_picture_order
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from property_picture
+    where property_picture_id = #{propertyPictureId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from property_picture
+    where property_picture_id = #{propertyPictureId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="property_picture_id" keyProperty="propertyPictureId" parameterType="com.penny.vo.base.PropertyPictureBaseVo" useGeneratedKeys="true">
+    insert into property_picture (property_id, picture_id, property_picture_order
+      )
+    values (#{propertyId,jdbcType=BIGINT}, #{pictureId,jdbcType=BIGINT}, #{propertyPictureOrder,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="property_picture_id" keyProperty="propertyPictureId" parameterType="com.penny.vo.base.PropertyPictureBaseVo" useGeneratedKeys="true">
+    insert into property_picture
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="propertyId != null">
+        property_id,
+      </if>
+      <if test="pictureId != null">
+        picture_id,
+      </if>
+      <if test="propertyPictureOrder != null">
+        property_picture_order,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="propertyId != null">
+        #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="pictureId != null">
+        #{pictureId,jdbcType=BIGINT},
+      </if>
+      <if test="propertyPictureOrder != null">
+        #{propertyPictureOrder,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PropertyPictureBaseVo">
+    update property_picture
+    <set>
+      <if test="propertyId != null">
+        property_id = #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="pictureId != null">
+        picture_id = #{pictureId,jdbcType=BIGINT},
+      </if>
+      <if test="propertyPictureOrder != null">
+        property_picture_order = #{propertyPictureOrder,jdbcType=BIGINT},
+      </if>
+    </set>
+    where property_picture_id = #{propertyPictureId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PropertyPictureBaseVo">
+    update property_picture
+    set property_id = #{propertyId,jdbcType=BIGINT},
+      picture_id = #{pictureId,jdbcType=BIGINT},
+      property_picture_order = #{propertyPictureOrder,jdbcType=BIGINT}
+    where property_picture_id = #{propertyPictureId,jdbcType=BIGINT}
+  </update>
+</mapper>

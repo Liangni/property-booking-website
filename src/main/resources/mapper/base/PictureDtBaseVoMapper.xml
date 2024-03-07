@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.PictureDtBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.PictureDtBaseVo">
+    <id column="picture_dt_id" jdbcType="BIGINT" property="pictureDtId" />
+    <result column="picture_dt_url" jdbcType="VARCHAR" property="pictureDtUrl" />
+    <result column="picture_dt_size" jdbcType="VARCHAR" property="pictureDtSize" />
+    <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    picture_dt_id, picture_dt_url, picture_dt_size, picture_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture_dt
+    where picture_dt_id = #{pictureDtId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from picture_dt
+    where picture_dt_id = #{pictureDtId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="picture_dt_id" keyProperty="pictureDtId" parameterType="com.penny.vo.base.PictureDtBaseVo" useGeneratedKeys="true">
+    insert into picture_dt (picture_dt_url, picture_dt_size, picture_id
+      )
+    values (#{pictureDtUrl,jdbcType=VARCHAR}, #{pictureDtSize,jdbcType=VARCHAR}, #{pictureId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="picture_dt_id" keyProperty="pictureDtId" parameterType="com.penny.vo.base.PictureDtBaseVo" useGeneratedKeys="true">
+    insert into picture_dt
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pictureDtUrl != null">
+        picture_dt_url,
+      </if>
+      <if test="pictureDtSize != null">
+        picture_dt_size,
+      </if>
+      <if test="pictureId != null">
+        picture_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pictureDtUrl != null">
+        #{pictureDtUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureDtSize != null">
+        #{pictureDtSize,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureId != null">
+        #{pictureId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PictureDtBaseVo">
+    update picture_dt
+    <set>
+      <if test="pictureDtUrl != null">
+        picture_dt_url = #{pictureDtUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureDtSize != null">
+        picture_dt_size = #{pictureDtSize,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureId != null">
+        picture_id = #{pictureId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where picture_dt_id = #{pictureDtId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PictureDtBaseVo">
+    update picture_dt
+    set picture_dt_url = #{pictureDtUrl,jdbcType=VARCHAR},
+      picture_dt_size = #{pictureDtSize,jdbcType=VARCHAR},
+      picture_id = #{pictureId,jdbcType=BIGINT}
+    where picture_dt_id = #{pictureDtId,jdbcType=BIGINT}
+  </update>
+</mapper>
