@@ -3,6 +3,7 @@ package com.penny.dao;
 import com.penny.dao.base.*;
 import com.penny.vo.PropertyPictureVo;
 import com.penny.vo.base.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -118,7 +119,25 @@ public class PropertyPictureVoMapperTest {
     @Test
     @DisplayName("用 propertyId 列表搜尋房源圖片")
     void ListByPropertyIdListTest() {
-        List<PropertyPictureVo> propertyPicList = propertyPictureVoMapper.ListByPropertyIdList(propertyIdList);
-        System.out.println(propertyPicList);
+        // 期望的房源ID列表，取前2個房源ID
+        List<Long> expectPropertyIdList = propertyIdList.subList(0, 2);
+
+        // 根據期望的房源ID列表搜索房源圖片
+        List<PropertyPictureVo> propertyPicList = propertyPictureVoMapper.ListByPropertyIdList(expectPropertyIdList);
+
+        // 斷言返回的房源圖片列表不為空
+        Assertions.assertFalse(propertyPicList.isEmpty());
+
+        // 將房源圖片列表轉換為房源ID列表
+        List<Long> returnPropertyIdList = propertyPicList
+                .stream()
+                .map(PropertyPictureVo::getPropertyId)
+                .toList();
+
+        // 斷言返回的房源ID列表包含所有期望的房源ID列表
+        Assertions.assertTrue(returnPropertyIdList.containsAll(expectPropertyIdList));
+
+        // 斷言返回的房源ID列表不包含指定的房源ID（propertyIdList.get(2)）
+        Assertions.assertFalse(returnPropertyIdList.contains(propertyIdList.get(2)));
     }
 }

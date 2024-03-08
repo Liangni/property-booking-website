@@ -16,9 +16,8 @@
         select
             <include refid="Base_Column_List"/>
         from property_picture
-        where property_picture_id in (
-            <foreach collection="propertyIdList" item="propertyId" separator="," close="">#{propertyId, jdbcType=BIGINT}</foreach>
-            );
+        where property_id in
+            <foreach collection="propertyIdList" item="propertyId" open="(" separator="," close=")">#{propertyId, jdbcType=BIGINT}</foreach>
     </select>
 
 </mapper>
