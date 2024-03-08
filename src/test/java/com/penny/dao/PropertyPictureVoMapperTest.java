@@ -107,7 +107,7 @@ public class PropertyPictureVoMapperTest {
     }
 
     @Test
-    @DisplayName("測試")
+    @DisplayName("用 propertyId 列表搜尋房源圖片")
     void ListByPropertyIdListTest() {
         List<PropertyPictureVo> propertyPicList = propertyPictureVoMapper.ListByPropertyIdList(propertyIdList);
         System.out.println(propertyPicList);
