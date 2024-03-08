@@ -36,6 +36,15 @@ public class PropertyPictureVoMapperTest {
 
     List<Long> propertyIdList = new ArrayList<>();
 
+    /**
+     * 在每次測試執行前設置測試環境：
+     * - 新增行政區劃分層級資料
+     * - 新增地區資料
+     * - 新增地址資料
+     * - 新增使用者資料
+     * - 新增房源資料
+     * - 新增圖片、房源圖片資料
+     */
     @BeforeEach
     void setup(){
         // 新增行政區劃分層級資料
