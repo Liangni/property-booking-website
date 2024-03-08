@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @Transactional
@@ -47,60 +48,41 @@ public class PropertyVoMapperTest {
      */
     @BeforeEach
     void setup(){
-        // 新增行政區劃分層級資料
-        AdministrativeAreaBaseVo administrativeArea101 = AdministrativeAreaBaseVo.builder()
-                .administrativeAreaName("test admin area 101")
-                .administrativeAreaLevel(101L)
-                .build();
-
-        AdministrativeAreaBaseVo administrativeArea102 = AdministrativeAreaBaseVo.builder()
-                .administrativeAreaName("test admin area 102")
-                .administrativeAreaLevel(102L)
-                .build();
-
-        AdministrativeAreaBaseVo administrativeArea103 = AdministrativeAreaBaseVo.builder()
-                .administrativeAreaName("test admin area 103")
-                .administrativeAreaLevel(103L)
-                .build();
-
-        administrativeAreaBaseVoMapper.insertSelective(administrativeArea101);
-        administrativeAreaBaseVoMapper.insertSelective(administrativeArea102);
-        administrativeAreaBaseVoMapper.insertSelective(administrativeArea103);
-
-        // 獲取新行政區劃分層級資料 id
-        long administrativeArea101Id =(long) administrativeArea101.getAdministrativeAreaId();
-        long administrativeArea102Id =(long) administrativeArea102.getAdministrativeAreaId();
-        long administrativeArea103Id =(long) administrativeArea103.getAdministrativeAreaId();
+        // 新增行政區劃分層級 101 ~ 103 的資料
+        List<Long> administrativeAreaIdList = new ArrayList<>();
+        for (int i = 101; i <= 103; i++) {
+            AdministrativeAreaBaseVo administrativeArea = AdministrativeAreaBaseVo.builder()
+                    .administrativeAreaName("test admin area " + i)
+                    .administrativeAreaLevel((long) i)
+                    .build();
+            administrativeAreaBaseVoMapper.insertSelective(administrativeArea);
+            administrativeAreaIdList.add(administrativeArea.getAdministrativeAreaId());
+        }
 
         // 新增地區資料
-        DistrictBaseVo district1 = DistrictBaseVo.builder()
-                .districtName("test district 1")
-                .administrativeAreaId(administrativeArea101Id) // 帶入行政區劃分層級資料 id
-                .build();
+        List<Long> districtIdList = new ArrayList<>();
+        for (int i = 1; i <=2; i++) {
+            DistrictBaseVo district = DistrictBaseVo.builder()
+                    .districtName("test district " + i)
+                    .administrativeAreaId(administrativeAreaIdList.get(i - 1)) // 帶入行政區劃分層級為 101, 102 的 id
+                    .build();
 
-        DistrictBaseVo district2 = DistrictBaseVo.builder()
-                .districtName("test district 2")
-                .administrativeAreaId(administrativeArea102Id) // 帶入行政區劃分層級資料 id
-                .build();
-
-        districtBaseVoMapper.insertSelective(district1);
-        districtBaseVoMapper.insertSelective(district2);
-
-        // 獲取地區資料 id
-        long district1Id = (long) district1.getDistrictId();
-        long district2Id = (long) district2.getDistrictId();
+            districtBaseVoMapper.insertSelective(district);
+            // 獲取地區資料 id
+            districtIdList.add(district.getDistrictId());
+        }
 
         // 新增子地區
         DistrictBaseVo district1Child = DistrictBaseVo.builder()
                 .districtName("test district 1's child")
-                .administrativeAreaId(administrativeArea103Id) // 帶入行政區劃分層級資料 id
-                .parentDistrictId(district1Id)
+                .administrativeAreaId(administrativeAreaIdList.get(2)) // 帶入行政區劃分層級為 103 的 id
+                .parentDistrictId(districtIdList.get(0)) // 隸屬於行政層級為 101 的地區
                 .build();
 
         DistrictBaseVo district2Child = DistrictBaseVo.builder()
                 .districtName("test district 2's child")
-                .administrativeAreaId(administrativeArea103Id) // 帶入行政區劃分層級資料 id
-                .parentDistrictId(district2Id)
+                .administrativeAreaId(administrativeAreaIdList.get(2)) // 帶入行政區劃分層級為 103 的 id
+                .parentDistrictId(districtIdList.get(1)) // 隸屬於行政層級為 102 的地區
                 .build();
 
         districtBaseVoMapper.insertSelective(district1Child);
@@ -113,14 +95,14 @@ public class PropertyVoMapperTest {
         // 新增地址資料
         AddressBaseVo address1 = AddressBaseVo.builder()
                 .street("test street 1")
-                .adminAreaLevel1DistrictId(district1Id) // 帶入地區資料 id
-                .adminAreaLevel3DistrictId(district1ChildId) // 帶入子地區資料 id
+                .adminAreaLevel1DistrictId(districtIdList.get(0)) // 帶入行政劃分層級為 101 的地區 id
+                .adminAreaLevel3DistrictId(district1ChildId) // 帶入行政劃分層級為 103 的地區 id
                 .build();
 
         AddressBaseVo address2 = AddressBaseVo.builder()
                 .street("test street 2")
-                .adminAreaLevel2DistrictId(district2Id) // 帶入地區資料 id
-                .adminAreaLevel3DistrictId(district2ChildId) // 帶入子地區資料 id
+                .adminAreaLevel2DistrictId(districtIdList.get(1)) // 帶入行政劃分層級為 102 的地區 id
+                .adminAreaLevel3DistrictId(district2ChildId) // 帶入行政劃分層級為 103 的地區 id
                 .build();
 
         // 獲取地址資料 id
