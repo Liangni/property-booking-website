@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.PropertyReviewBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.PropertyReviewBaseVo">
+    <id column="property_review_id" jdbcType="BIGINT" property="propertyReviewId" />
+    <result column="property_review_cleanliness" jdbcType="INTEGER" property="propertyReviewCleanliness" />
+    <result column="property_review_accuracy" jdbcType="INTEGER" property="propertyReviewAccuracy" />
+    <result column="property_review_checkin" jdbcType="INTEGER" property="propertyReviewCheckin" />
+    <result column="property_review_communication" jdbcType="INTEGER" property="propertyReviewCommunication" />
+    <result column="property_review_location" jdbcType="INTEGER" property="propertyReviewLocation" />
+    <result column="property_review_value" jdbcType="INTEGER" property="propertyReviewValue" />
+    <result column="property_review_comment" jdbcType="VARCHAR" property="propertyReviewComment" />
+    <result column="property_review_created_at" jdbcType="TIMESTAMP" property="propertyReviewCreatedAt" />
+    <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+    <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    property_review_id, property_review_cleanliness, property_review_accuracy, property_review_checkin, 
+    property_review_communication, property_review_location, property_review_value, property_review_comment, 
+    property_review_created_at, property_id, customer_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from property_review
+    where property_review_id = #{propertyReviewId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from property_review
+    where property_review_id = #{propertyReviewId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="property_review_id" keyProperty="propertyReviewId" parameterType="com.penny.vo.base.PropertyReviewBaseVo" useGeneratedKeys="true">
+    insert into property_review (property_review_cleanliness, property_review_accuracy, 
+      property_review_checkin, property_review_communication, 
+      property_review_location, property_review_value, 
+      property_review_comment, property_review_created_at, 
+      property_id, customer_id)
+    values (#{propertyReviewCleanliness,jdbcType=INTEGER}, #{propertyReviewAccuracy,jdbcType=INTEGER}, 
+      #{propertyReviewCheckin,jdbcType=INTEGER}, #{propertyReviewCommunication,jdbcType=INTEGER}, 
+      #{propertyReviewLocation,jdbcType=INTEGER}, #{propertyReviewValue,jdbcType=INTEGER}, 
+      #{propertyReviewComment,jdbcType=VARCHAR}, #{propertyReviewCreatedAt,jdbcType=TIMESTAMP}, 
+      #{propertyId,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="property_review_id" keyProperty="propertyReviewId" parameterType="com.penny.vo.base.PropertyReviewBaseVo" useGeneratedKeys="true">
+    insert into property_review
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="propertyReviewCleanliness != null">
+        property_review_cleanliness,
+      </if>
+      <if test="propertyReviewAccuracy != null">
+        property_review_accuracy,
+      </if>
+      <if test="propertyReviewCheckin != null">
+        property_review_checkin,
+      </if>
+      <if test="propertyReviewCommunication != null">
+        property_review_communication,
+      </if>
+      <if test="propertyReviewLocation != null">
+        property_review_location,
+      </if>
+      <if test="propertyReviewValue != null">
+        property_review_value,
+      </if>
+      <if test="propertyReviewComment != null">
+        property_review_comment,
+      </if>
+      <if test="propertyReviewCreatedAt != null">
+        property_review_created_at,
+      </if>
+      <if test="propertyId != null">
+        property_id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="propertyReviewCleanliness != null">
+        #{propertyReviewCleanliness,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewAccuracy != null">
+        #{propertyReviewAccuracy,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewCheckin != null">
+        #{propertyReviewCheckin,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewCommunication != null">
+        #{propertyReviewCommunication,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewLocation != null">
+        #{propertyReviewLocation,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewValue != null">
+        #{propertyReviewValue,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewComment != null">
+        #{propertyReviewComment,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyReviewCreatedAt != null">
+        #{propertyReviewCreatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="propertyId != null">
+        #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PropertyReviewBaseVo">
+    update property_review
+    <set>
+      <if test="propertyReviewCleanliness != null">
+        property_review_cleanliness = #{propertyReviewCleanliness,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewAccuracy != null">
+        property_review_accuracy = #{propertyReviewAccuracy,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewCheckin != null">
+        property_review_checkin = #{propertyReviewCheckin,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewCommunication != null">
+        property_review_communication = #{propertyReviewCommunication,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewLocation != null">
+        property_review_location = #{propertyReviewLocation,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewValue != null">
+        property_review_value = #{propertyReviewValue,jdbcType=INTEGER},
+      </if>
+      <if test="propertyReviewComment != null">
+        property_review_comment = #{propertyReviewComment,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyReviewCreatedAt != null">
+        property_review_created_at = #{propertyReviewCreatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="propertyId != null">
+        property_id = #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where property_review_id = #{propertyReviewId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PropertyReviewBaseVo">
+    update property_review
+    set property_review_cleanliness = #{propertyReviewCleanliness,jdbcType=INTEGER},
+      property_review_accuracy = #{propertyReviewAccuracy,jdbcType=INTEGER},
+      property_review_checkin = #{propertyReviewCheckin,jdbcType=INTEGER},
+      property_review_communication = #{propertyReviewCommunication,jdbcType=INTEGER},
+      property_review_location = #{propertyReviewLocation,jdbcType=INTEGER},
+      property_review_value = #{propertyReviewValue,jdbcType=INTEGER},
+      property_review_comment = #{propertyReviewComment,jdbcType=VARCHAR},
+      property_review_created_at = #{propertyReviewCreatedAt,jdbcType=TIMESTAMP},
+      property_id = #{propertyId,jdbcType=BIGINT},
+      customer_id = #{customerId,jdbcType=BIGINT}
+    where property_review_id = #{propertyReviewId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.PropertyReviewVoMapper">
+
+    <resultMap id="BaseResultMap" type="com.penny.vo.PropertyReviewVo">
+        <id column="property_review_id" jdbcType="BIGINT" property="propertyReviewId" />
+        <result column="property_review_cleanliness" jdbcType="INTEGER" property="propertyReviewCleanliness" />
+        <result column="property_review_accuracy" jdbcType="INTEGER" property="propertyReviewAccuracy" />
+        <result column="property_review_checkin" jdbcType="INTEGER" property="propertyReviewCheckin" />
+        <result column="property_review_communication" jdbcType="INTEGER" property="propertyReviewCommunication" />
+        <result column="property_review_location" jdbcType="INTEGER" property="propertyReviewLocation" />
+        <result column="property_review_value" jdbcType="INTEGER" property="propertyReviewValue" />
+        <result column="property_review_comment" jdbcType="VARCHAR" property="propertyReviewComment" />
+        <result column="property_review_created_at" jdbcType="TIMESTAMP" property="propertyReviewCreatedAt" />
+        <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+        <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+    </resultMap>
+
+    <resultMap id="countByPropertyIdListResultMap" type="java.util.Map">
+        <result column="count" jdbcType="BIGINT" property="count" />
+        <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        property_review_id,
+        property_review_cleanliness,
+        property_review_accuracy,
+        property_review_checkin,
+        property_review_communication,
+        property_review_location,
+        property_review_value,
+        property_review_comment,
+        property_review_created_at,
+        property_id,
+        customer_id
+    </sql>
+
+    <select id="countByPropertyIdList" parameterType="java.util.List" resultMap="countByPropertyIdListResultMap">
+        select count(property_review_id), property_id
+        from property_review
+        where property_id in
+        <foreach collection="propertyIdList" item="propertyId" open="(" separator="," close=")">
+            #{propertyId, jdbcType=BIGINT}
+        </foreach>
+        group by property_id
+    </select>
+
+</mapper>
