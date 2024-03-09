@@ -64,12 +64,12 @@ public class PictureDtVoMapperTest {
 
     @Test
     @DisplayName("用 pictureId 列表搜尋房源圖片")
-    void ListByPictureIdList() {
+    void listByPictureIdList() {
         // 期望的圖片ID列表，取前2個圖片ID
         List<Long> expectPictureIdList = pictureIdList.subList(0, 2);
 
         // 根據期望的圖片ID列表搜索PictureDt
-        List<PictureDtVo> returnPictureDtList = pictureDtVoMapper.ListByPictureIdList(expectPictureIdList);
+        List<PictureDtVo> returnPictureDtList = pictureDtVoMapper.listByPictureIdList(expectPictureIdList);
 
         // 斷言返回的PictureDt列表不為空
         Assertions.assertFalse(returnPictureDtList.isEmpty());

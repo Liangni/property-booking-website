@@ -13,7 +13,7 @@
         picture_dt_id, picture_id, picture_dt_url, picture_dt_size
     </sql>
 
-    <select id="ListByPictureIdList" parameterType="java.util.List" resultMap="BaseResultMap">
+    <select id="listByPictureIdList" parameterType="java.util.List" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from picture_dt

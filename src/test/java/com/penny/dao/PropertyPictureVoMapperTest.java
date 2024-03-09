@@ -118,12 +118,12 @@ public class PropertyPictureVoMapperTest {
 
     @Test
     @DisplayName("用 propertyId 列表搜尋房源圖片")
-    void ListByPropertyIdListTest() {
+    void listByPropertyIdListTest() {
         // 期望的房源ID列表，取前2個房源ID
         List<Long> expectPropertyIdList = propertyIdList.subList(0, 2);
 
         // 根據期望的房源ID列表搜索房源圖片
-        List<PropertyPictureVo> propertyPicList = propertyPictureVoMapper.ListByPropertyIdList(expectPropertyIdList);
+        List<PropertyPictureVo> propertyPicList = propertyPictureVoMapper.listByPropertyIdList(expectPropertyIdList);
 
         // 斷言返回的房源圖片列表不為空
         Assertions.assertFalse(propertyPicList.isEmpty());

@@ -12,7 +12,7 @@
         property_picture_id, property_id, picture_id, property_picture_order
     </sql>
 
-    <select id="ListByPropertyIdList" parameterType="java.util.List" resultMap="BaseResultMap">
+    <select id="listByPropertyIdList" parameterType="java.util.List" resultMap="BaseResultMap">
         select
             <include refid="Base_Column_List"/>
         from property_picture

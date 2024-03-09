@@ -10,7 +10,7 @@
         picture_id, picture_url
     </sql>
 
-    <select id="ListByPictureIdList" parameterType="java.util.List" resultMap="BaseResultMap">
+    <select id="listByPictureIdList" parameterType="java.util.List" resultMap="BaseResultMap">
         select
             <include refid="Base_Column_List"/>
         from picture
