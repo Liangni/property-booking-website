@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.PictureDtVoMapper">
+
+    <resultMap id="BaseResultMap" type="com.penny.vo.PictureDtVo">
+        <id column="picture_dt_id" jdbcType="BIGINT" property="pictureDtId" />
+        <id column="picture_id" jdbcType="BIGINT" property="pictureId" />
+        <id column="picture_dt_url" jdbcType="VARCHAR" property="pictureDtUrl" />
+        <id column="picture_dt_size" jdbcType="VARCHAR" property="pictureDtSize" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        picture_dt_id, picture_id, picture_dt_url, picture_dt_size
+    </sql>
+
+    <select id="ListByPictureIdList" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from picture_dt
+        where picture_id IN <foreach collection="pictureIdList" item="pictureId" open="(" separator="," close=")">
+        #{pictureId, jdbcType=BIGINT}
+    </foreach>
+    </select>
+
+</mapper>
