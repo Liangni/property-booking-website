@@ -139,8 +139,10 @@ public class PictureDtVoMapperTest {
         // 進入測試
         // 從尺寸列表中取得第一個尺寸
         String size = sizeList.get(0);
-        // 根據房產ID和尺寸查詢圖片詳細資訊列表
-        List<PictureDtVo> pictureDtList = pictureDtVoMapper.listByPropertyId(propertyId, size);
+        int offset = 0;
+        int limit = numOfPictureToInsert + 1; // 確保取回的圖片詳細資訊列表數量大於插入的圖片數量
+        // 根據房源ID和尺寸查詢圖片詳細資訊列表
+        List<PictureDtVo> pictureDtList = pictureDtVoMapper.listByPropertyId(propertyId, size, offset, limit);
 
         // 斷言圖片詳細資訊列表不為空
         Assertions.assertFalse(pictureDtList.isEmpty());

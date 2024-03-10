@@ -19,5 +19,5 @@ public interface PictureDtVoMapper {
      * @param size 尺寸，用於指定要查詢的圖片的尺寸
      * @return 符合條件的圖片詳細資訊列表
      */
-    List<PictureDtVo> listByPropertyId(Long propertyId, String size);
+    List<PictureDtVo> listByPropertyId(Long propertyId, String size, Integer offset, Integer limit);
 }

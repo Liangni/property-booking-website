@@ -36,6 +36,9 @@
             <if test="size != null">
                 and pd.picture_dt_size = #{size, jdbcType=VARCHAR}
             </if>
+        <if test="offset != null and limit != null">
+            limit #{limit} offset #{offset}
+        </if>
     </select>
 
 </mapper>
