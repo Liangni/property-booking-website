@@ -9,4 +9,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PictureDtVo extends PictureDtBaseVo {
+    private Long propertyId;
 }

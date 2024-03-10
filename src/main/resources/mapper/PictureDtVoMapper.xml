@@ -13,13 +13,29 @@
         picture_dt_id, picture_id, picture_dt_url, picture_dt_size
     </sql>
 
+    <sql id="Join_Column_List">
+        pd.picture_dt_id, pd.picture_id, pd.picture_dt_url, pd.picture_dt_size, pp.property_id
+    </sql>
+
     <select id="listByPictureIdList" parameterType="java.util.List" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+            <include refid="Base_Column_List"/>
         from picture_dt
-        where picture_id IN <foreach collection="pictureIdList" item="pictureId" open="(" separator="," close=")">
-        #{pictureId, jdbcType=BIGINT}
-    </foreach>
+        where picture_id in
+              <foreach collection="pictureIdList" item="pictureId" open="(" separator="," close=")">
+                #{pictureId, jdbcType=BIGINT}
+              </foreach>
+    </select>
+
+    <select id="listByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+            <include refid="Join_Column_List"/>
+        from property_picture as pp
+        left join picture_dt as pd on pp.picture_id = pd.picture_id
+        where pp.property_id = #{propertyId, jdbcType=BIGINT}
+            <if test="size != null">
+                and pd.picture_dt_size = #{size, jdbcType=VARCHAR}
+            </if>
     </select>
 
 </mapper>
