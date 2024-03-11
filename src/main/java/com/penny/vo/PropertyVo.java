@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -30,4 +31,6 @@ public class PropertyVo extends PropertyBaseVo {
     private Date startAvailableDate;
 
     private Date endAvailableDate;
+
+    private List<PictureDtVo> pictureDtVoList;
 }

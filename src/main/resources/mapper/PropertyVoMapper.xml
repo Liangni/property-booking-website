@@ -38,149 +38,151 @@
     <sql id="available_periods_sql">
         -- 對 booking_availability 表進行查詢，選擇房源ID、預訂日期以及相關的計算結果
         -- 將可預定日期按照房源ID、連續可預定期間分組標識（available_period_group）分組，計算其所在的連續可預定天數（consecutive_available_days）
-        SELECT
+        select
             property_id,
             booking_availability_date,
-            COUNT(*) OVER (PARTITION BY property_id, available_period_group) AS consecutive_available_days
-        FROM (
+            count(*) over (partition by property_id, available_period_group) as consecutive_available_days
+        from (
                  -- 子查詢：計算每個房源的連續可預定期間分組
                  -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
                  -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
-                 SELECT
+                 select
                      property_id,
                      booking_availability_date,
-                     ROW_NUMBER() OVER (PARTITION BY property_id ORDER BY booking_availability_date) AS nth_available_day, -- 第幾天可用
-                     booking_availability_date - ROW_NUMBER() OVER (PARTITION BY property_id, booking_availability_status ORDER BY booking_availability_date) * INTERVAL '1 DAY' AS available_period_group -- 連續可預定期間分組
-                 FROM
+                     row_number() over (partition by property_id order by booking_availability_date) as nth_available_day, -- 第幾天可用
+                     booking_availability_date - row_number() over (partition by property_id, booking_availability_status order by booking_availability_date) * interval '1 DAY' as available_period_group -- 連續可預定期間分組
+                 from
                      booking_availability
-                 WHERE
+                 where
                      booking_availability_status = 'available' -- 選擇預訂可用狀態為 'available' 的預訂
-             ) AS subquery
+             ) as subquery
 
     </sql>
 
     <select id="listByNumOfAvailableDays" parameterType="com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam" resultMap="BaseResultMap">
         <!-- 定義 available_periods 公用表達式（CTE），用於計算每個房源每個日期所在的連續可預定天數 -->
-        WITH available_periods AS (
-            <include refid="available_periods_sql"/>
+        with available_periods as (
+        <include refid="available_periods_sql"/>
         )
         <!-- 從 available_periods CTE 中選擇屬性 -->
-        SELECT
-            <foreach collection="returnFieldList" item="returnField" separator="," close=",">
-                <choose>
-                    <when test="returnField == 'propertyId'">
-                        p.property_id
-                    </when>
-                    <when test="returnField == 'propertyTitle'">
-                        p.property_title
-                    </when>
-                    <when test="returnField == 'propertyDescription'">
-                        p.property_description
-                    </when>
-                    <when test="returnField == 'propertyMaxNumOfGuests'">
-                        p.max_num_of_guests
-                    </when>
-                    <when test="returnField == 'numOfBedrooms'">
-                        p.num_of_bedrooms
-                    </when>
-                    <when test="returnField == 'numOfBeds'">
-                        p.num_of_beds
-                    </when>
-                    <when test="returnField == 'numOfBathrooms'">
-                        p.num_of_bathrooms
-                    </when>
-                    <when test="returnField == 'priceOnWeekdays'">
-                        p.price_on_weekdays
-                    </when>
-                    <when test="returnField == 'priceOnWeekends'">
-                        p.price_on_weekends
-                    </when>
-                    <when test="returnField == 'isPublished'">
-                        p.is_published
-                    </when>
-                    <when test="returnField == 'averageRating'">
-                        p.average_rating
-                    </when>
-                    <when test="returnField == 'propertyGroupTypeId'">
-                        p.property_group_type_id
-                    </when>
-                    <when test="returnField == 'propertyShareTypeId'">
-                        p.property_share_type_id
-                    </when>
-                    <when test="returnField == 'addressId'">
-                        p.address_id
-                    </when>
-                    <when test="returnField == 'address'">
-                        ad.apartment_floor,
-                        ad.street,
-                        ad.admin_area_level_1_district_id,
-                        ad.admin_area_level_2_district_id,
-                        ad.admin_area_level_3_district_id
-                    </when>
-                    <when test="returnField == 'district'">
-                        da1.district_name AS admin_area_level_1_district_name,
-                        da2.district_name AS admin_area_level_2_district_name,
-                        da3.district_name AS admin_area_level_3_district_name
-                    </when>
-                </choose>
-            </foreach>
-            <!-- 計算開始的可預定日期和結束可預定日期 -->
-            MIN(a.booking_availability_date) AS start_available_date,
-            MIN(a.booking_availability_date) + #{numOfAvailableDay, jdbcType = BIGINT} AS end_available_date
+        select
+        <foreach collection="returnFieldList" item="returnField" separator="," close=",">
+            <choose>
+                <when test="returnField == 'propertyId'">
+                    p.property_id
+                </when>
+                <when test="returnField == 'propertyTitle'">
+                    p.property_title
+                </when>
+                <when test="returnField == 'propertyDescription'">
+                    p.property_description
+                </when>
+                <when test="returnField == 'propertyMaxNumOfGuests'">
+                    p.max_num_of_guests
+                </when>
+                <when test="returnField == 'numOfBedrooms'">
+                    p.num_of_bedrooms
+                </when>
+                <when test="returnField == 'numOfBeds'">
+                    p.num_of_beds
+                </when>
+                <when test="returnField == 'numOfBathrooms'">
+                    p.num_of_bathrooms
+                </when>
+                <when test="returnField == 'priceOnWeekdays'">
+                    p.price_on_weekdays
+                </when>
+                <when test="returnField == 'priceOnWeekends'">
+                    p.price_on_weekends
+                </when>
+                <when test="returnField == 'isPublished'">
+                    p.is_published
+                </when>
+                <when test="returnField == 'averageRating'">
+                    p.average_rating
+                </when>
+                <when test="returnField == 'propertyGroupTypeId'">
+                    p.property_group_type_id
+                </when>
+                <when test="returnField == 'propertyShareTypeId'">
+                    p.property_share_type_id
+                </when>
+                <when test="returnField == 'addressId'">
+                    p.address_id
+                </when>
+                <when test="returnField == 'address'">
+                    ad.apartment_floor,
+                    ad.street,
+                    ad.admin_area_level_1_district_id,
+                    ad.admin_area_level_2_district_id,
+                    ad.admin_area_level_3_district_id
+                </when>
+                <when test="returnField == 'district'">
+                    da1.district_name as admin_area_level_1_district_name,
+                    da2.district_name as admin_area_level_2_district_name,
+                    da3.district_name as admin_area_level_3_district_name
+                </when>
+            </choose>
+        </foreach>
+        <!-- 計算開始的可預定日期和結束可預定日期 -->
+        min(a.booking_availability_date) as start_available_date,
+        min(a.booking_availability_date) + #{numOfAvailableDay, jdbcType = BIGINT} as end_available_date
         <!-- 從 available_periods CTE 中取得房源和地址等資訊 -->
-        FROM available_periods AS a
-                 JOIN property AS p ON a.property_id = p.property_id
-                <!-- 處理地址相關的 JOIN 和 LEFT JOIN 操作 -->
-                <if test="returnFieldList.contains('district') or sortFieldList.contains('district')">
-                    JOIN address AS ad ON p.address_id = ad.address_id
-                    LEFT JOIN
-                    district AS da1 ON ad.admin_area_level_1_district_id = da1.district_id
-                    LEFT JOIN
-                    district AS da2 ON ad.admin_area_level_2_district_id = da2.district_id
-                    LEFT JOIN
-                    district AS da3 ON ad.admin_area_level_3_district_id = da3.district_id
-                </if>
-                <!-- 如果只需要地址而不需要行政區域信息，只需要單獨的 JOIN 操作 -->
-                <if test="!returnFieldList.contains('district') and !sortFieldList.contains('district') and returnFieldList.contains('address')">
-                    JOIN address AS ad ON p.address_id = ad.address_id
-                </if>
+        from available_periods as a
+        join property as p on a.property_id = p.property_id
+        <!-- 處理地址相關的 JOIN 操作 -->
+        <if test="returnFieldList.contains('district') or sortFieldList.contains('district')">
+            left join
+            address as ad on p.address_id = ad.address_id
+            left join
+            district as da1 on ad.admin_area_level_1_district_id = da1.district_id
+            left join
+            district as da2 on ad.admin_area_level_2_district_id = da2.district_id
+            left join
+            district as da3 on ad.admin_area_level_3_district_id = da3.district_id
+        </if>
+        <!-- 如果只需要地址而不需要行政區域信息，只需要單獨的 JOIN 操作 -->
+        <if test="!returnFieldList.contains('district') and !sortFieldList.contains('district') and returnFieldList.contains('address')">
+            left join
+            address as ad on p.address_id = ad.address_id
+        </if>
         <!-- 條件過濾 -->
-        WHERE a.consecutive_available_days >= #{numOfAvailableDay, jdbcType = BIGINT}
+        where a.consecutive_available_days >= #{numOfAvailableDay, jdbcType = BIGINT}
         <!-- 分組 -->
-        GROUP BY
-            <trim suffixOverrides=",">
-                p.property_id,
-                <!-- 如果需要行政區域資訊，則加入相關欄位 -->
-                <if test="returnFieldList.contains('district') or sortFieldList.contains('district')">
-                    ad.address_id,
-                    da1.district_id,
-                    da2.district_id,
-                    da3.district_id,
-                </if>
-                <!-- 如果只需要地址而不需要行政區域資訊，則只加入地址欄位 -->
-                <if test="!returnFieldList.contains('district') and !sortFieldList.contains('district') and returnFieldList.contains('address')">
-                    ad.address_id,
-                </if>
-            </trim>
+        group by
+        <trim suffixOverrides=",">
+            p.property_id,
+            <!-- 如果需要行政區域資訊，則加入相關欄位 -->
+            <if test="returnFieldList.contains('district') or sortFieldList.contains('district')">
+                ad.address_id,
+                da1.district_id,
+                da2.district_id,
+                da3.district_id,
+            </if>
+            <!-- 如果只需要地址而不需要行政區域資訊，則只加入地址欄位 -->
+            <if test="!returnFieldList.contains('district') and !sortFieldList.contains('district') and returnFieldList.contains('address')">
+                ad.address_id,
+            </if>
+        </trim>
         <!-- 排序 -->
-        ORDER BY
-            <foreach collection="sortFieldList" item="sortField" index= "index" separator="," open="" close="">
-                <choose>
-                    <when test="sortField == 'district'">
-                        ad.admin_area_level_1_district_id,
-                        ad.admin_area_level_2_district_id,
-                        ad.admin_area_level_3_district_id
-                    </when>
-                    <when test="sortField == 'nearestAvailableDay'">
-                        MIN(booking_availability_date) - CURRENT_DATE
-                    </when>
-                </choose>
-            </foreach>
+        order by
+        <foreach collection="sortFieldList" item="sortField" index="index" separator="," open="" close="">
+            <choose>
+                <when test="sortField == 'district'">
+                    ad.admin_area_level_1_district_id,
+                    ad.admin_area_level_2_district_id,
+                    ad.admin_area_level_3_district_id
+                </when>
+                <when test="sortField == 'nearestAvailableDay'">
+                    min(booking_availability_date) - CURRENT_DATE
+                </when>
+            </choose>
+        </foreach>
         <if test="offset != null and limit != null">
-            LIMIT #{limit}
-            OFFSET #{offset}
+            limit #{limit}
+            offset #{offset}
         </if>
         ;
-</select>
+    </select>
 
 </mapper>
