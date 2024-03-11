@@ -16,7 +16,7 @@
         <result column="customer_id" jdbcType="BIGINT" property="customerId" />
     </resultMap>
 
-    <resultMap id="countByPropertyIdListResultMap" type="java.util.Map">
+    <resultMap id="CountByPropertyIdResultMap" type="java.util.Map">
         <result column="count" jdbcType="BIGINT" property="count" />
         <result column="property_id" jdbcType="BIGINT" property="propertyId" />
     </resultMap>
@@ -35,13 +35,20 @@
         customer_id
     </sql>
 
-    <select id="countByPropertyIdList" parameterType="java.util.List" resultMap="countByPropertyIdListResultMap">
+    <select id="countByPropertyIdList" parameterType="java.util.List" resultMap="CountByPropertyIdResultMap">
         select count(property_review_id), property_id
         from property_review
         where property_id in
         <foreach collection="propertyIdList" item="propertyId" open="(" separator="," close=")">
             #{propertyId, jdbcType=BIGINT}
         </foreach>
+        group by property_id
+    </select>
+
+    <select id="countByPropertyId" parameterType="java.lang.Long" resultMap="CountByPropertyIdResultMap">
+        select count(property_review_id), property_id
+        from property_review
+        where property_id = #{propertyId, jdbcType=BIGINT}
         group by property_id
     </select>
 
