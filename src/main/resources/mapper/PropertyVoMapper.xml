@@ -2,31 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.penny.dao.PropertyVoMapper">
     <resultMap id="BaseResultMap" type="com.penny.vo.PropertyVo">
-        <id column="property_id" jdbcType="BIGINT" property="propertyId" />
-        <result column="property_title" jdbcType="VARCHAR" property="propertyTitle" />
-        <result column="property_description" jdbcType="VARCHAR" property="propertyDescription" />
-        <result column="max_num_of_guests" jdbcType="INTEGER" property="maxNumOfGuests" />
-        <result column="num_of_bedrooms" jdbcType="INTEGER" property="numOfBedrooms" />
-        <result column="num_of_beds" jdbcType="INTEGER" property="numOfBeds" />
-        <result column="num_of_bathrooms" jdbcType="INTEGER" property="numOfBathrooms" />
-        <result column="price_on_weekdays" jdbcType="BIGINT" property="priceOnWeekdays" />
-        <result column="price_on_weekends" jdbcType="BIGINT" property="priceOnWeekends" />
-        <result column="is_published" jdbcType="BIT" property="isPublished" />
-        <result column="average_rating" jdbcType="DOUBLE" property="averageRating" />
-        <result column="property_group_type_id" jdbcType="BIGINT" property="propertyGroupTypeId" />
-        <result column="property_share_type_id" jdbcType="BIGINT" property="propertyShareTypeId" />
-        <result column="address_id" jdbcType="BIGINT" property="addressId" />
-        <result column="host_id" jdbcType="BIGINT" property="hostId" />
-        <result column="street" jdbcType="VARCHAR" property="street" />
-        <result column="apartment_floor" jdbcType="VARCHAR" property="apartmentFloor" />
-        <result column="admin_area_level_1_district_id" jdbcType="BIGINT" property="adminAreaLevel1DistrictId" />
-        <result column="admin_area_level_2_district_id" jdbcType="BIGINT" property="adminAreaLevel2DistrictId" />
-        <result column="admin_area_level_3_district_id" jdbcType="BIGINT" property="adminAreaLevel3DistrictId" />
-        <result column="admin_area_level_1_district_name" jdbcType="BIGINT" property="adminAreaLevel1DistrictName" />
-        <result column="admin_area_level_2_district_name" jdbcType="BIGINT" property="adminAreaLevel2DistrictName" />
-        <result column="admin_area_level_3_district_name" jdbcType="BIGINT" property="adminAreaLevel3DistrictName" />
-        <result column="start_available_date" jdbcType="DATE" property="startAvailableDate" />
-        <result column="end_available_date" jdbcType="DATE" property="endAvailableDate" />
+        <id column="property_id" jdbcType="BIGINT" property="propertyId"/>
+        <result column="property_title" jdbcType="VARCHAR" property="propertyTitle"/>
+        <result column="property_description" jdbcType="VARCHAR" property="propertyDescription"/>
+        <result column="max_num_of_guests" jdbcType="INTEGER" property="maxNumOfGuests"/>
+        <result column="num_of_bedrooms" jdbcType="INTEGER" property="numOfBedrooms"/>
+        <result column="num_of_beds" jdbcType="INTEGER" property="numOfBeds"/>
+        <result column="num_of_bathrooms" jdbcType="INTEGER" property="numOfBathrooms"/>
+        <result column="price_on_weekdays" jdbcType="BIGINT" property="priceOnWeekdays"/>
+        <result column="price_on_weekends" jdbcType="BIGINT" property="priceOnWeekends"/>
+        <result column="is_published" jdbcType="BIT" property="isPublished"/>
+        <result column="average_rating" jdbcType="DOUBLE" property="averageRating"/>
+        <result column="property_group_type_id" jdbcType="BIGINT" property="propertyGroupTypeId"/>
+        <result column="property_share_type_id" jdbcType="BIGINT" property="propertyShareTypeId"/>
+        <result column="address_id" jdbcType="BIGINT" property="addressId"/>
+        <result column="host_id" jdbcType="BIGINT" property="hostId"/>
+        <result column="street" jdbcType="VARCHAR" property="street"/>
+        <result column="apartment_floor" jdbcType="VARCHAR" property="apartmentFloor"/>
+        <result column="admin_area_level_1_district_id" jdbcType="BIGINT" property="adminAreaLevel1DistrictId"/>
+        <result column="admin_area_level_2_district_id" jdbcType="BIGINT" property="adminAreaLevel2DistrictId"/>
+        <result column="admin_area_level_3_district_id" jdbcType="BIGINT" property="adminAreaLevel3DistrictId"/>
+        <result column="admin_area_level_1_district_name" jdbcType="BIGINT" property="adminAreaLevel1DistrictName"/>
+        <result column="admin_area_level_2_district_name" jdbcType="BIGINT" property="adminAreaLevel2DistrictName"/>
+        <result column="admin_area_level_3_district_name" jdbcType="BIGINT" property="adminAreaLevel3DistrictName"/>
+        <result column="start_available_date" jdbcType="DATE" property="startAvailableDate"/>
+        <result column="end_available_date" jdbcType="DATE" property="endAvailableDate"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -38,28 +38,28 @@
     <sql id="available_periods_sql">
         -- 對 booking_availability 表進行查詢，選擇房源ID、預訂日期以及相關的計算結果
         -- 將可預定日期按照房源ID、連續可預定期間分組標識（available_period_group）分組，計算其所在的連續可預定天數（consecutive_available_days）
-        select
-            property_id,
-            booking_availability_date,
-            count(*) over (partition by property_id, available_period_group) as consecutive_available_days
+        select property_id,
+               booking_availability_date,
+               count(*) over (partition by property_id, available_period_group) as consecutive_available_days
         from (
                  -- 子查詢：計算每個房源的連續可預定期間分組
                  -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
                  -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
-                 select
-                     property_id,
-                     booking_availability_date,
-                     row_number() over (partition by property_id order by booking_availability_date) as nth_available_day, -- 第幾天可用
-                     booking_availability_date - row_number() over (partition by property_id, booking_availability_status order by booking_availability_date) * interval '1 DAY' as available_period_group -- 連續可預定期間分組
-                 from
-                     booking_availability
-                 where
-                     booking_availability_status = 'available' -- 選擇預訂可用狀態為 'available' 的預訂
+                 select property_id,
+                        booking_availability_date,
+                        row_number()
+                        over (partition by property_id order by booking_availability_date) as nth_available_day,     -- 第幾天可用
+                        booking_availability_date - row_number()
+                                                    over (partition by property_id, booking_availability_status order by booking_availability_date) *
+                                                    interval '1 DAY'                       as available_period_group -- 連續可預定期間分組
+                 from booking_availability
+                 where booking_availability_status = 'available' -- 選擇預訂可用狀態為 'available' 的預訂
              ) as subquery
 
     </sql>
 
-    <select id="listByNumOfAvailableDays" parameterType="com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam" resultMap="BaseResultMap">
+    <select id="listByNumOfAvailableDays"
+            parameterType="com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam" resultMap="BaseResultMap">
         <!-- 定義 available_periods 公用表達式（CTE），用於計算每個房源每個日期所在的連續可預定天數 -->
         with available_periods as (
         <include refid="available_periods_sql"/>
@@ -174,7 +174,7 @@
                     ad.admin_area_level_3_district_id
                 </when>
                 <when test="sortField == 'nearestAvailableDay'">
-                    min(booking_availability_date) - CURRENT_DATE
+                    min(a.booking_availability_date) - CURRENT_DATE
                 </when>
             </choose>
         </foreach>
@@ -185,4 +185,18 @@
         ;
     </select>
 
+    <select id="countByNumOfAvailableDays" parameterType="java.lang.Integer" resultType="java.lang.Long">
+        <!-- 定義 available_periods 公用表達式（CTE），用於計算每個房源每個日期所在的連續可預定天數 -->
+        with available_periods as (
+        <include refid="available_periods_sql"/>
+        )
+        select count(temp.property_id)
+        from (
+        select p.property_id
+        from available_periods as a
+        join property as p on a.property_id = p.property_id
+        where a.consecutive_available_days >= #{numOfAvailableDay, jdbcType = BIGINT}
+        group by p.property_id
+        ) temp;
+    </select>
 </mapper>

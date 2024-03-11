@@ -205,7 +205,7 @@ public class PropertyVoMapperTest {
     /**
      * 測試根據連續可訂天數搜尋房源的方法
      * 此測試驗證根據指定的連續可訂天數搜尋房源的功能
-     * 它確保返回的列表包含具有指定 field 的房源，並根據給定的排序字段進行排序
+     * 它確保返回的列表房源具有指定屬性，並根據給定的排序屬性進行排序
      */
     @Test
     @DisplayName("用連續可訂天數來搜尋房源")
@@ -224,7 +224,7 @@ public class PropertyVoMapperTest {
         sortOrderList.add("asc");
         sortOrderList.add("asc");
 
-        // 準備要要使用的參數物件
+        // 準備要使用的參數物件
         ListByNumOfAvailableDaysParam param = ListByNumOfAvailableDaysParam.builder()
                 .numOfAvailableDay(NUM_OF_AVAILABLE_DAY)
                 .returnFieldList(returnFieldList)
@@ -260,5 +260,16 @@ public class PropertyVoMapperTest {
                 && actualPropertyIdList.indexOf(property3Id) < actualPropertyIdList.indexOf(property2Id)
         );
     }
-
+    /**
+     * 測試根據連續可預訂天數來計算房源數量
+     * 此測試確保根據連續可預訂天數統計的房源數量不為零
+     */
+    @Test
+    @DisplayName("用連續可預訂天數來計算房源數量")
+    void countByNumOfAvailableDaysTest(){
+        // 調用 countByNumOfAvailableDays 方法，統計房源數量
+        Long count = propertyVoMapper.countByNumOfAvailableDays(NUM_OF_AVAILABLE_DAY);
+        // 斷言房源數量不等於零
+        Assertions.assertNotEquals(count, 0L);
+    }
 }
