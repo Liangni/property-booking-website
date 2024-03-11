@@ -255,17 +255,10 @@ public class PropertyVoMapperTest {
         // 斷言實際房源 ID 列表中包含了預期房源 ID 列表中的所有元素
         Assertions.assertTrue(actualPropertyIdList.containsAll(expectedPropertyIdList));
         // 斷言房源 ID 基於排序標準的預期順序
-        for(PropertyVo propertyVo: propertyList) {
-            System.out.println(propertyVo.toString());
-        }
-        System.out.println(expectedPropertyIdList);
-        System.out.println(actualPropertyIdList);
-
         Assertions.assertTrue(
                 actualPropertyIdList.indexOf(property1Id) < actualPropertyIdList.indexOf(property3Id)
                 && actualPropertyIdList.indexOf(property3Id) < actualPropertyIdList.indexOf(property2Id)
         );
     }
-
 
 }
