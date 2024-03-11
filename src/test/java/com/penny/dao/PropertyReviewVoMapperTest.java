@@ -114,10 +114,10 @@ public class PropertyReviewVoMapperTest {
     @DisplayName("用 propertyId 計算 propertyReview 數量")
     void countByPropertyIdTest() {
         // 使用房源ID計算房源評論數
-        Map<String, Object> countMap = propertyReviewVoMapper.countByPropertyId(propertyId);
+        Long count = propertyReviewVoMapper.countByPropertyId(propertyId);
         // 斷言計算結果Map不為空
-        Assertions.assertNotNull(countMap);
+        Assertions.assertNotNull(count);
         // 斷言計算結果Map中鍵為"count"的值等於1
-        Assertions.assertEquals(countMap.get("count"), 1L);
+        Assertions.assertEquals(count, 1L);
     }
 }

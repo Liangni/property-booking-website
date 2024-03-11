@@ -45,11 +45,10 @@
         group by property_id
     </select>
 
-    <select id="countByPropertyId" parameterType="java.lang.Long" resultMap="CountByPropertyIdResultMap">
-        select count(property_review_id), property_id
+    <select id="countByPropertyId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select count(property_review_id)
         from property_review
         where property_id = #{propertyId, jdbcType=BIGINT}
-        group by property_id
     </select>
 
 </mapper>

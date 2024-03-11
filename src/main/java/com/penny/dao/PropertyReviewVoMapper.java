@@ -17,5 +17,5 @@ public interface PropertyReviewVoMapper {
      * @param propertyId 房源ID，用於指定要統計的房源
      * @return 以 Map 形式返回統計結果，其中鍵是房源ID，值是評論數量
      */
-    Map<String, Object> countByPropertyId(Long propertyId);
+    Long countByPropertyId(Long propertyId);
 }
