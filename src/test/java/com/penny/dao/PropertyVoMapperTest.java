@@ -41,6 +41,10 @@ public class PropertyVoMapperTest {
 
     private long property3Id;
 
+    private static final int NUM_OF_BOOKING_DAY = 10;
+
+    private static final int NUM_OF_AVAILABLE_DAY = 3;
+
     /**
      * 在每次測試運行之前設置測試環境，包括新增
      * - 行政區劃分層級資料
@@ -165,10 +169,14 @@ public class PropertyVoMapperTest {
 
         // 定義包含三個房源ID和對應可預訂日期範圍的列表
         List<Long> propertyIds = Arrays.asList(property1Id, property2Id, property3Id);
-        List<List<Integer>> availableRanges = Arrays.asList(Arrays.asList(2,5), Arrays.asList(2, 5), Arrays.asList(7,10));
+        List<List<Integer>> availableRanges = List.of(
+                List.of(2, 2 + NUM_OF_AVAILABLE_DAY),
+                List.of(2, 2 + NUM_OF_AVAILABLE_DAY),
+                List.of(7, 7 + NUM_OF_AVAILABLE_DAY)
+        );
 
         // 對每個日期進行迭代
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < NUM_OF_BOOKING_DAY ; i ++) {
             // 對每個房源進行迭代
             for (int j = 0; j < propertyIds.size(); j++) {
                 String bookingStatus = "booked";
@@ -210,7 +218,7 @@ public class PropertyVoMapperTest {
 
         List<String> sortFieldList = new ArrayList<>();
         sortFieldList.add("district");
-        sortFieldList.add("nearestAvailableDate");
+        sortFieldList.add("nearestAvailableDay");
 
         List<String> sortOrderList = new ArrayList<>();
         sortOrderList.add("asc");
@@ -218,7 +226,7 @@ public class PropertyVoMapperTest {
 
         // 準備要要使用的參數物件
         ListByNumOfAvailableDaysParam param = ListByNumOfAvailableDaysParam.builder()
-                .numOfAvailableDay(3)
+                .numOfAvailableDay(NUM_OF_AVAILABLE_DAY)
                 .returnFieldList(returnFieldList)
                 .sortFieldList(sortFieldList)
                 .sortOrderList(sortOrderList)
@@ -247,7 +255,17 @@ public class PropertyVoMapperTest {
         // 斷言實際房源 ID 列表中包含了預期房源 ID 列表中的所有元素
         Assertions.assertTrue(actualPropertyIdList.containsAll(expectedPropertyIdList));
         // 斷言房源 ID 基於排序標準的預期順序
-        Assertions.assertTrue(actualPropertyIdList.indexOf(property1Id) < actualPropertyIdList.indexOf(property3Id));
-        Assertions.assertTrue(actualPropertyIdList.indexOf(property3Id) < actualPropertyIdList.indexOf(property2Id));
+        for(PropertyVo propertyVo: propertyList) {
+            System.out.println(propertyVo.toString());
+        }
+        System.out.println(expectedPropertyIdList);
+        System.out.println(actualPropertyIdList);
+
+        Assertions.assertTrue(
+                actualPropertyIdList.indexOf(property1Id) < actualPropertyIdList.indexOf(property3Id)
+                && actualPropertyIdList.indexOf(property3Id) < actualPropertyIdList.indexOf(property2Id)
+        );
     }
+
+
 }
