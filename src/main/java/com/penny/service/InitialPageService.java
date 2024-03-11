@@ -1,6 +1,7 @@
 package com.penny.service;
 
 import com.penny.dao.PictureDtVoMapper;
+import com.penny.dao.PropertyReviewVoMapper;
 import com.penny.dao.PropertyVoMapper;
 import com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam;
 import com.penny.vo.PictureDtVo;
@@ -31,21 +32,29 @@ public class InitialPageService {
 
     private final PictureDtVoMapper pictureDtVoMapper;
 
+    private final PropertyReviewVoMapper propertyReviewVoMapper;
+
     @Autowired
-    public InitialPageService(PropertyVoMapper propertyVoMapper, PictureDtVoMapper pictureDtVoMapper){
+    public InitialPageService(PropertyVoMapper propertyVoMapper, PictureDtVoMapper pictureDtVoMapper, PropertyReviewVoMapper propertyReviewVoMapper){
         this.propertyVoMapper = propertyVoMapper;
         this.pictureDtVoMapper = pictureDtVoMapper;
+        this.propertyReviewVoMapper = propertyReviewVoMapper;
     }
 
     public Map<String, Object> getInitialPageData(){
-        int propertyOffset = calculateOffset(DEFAULT_PROPERTY_PAGE, DEFAULT_PROPERTY_LIMIT);
+        // 準備返回屬性列表
         List<String> returnFieldList = new ArrayList<>();
         returnFieldList.add("propertyId");
         returnFieldList.add("district");
         returnFieldList.add("priceOnWeekdays");
+
+        // 準備排序屬性列表和排序方式列表
         List<String> sortFieldList = List.of("district", "nearestAvailableDay");
         List<String> sortOrderList = List.of("asc", "asc");
 
+        // 計算房源的偏移量
+        int propertyOffset = calculateOffset(DEFAULT_PROPERTY_PAGE, DEFAULT_PROPERTY_LIMIT);
+        // 準備房源查詢參數
         ListByNumOfAvailableDaysParam param  = ListByNumOfAvailableDaysParam
                 .builder()
                 .numOfAvailableDay(DEFAULT_NUM_OF_AVAILABLE_DAY)
@@ -55,17 +64,22 @@ public class InitialPageService {
                 .offset(propertyOffset)
                 .limit(DEFAULT_PROPERTY_LIMIT)
                 .build();
+
+        // 根據房源查詢參數查詢房源列表
         List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(param);
 
+        // 計算圖片詳細資訊的偏移量並為每個房源設置圖片詳細資訊列表和評論數
         int pictureDtOffset = calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);
         for(PropertyVo propertyVo: propertyVoList) {
-            //
             Long propertyId = propertyVo.getPropertyId();
+
+            // 查詢房源的圖片詳細資訊列表
             List<PictureDtVo> pictureDtVoList = pictureDtVoMapper.listByPropertyId(propertyId, DEFAULT_PICTURE_DT_SIZE, pictureDtOffset, DEFAULT_PICTURE_DT_LIMIT);
             propertyVo.setPictureDtVoList(pictureDtVoList);
 
-            //
-
+            // 查詢房源的評論數
+            Map<String, Object> reviewCountMap = propertyReviewVoMapper.countByPropertyId(propertyId);
+            propertyVo.setReviewCount((long)reviewCountMap.get("count"));
         }
 
 

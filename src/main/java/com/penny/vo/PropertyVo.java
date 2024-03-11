@@ -33,4 +33,6 @@ public class PropertyVo extends PropertyBaseVo {
     private Date endAvailableDate;
 
     private List<PictureDtVo> pictureDtVoList;
+
+    private Long reviewCount;
 }
