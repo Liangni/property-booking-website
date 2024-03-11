@@ -5,6 +5,7 @@ package com.penny.service;
 import com.penny.dao.DistrictVoMapper;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.district.DistrictSearchRequest;
+import com.penny.util.Paginator;
 import com.penny.vo.DistrictVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,12 @@ public class DistrictService {
 
     private final DistrictVoMapper districtVoMapper;
 
+    private final Paginator paginator;
+
     @Autowired
-    public DistrictService(DistrictVoMapper districtVoMapper){
+    public DistrictService(DistrictVoMapper districtVoMapper, Paginator paginator){
         this.districtVoMapper = districtVoMapper;
+        this.paginator = paginator;
     }
 
     /**
@@ -42,59 +46,19 @@ public class DistrictService {
 
         String replaced = keyword.replace("台", "臺");
 
-        int offset = calculateOffset(page, limit);
+        int offset = paginator.calculateOffset(page, limit);
 
         List<DistrictVo> fetchResults = Optional.ofNullable(districtVoMapper.listByNameKeyword(replaced, offset, limit))
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("district with name [%s] not found", keyword)));
 
         int totalResultCount = districtVoMapper.countByNameKeyword(replaced);
-        int totalPages = calculateTotalPages(totalResultCount, limit);
+        int totalPages = paginator.calculateTotalPages(totalResultCount, limit);
 
-        Map<String, Object> pagination = buildPaginationMap(totalResultCount, page, totalPages, limit);
+        Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, page, totalPages, limit);
 
-        resultMap.put("results", fetchResults);
+        resultMap.put("result", fetchResults);
         resultMap.put("pagination", pagination);
         return resultMap;
-    }
-
-    /**
-     * 根據頁碼和每頁數量計算分頁查詢時的偏移量。
-     *
-     * @param page  目標頁碼。
-     * @param limit 每頁數量。
-     * @return 分頁查詢時的偏移量。
-     */
-    private int calculateOffset(int page, int limit) {
-        return (page - 1) * limit;
-    }
-
-    /**
-     * 根據總記錄數和每頁數量計算總頁數。
-     *
-     * @param totalResultCount 總記錄數。
-     * @param limit            每頁數量。
-     * @return 總頁數。
-     */
-    private int calculateTotalPages(int totalResultCount, int limit) {
-        return (int) Math.ceil((double) totalResultCount / limit);
-    }
-
-    /**
-     * 構建分頁資訊的 map。
-     *
-     * @param totalResultCount 總記錄數。
-     * @param page             目前頁碼。
-     * @param totalPages       總頁數。
-     * @param limit            每頁數量。
-     * @return 紀錄分頁資訊的map。
-     */
-    private Map<String, Object> buildPaginationMap(int totalResultCount, int page, int totalPages, int limit) {
-        Map<String, Object> pagination = new HashMap<>();
-        pagination.put("totalResults", totalResultCount);
-        pagination.put("currentPage", page);
-        pagination.put("totalPages", totalPages);
-        pagination.put("pageSize", limit);
-        return pagination;
     }
 
 }

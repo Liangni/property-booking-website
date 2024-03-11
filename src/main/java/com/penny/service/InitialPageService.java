@@ -4,6 +4,7 @@ import com.penny.dao.PictureDtVoMapper;
 import com.penny.dao.PropertyReviewVoMapper;
 import com.penny.dao.PropertyVoMapper;
 import com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam;
+import com.penny.util.Paginator;
 import com.penny.vo.PictureDtVo;
 import com.penny.vo.PropertyVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,14 @@ public class InitialPageService {
 
     private final PropertyReviewVoMapper propertyReviewVoMapper;
 
+    private final Paginator paginator;
+
     @Autowired
-    public InitialPageService(PropertyVoMapper propertyVoMapper, PictureDtVoMapper pictureDtVoMapper, PropertyReviewVoMapper propertyReviewVoMapper){
+    public InitialPageService(PropertyVoMapper propertyVoMapper, PictureDtVoMapper pictureDtVoMapper, PropertyReviewVoMapper propertyReviewVoMapper, Paginator paginator){
         this.propertyVoMapper = propertyVoMapper;
         this.pictureDtVoMapper = pictureDtVoMapper;
         this.propertyReviewVoMapper = propertyReviewVoMapper;
+        this.paginator = paginator;
     }
 
     public Map<String, Object> getInitialPageData(){
@@ -50,7 +54,7 @@ public class InitialPageService {
         List<String> sortOrderList = List.of("asc", "asc");
 
         // 計算房源的偏移量
-        int propertyOffset = calculateOffset(DEFAULT_PROPERTY_PAGE, DEFAULT_PROPERTY_LIMIT);
+        int propertyOffset = paginator.calculateOffset(DEFAULT_PROPERTY_PAGE, DEFAULT_PROPERTY_LIMIT);
         // 準備房源查詢參數
         ListByNumOfAvailableDaysParam param  = ListByNumOfAvailableDaysParam
                 .builder()
@@ -67,7 +71,7 @@ public class InitialPageService {
 
 
         // 計算圖片詳細資訊的偏移量並為每個房源設置圖片詳細資訊列表和評論數
-        int pictureDtOffset = calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);
+        int pictureDtOffset = paginator.calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);
         List<Map<String, Object>> leanProeprtyList= new ArrayList<>();
 
         for(PropertyVo propertyVo: propertyVoList) {
@@ -105,56 +109,13 @@ public class InitialPageService {
         }
 
         long totalResultCount = propertyVoMapper.countByNumOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAY);
-        long totalPages = calculateTotalPages(totalResultCount, DEFAULT_PROPERTY_LIMIT);
+        long totalPages = paginator.calculateTotalPages(totalResultCount, DEFAULT_PROPERTY_LIMIT);
 
-        Map<String, Object> pagination = buildPaginationMap(totalResultCount, DEFAULT_PROPERTY_PAGE, totalPages, DEFAULT_PROPERTY_LIMIT);
+        Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, DEFAULT_PROPERTY_PAGE, totalPages, DEFAULT_PROPERTY_LIMIT);
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("results", leanProeprtyList);
+        resultMap.put("result", leanProeprtyList);
         resultMap.put("pagination", pagination);
         return resultMap;
     }
 
-    /**
-     * 根據頁碼和每頁數量計算分頁查詢時的偏移量。
-     *
-     * @param page  目標頁碼。
-     * @param limit 每頁數量。
-     * @return 分頁查詢時的偏移量。
-     */
-    private int calculateOffset(int page, int limit) {
-        return (page - 1) * limit;
-    }
-
-    /**
-     * 根據總記錄數和每頁數量計算總頁數。
-     *
-     * @param totalResultCount 總記錄數。
-     * @param limit            每頁數量。
-     * @return 總頁數。
-     */
-    private int calculateTotalPages(int totalResultCount, int limit) {
-        return (int) Math.ceil((double) totalResultCount / limit);
-    }
-
-    private int calculateTotalPages(long totalResultCount, long limit) {
-        return (int) Math.ceil((double) totalResultCount / limit);
-    }
-
-    /**
-     * 構建分頁資訊的 map。
-     *
-     * @param totalResultCount 總記錄數。
-     * @param page             目前頁碼。
-     * @param totalPages       總頁數。
-     * @param limit            每頁數量。
-     * @return 紀錄分頁資訊的map。
-     */
-    private Map<String, Object> buildPaginationMap(long totalResultCount, long page, long totalPages, long limit) {
-        Map<String, Object> pagination = new HashMap<>();
-        pagination.put("totalResults", totalResultCount);
-        pagination.put("currentPage", page);
-        pagination.put("totalPages", totalPages);
-        pagination.put("pageSize", limit);
-        return pagination;
-    }
 }
