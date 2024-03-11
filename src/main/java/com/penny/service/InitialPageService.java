@@ -41,7 +41,12 @@ public class InitialPageService {
         this.propertyReviewVoMapper = propertyReviewVoMapper;
         this.paginator = paginator;
     }
-
+    /**
+     * 獲取初始頁面數據。
+     * 此方法構建並返回用於初始頁面的數據，包括房源列表、分頁信息等。
+     *
+     * @return 返回包含初始頁面數據的 Map。其中，鍵為 "result"，值為房源列表；鍵為 "pagination"，值為分頁信息。
+     */
     public Map<String, Object> getInitialPageData(){
         // 準備返回屬性列表
         List<String> returnFieldList = new ArrayList<>();
@@ -68,7 +73,6 @@ public class InitialPageService {
 
         // 根據房源查詢參數查詢房源列表
         List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(param);
-
 
         // 計算圖片詳細資訊的偏移量並為每個房源設置圖片詳細資訊列表和評論數
         int pictureDtOffset = paginator.calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);
@@ -108,13 +112,16 @@ public class InitialPageService {
             leanProeprtyList.add(propertyMap);
         }
 
+        // 獲取總房源數和總頁數，並構建分頁資訊 Map
         long totalResultCount = propertyVoMapper.countByNumOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAY);
         long totalPages = paginator.calculateTotalPages(totalResultCount, DEFAULT_PROPERTY_LIMIT);
-
         Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, DEFAULT_PROPERTY_PAGE, totalPages, DEFAULT_PROPERTY_LIMIT);
+
+        // 構建結果 Map，包含房源列表和分頁資訊
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", leanProeprtyList);
         resultMap.put("pagination", pagination);
+
         return resultMap;
     }
 
