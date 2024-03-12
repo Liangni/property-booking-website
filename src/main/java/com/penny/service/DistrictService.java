@@ -52,7 +52,7 @@ public class DistrictService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("district with name [%s] not found", keyword)));
 
         int totalResultCount = districtVoMapper.countByNameKeyword(replaced);
-        int totalPages = paginator.calculateTotalPages(totalResultCount, limit);
+        long totalPages = paginator.calculateTotalPages(totalResultCount, limit);
 
         Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, page, totalPages, limit);
 

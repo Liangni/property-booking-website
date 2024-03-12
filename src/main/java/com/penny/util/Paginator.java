@@ -27,10 +27,7 @@ public class Paginator {
      * @param limit            每頁數量。
      * @return 總頁數。
      */
-    public int calculateTotalPages(int totalResultCount, int limit) {
-        return (int) Math.ceil((double) totalResultCount / limit);
-    }
-    public int calculateTotalPages(long totalResultCount, int limit) {
+    public long calculateTotalPages(long totalResultCount, int limit) {
         return (int) Math.ceil((double) totalResultCount / limit);
     }
 
@@ -43,15 +40,7 @@ public class Paginator {
      * @param limit            每頁數量。
      * @return 紀錄分頁資訊的map。
      */
-    public Map<String, Object> buildPaginationMap(int totalResultCount, int page, int totalPages, int limit) {
-        Map<String, Object> pagination = new HashMap<>();
-        pagination.put("totalResults", totalResultCount);
-        pagination.put("currentPage", page);
-        pagination.put("totalPages", totalPages);
-        pagination.put("pageSize", limit);
-        return pagination;
-    }
-    public Map<String, Object> buildPaginationMap(long totalResultCount, long page, long totalPages, int limit) {
+    public Map<String, Object> buildPaginationMap(long totalResultCount, int page, long totalPages, int limit) {
         Map<String, Object> pagination = new HashMap<>();
         pagination.put("totalResults", totalResultCount);
         pagination.put("currentPage", page);
