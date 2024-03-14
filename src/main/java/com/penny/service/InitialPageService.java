@@ -58,9 +58,9 @@ public class InitialPageService {
         returnFieldList.add("district");
         returnFieldList.add("priceOnWeekdays");
 
-        // 準備排序屬性列表和排序方式列表
-        List<String> sortFieldList = List.of("district", "nearestAvailableDay");
-        List<String> sortOrderList = List.of("asc", "asc");
+        // 準備排序 map
+        Map<String, String> sortMap = new HashMap<>();
+        sortMap.put("district", "asc");
 
         // 計算房源的偏移量
         int propertyOffset = paginator.calculateOffset(DEFAULT_PROPERTY_PAGE, DEFAULT_PROPERTY_LIMIT);
@@ -69,8 +69,7 @@ public class InitialPageService {
                 .builder()
                 .filterMap(filterMap)
                 .returnFieldList(returnFieldList)
-                .sortFieldList(sortFieldList)
-                .sortOrderList(sortOrderList)
+                .sortMap(sortMap)
                 .offset(propertyOffset)
                 .limit(DEFAULT_PROPERTY_LIMIT)
                 .build();

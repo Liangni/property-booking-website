@@ -157,20 +157,16 @@ public class PropertyVoMapperTest {
         returnFieldList.add("district");
         returnFieldList.add("propertyId");
 
-        List<String> sortFieldList = new ArrayList<>();
-        sortFieldList.add("district");
-        sortFieldList.add("nearestAvailableDay");
 
-        List<String> sortOrderList = new ArrayList<>();
-        sortOrderList.add("asc");
-        sortOrderList.add("asc");
+        Map<String, String> sortMap = new HashMap<>();
+        sortMap.put("district", "asc");
+        sortMap.put("nearestAvailableDay", "asc");
 
         // 準備要使用的參數物件
         SelectPropertyParam param = SelectPropertyParam.builder()
                 .filterMap(filterMap)
                 .returnFieldList(returnFieldList)
-                .sortFieldList(sortFieldList)
-                .sortOrderList(sortOrderList)
+                .sortMap(sortMap)
                 .offset(0)
                 .limit(10)
                 .build();
@@ -223,11 +219,8 @@ public class PropertyVoMapperTest {
         returnFieldList.add("district");
         returnFieldList.add("propertyId");
 
-        List<String> sortFieldList = new ArrayList<>();
-        sortFieldList.add("district");
-
-        List<String> sortOrderList = new ArrayList<>();
-        sortOrderList.add("asc");
+        Map<String, String> sortMap = new HashMap<>();
+        sortMap.put("district", "asc");
 
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("numOfGuests", 2);
@@ -247,8 +240,7 @@ public class PropertyVoMapperTest {
         SelectPropertyParam param = SelectPropertyParam.builder()
                 .filterMap(filterMap)
                 .returnFieldList(returnFieldList)
-                .sortFieldList(sortFieldList)
-                .sortOrderList(sortOrderList)
+                .sortMap(sortMap)
                 .offset(0)
                 .limit(10)
                 .build();

@@ -12,8 +12,7 @@ public class SelectPropertyParam {
 
     private Map<String, Object> filterMap;
     private List<String> returnFieldList;
-    private List<String> sortFieldList;
-    private List<String> sortOrderList;
+    private Map<String, String> sortMap;
     private Integer offset;
     private Integer limit;
 

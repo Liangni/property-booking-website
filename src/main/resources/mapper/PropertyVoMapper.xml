@@ -19,11 +19,7 @@
         <result column="host_id" jdbcType="BIGINT" property="hostId"/>
         <result column="street" jdbcType="VARCHAR" property="street"/>
         <result column="apartment_floor" jdbcType="VARCHAR" property="apartmentFloor"/>
-        <result column="admin_area_level_1_district_id" jdbcType="BIGINT" property="adminAreaLevel1DistrictId"/>
-        <result column="admin_area_level_2_district_id" jdbcType="BIGINT" property="adminAreaLevel2DistrictId"/>
         <result column="admin_area_level_3_district_id" jdbcType="BIGINT" property="adminAreaLevel3DistrictId"/>
-        <result column="admin_area_level_1_district_name" jdbcType="BIGINT" property="adminAreaLevel1DistrictName"/>
-        <result column="admin_area_level_2_district_name" jdbcType="BIGINT" property="adminAreaLevel2DistrictName"/>
         <result column="admin_area_level_3_district_name" jdbcType="BIGINT" property="adminAreaLevel3DistrictName"/>
         <result column="district_id" jdbcType="BIGINT" property="districtId"/>
         <result column="district_name" jdbcType="BIGINT" property="districtName"/>
@@ -100,7 +96,7 @@
                     ),
                 </when>
             </choose>
-            <if test="returnFieldList.contains('district') or sortFieldList.contains('district')">
+            <if test="returnFieldList.contains('district') or sortMap.district != null">
                 join_district as (
                 <include refid="join_district_table"/>
                 ),
@@ -179,7 +175,7 @@
             available_periods as a on a.property_id = p.property_id
         </if>
         <choose>
-            <when test="returnFieldList.contains('district') or sortFieldList.contains('district')">
+            <when test="returnFieldList.contains('district') or sortMap.district != null">
                 left join
                 address as ad on p.address_id = ad.address_id
                 left join
@@ -220,7 +216,7 @@
             <if test="filterMap.numOfAvailableDays != null">
                 p.property_id,
                 <choose>
-                    <when test="returnFieldList.contains('district') or sortFieldList.contains('district')">
+                    <when test="returnFieldList.contains('district') or sortMap.district != null">
                         ad.address_id,
                         join_district.parent_district_id,
                         join_district.parent_district_name,
@@ -235,15 +231,15 @@
         </trim>
 
         <trim prefix="order by" prefixOverrides="">
-            <foreach collection="sortFieldList" item="sortField" index="index" separator="," open="" close="">
+            <foreach collection="sortMap" index="sortField" item="sortOrder"  separator="," open="" close="">
                 <choose>
                     <when test="sortField == 'district'">
-                        join_district.parent_district_id,
-                        join_district.district_id
+                        join_district.parent_district_id <if test="sortOrder == 'desc'"> desc </if>,
+                        join_district.district_id <if test="sortOrder == 'desc'"> desc </if>
                     </when>
                     <when test="sortField == 'nearestAvailableDay'">
                         <if test="filterMap.numOfAvailableDays != null">
-                            min(a.booking_availability_date) - CURRENT_DATE
+                            (min(a.booking_availability_date) - CURRENT_DATE) <if test="sortOrder == 'desc'"> desc </if>
                         </if>
                     </when>
                 </choose>
