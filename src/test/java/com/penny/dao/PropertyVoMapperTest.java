@@ -181,7 +181,7 @@ public class PropertyVoMapperTest {
             Assertions.assertNotNull(property.getStreet());
             Assertions.assertNotNull(property.getAdminAreaLevel3DistrictId());
         }
-
+        System.out.println(propertyList.get(1).toString());
         // 從返回的列表中提取房源 ID
         List<Long> actualPropertyIdList = propertyList
                 .stream()
@@ -271,7 +271,6 @@ public class PropertyVoMapperTest {
         Assertions.assertTrue(actualPropertyIdList.containsAll(expectPropertyIdList));
         // 斷言房源 ID 基於排序標準的預期順序
         Assertions.assertTrue(actualPropertyIdList.indexOf(expectPropertyIdList.get(0)) < actualPropertyIdList.indexOf(expectPropertyIdList.get(1)));
-
     }
 
     private List<Long> insertTestAdminAreas(int numOfRowToInsert) {

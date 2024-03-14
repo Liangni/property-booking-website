@@ -81,9 +81,8 @@ public class InitialPageService {
         for(PropertyVo propertyVo: propertyVoList) {
             Long propertyId = propertyVo.getPropertyId();
             Long priceOnWeekdays = propertyVo.getPriceOnWeekdays();
-            String adminAreaLevel1DistrictName = propertyVo.getAdminAreaLevel1DistrictName();
-            String adminAreaLevel2DistrictName = propertyVo.getAdminAreaLevel2DistrictName();
-            String adminAreaLevel3DistrictName = propertyVo.getAdminAreaLevel3DistrictName();
+            String districtName = propertyVo.getDistrictName();
+            String parentDistrictName = propertyVo.getParentDistrictName();
             Date startAvailableDate = propertyVo.getStartAvailableDate();
             Date endAvailableDate = propertyVo.getEndAvailableDate();
             Double averageRating = propertyVo.getAverageRating();
@@ -92,10 +91,8 @@ public class InitialPageService {
             Map<String, Object> propertyMap = new HashMap<>();
             propertyMap.put("propertyId", propertyId);
             propertyMap.put("priceOnWeekdays", priceOnWeekdays);
-            propertyMap.put("parentDistrictName", Optional.ofNullable(adminAreaLevel1DistrictName)
-                    .orElse(adminAreaLevel2DistrictName)
-            );
-            propertyMap.put("childDistrictName", adminAreaLevel3DistrictName);
+            propertyMap.put("parentDistrictName", parentDistrictName);
+            propertyMap.put("districtName", districtName);
             propertyMap.put("startAvailableDate", startAvailableDate);
             propertyMap.put("endAvailableDate", endAvailableDate);
             propertyMap.put("averageRating", averageRating);
