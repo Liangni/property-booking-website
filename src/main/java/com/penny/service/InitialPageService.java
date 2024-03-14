@@ -3,7 +3,7 @@ package com.penny.service;
 import com.penny.dao.PictureDtVoMapper;
 import com.penny.dao.PropertyReviewVoMapper;
 import com.penny.dao.PropertyVoMapper;
-import com.penny.daoParam.propertyVoMapper.ListByNumOfAvailableDaysParam;
+import com.penny.daoParam.propertyVoMapper.SelectPropertyParam;
 import com.penny.util.Paginator;
 import com.penny.vo.PictureDtVo;
 import com.penny.vo.PropertyVo;
@@ -61,7 +61,7 @@ public class InitialPageService {
         // 計算房源的偏移量
         int propertyOffset = paginator.calculateOffset(DEFAULT_PROPERTY_PAGE, DEFAULT_PROPERTY_LIMIT);
         // 準備房源查詢參數
-        ListByNumOfAvailableDaysParam param  = ListByNumOfAvailableDaysParam
+        SelectPropertyParam selectPropertyParam = SelectPropertyParam
                 .builder()
                 .numOfAvailableDay(DEFAULT_NUM_OF_AVAILABLE_DAY)
                 .returnFieldList(returnFieldList)
@@ -72,7 +72,7 @@ public class InitialPageService {
                 .build();
 
         // 根據房源查詢參數查詢房源列表
-        List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(param);
+        List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(selectPropertyParam);
 
         // 計算圖片詳細資訊的偏移量並為每個房源設置圖片詳細資訊列表和評論數
         int pictureDtOffset = paginator.calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);

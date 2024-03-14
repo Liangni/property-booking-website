@@ -28,6 +28,14 @@ public class PropertyVo extends PropertyBaseVo {
 
     private String adminAreaLevel3DistrictName;
 
+    private Long districtId;
+
+    private Long parentDistrictId;
+
+    private String districtName;
+
+    private String parentDistrictName;
+
     private Date startAvailableDate;
 
     private Date endAvailableDate;
