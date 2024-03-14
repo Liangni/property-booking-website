@@ -10,7 +10,6 @@ import java.util.Map;
 @Builder
 public class SelectPropertyParam {
 
-    private Integer numOfAvailableDay;
     private Map<String, Object> filterMap;
     private List<String> returnFieldList;
     private List<String> sortFieldList;

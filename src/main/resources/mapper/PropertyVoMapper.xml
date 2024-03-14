@@ -74,8 +74,7 @@
             district d2 on d1.district_id = d2.parent_district_id
     </sql>
 
-    <select id="listByNumOfAvailableDays"
-            parameterType="com.penny.daoParam.propertyVoMapper.SelectPropertyParam" resultMap="BaseResultMap">
+    <select id="listByNumOfAvailableDays" parameterType="com.penny.daoParam.propertyVoMapper.SelectPropertyParam" resultMap="BaseResultMap">
         <!-- 定義 available_periods 公用表達式（CTE），用於計算每個房源每個日期的連續可預定天數 -->
         with available_periods as (
             <include refid="available_periods_table"/>
@@ -143,7 +142,7 @@
             </foreach>
             <!-- 計算開始的可預定日期和結束可預定日期 -->
             min(a.booking_availability_date) as start_available_date,
-            min(a.booking_availability_date) + #{numOfAvailableDay, jdbcType = BIGINT} as end_available_date
+            min(a.booking_availability_date) + #{filterMap.numOfAvailableDays, jdbcType = BIGINT} as end_available_date
         from
             available_periods as a
             inner join property as p on a.property_id = p.property_id
@@ -157,7 +156,13 @@
                 </when>
             </choose>
         where
-            a.consecutive_available_days >= #{numOfAvailableDay, jdbcType = BIGINT}
+            <foreach collection="filterMap" index="key" item="value" open="" separator="and" close="">
+                <choose>
+                    <when test="key == 'numOfAvailableDays'">
+                        a.consecutive_available_days >= #{value}
+                    </when>
+                </choose>
+            </foreach>
         group by
             <trim suffixOverrides=",">
                 p.property_id,

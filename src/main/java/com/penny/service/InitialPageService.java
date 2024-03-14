@@ -18,7 +18,7 @@ public class InitialPageService {
 
     private static final int DEFAULT_PROPERTY_LIMIT = 10;
 
-    private static final int DEFAULT_NUM_OF_AVAILABLE_DAY = 5;
+    private static final int DEFAULT_NUM_OF_AVAILABLE_DAYS = 5;
 
     private static final int DEFAULT_PICTURE_DT_PAGE = 1;
 
@@ -48,6 +48,10 @@ public class InitialPageService {
      * @return 返回包含初始頁面數據的 Map。其中，鍵為 "result"，值為房源列表；鍵為 "pagination"，值為分頁信息。
      */
     public Map<String, Object> getInitialPageData(){
+        // 準備過濾屬性 map
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("numOfAvailableDays", DEFAULT_NUM_OF_AVAILABLE_DAYS);
+
         // 準備返回屬性列表
         List<String> returnFieldList = new ArrayList<>();
         returnFieldList.add("propertyId");
@@ -63,7 +67,7 @@ public class InitialPageService {
         // 準備房源查詢參數
         SelectPropertyParam selectPropertyParam = SelectPropertyParam
                 .builder()
-                .numOfAvailableDay(DEFAULT_NUM_OF_AVAILABLE_DAY)
+                .filterMap(filterMap)
                 .returnFieldList(returnFieldList)
                 .sortFieldList(sortFieldList)
                 .sortOrderList(sortOrderList)
@@ -110,7 +114,7 @@ public class InitialPageService {
         }
 
         // 獲取總房源數和總頁數，並構建分頁資訊 Map
-        long totalResultCount = propertyVoMapper.countByNumOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAY);
+        long totalResultCount = propertyVoMapper.countByNumOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAYS);
         long totalPages = paginator.calculateTotalPages(totalResultCount, DEFAULT_PROPERTY_LIMIT);
         Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, DEFAULT_PROPERTY_PAGE, totalPages, DEFAULT_PROPERTY_LIMIT);
 
