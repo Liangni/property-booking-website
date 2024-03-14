@@ -176,7 +176,7 @@ public class PropertyVoMapperTest {
                 .build();
 
         // 使用指定的參數調用 PropertyVoMapper 的 listByNumOfAvailableDays 方法
-        List<PropertyVo> propertyList = propertyVoMapper.listByNumOfAvailableDays(param);
+        List<PropertyVo> propertyList = propertyVoMapper.listByFilter(param);
 
         // 確認返回的房源列表不為空，並且包含了指定 field 的房源
         Assertions.assertNotEquals(0, propertyList.size());
@@ -252,7 +252,7 @@ public class PropertyVoMapperTest {
                 .offset(0)
                 .limit(10)
                 .build();
-        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDay(param);
+        List<PropertyVo> propertyList = propertyVoMapper.listByFilter(param);
 
         // 確認返回的房源列表不為空，並且包含了指定 field 的房源
         Assertions.assertNotEquals(0, propertyList.size());

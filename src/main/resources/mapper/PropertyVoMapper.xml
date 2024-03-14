@@ -40,14 +40,13 @@
     </sql>
 
     <sql id="available_periods_table">
-        -- 對 booking_availability 表進行查詢，選擇房源ID、預訂日期以及相關的計算結果
-        -- 將可預定日期按照房源ID、連續可預定期間分組標識（available_period_group）分組，計算其所在的連續可預定天數（consecutive_available_days）
+        -- 對 booking_availability 表進行查詢，選擇房源ID、可預訂日期以及計算其所在的連續可預定天數（consecutive_available_days）
         select
             property_id,
             booking_availability_date,
             count(*) over (partition by property_id, available_period_group) as consecutive_available_days
         from (
-                 -- 子查詢：計算每個房源的連續可預定期間分組
+                 -- 子查詢：計算每個房源的連續可預定天數分組
                  -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
                  -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
              select
@@ -62,6 +61,19 @@
          ) as subquery
     </sql>
 
+    <sql id="property_availability_table">
+        select
+            property_id
+        from
+            booking_availability
+        where
+            booking_availability_date between #{filterMap.startAvailableDay} and #{filterMap.endAvailableDay}
+        group by
+            property_id
+        having
+            sum(case when booking_availability_status = 'booked' then 1 else 0 end) = 0
+    </sql>
+
     <sql id="join_district_table">
         select
             d1.district_id   as parent_district_id,
@@ -74,15 +86,29 @@
             district d2 on d1.district_id = d2.parent_district_id
     </sql>
 
-    <select id="listByNumOfAvailableDays" parameterType="com.penny.daoParam.propertyVoMapper.SelectPropertyParam" resultMap="BaseResultMap">
-        <!-- 定義 available_periods 公用表達式（CTE），用於計算每個房源每個日期的連續可預定天數 -->
-        with available_periods as (
-            <include refid="available_periods_table"/>
-        ),
-        join_district as (
-            <include refid="join_district_table"/>
-        )
+    <select id="listByFilter" parameterType="com.penny.daoParam.propertyVoMapper.SelectPropertyParam" resultMap="BaseResultMap">
+        <trim prefix="with" suffixOverrides=",">
+            <choose>
+                <when test="filterMap.numOfAvailableDays != null">
+                    available_periods as (
+                    <include refid="available_periods_table"/>
+                    ),
+                </when>
+                <when test="filterMap.startAvailableDay != null and filterMap.endAvailableDay != null ">
+                    property_availability as (
+                    <include refid="property_availability_table"/>
+                    ),
+                </when>
+            </choose>
+            <if test="returnFieldList.contains('district') or sortFieldList.contains('district')">
+                join_district as (
+                <include refid="join_district_table"/>
+                ),
+            </if>
+        </trim>
+
         select
+        <trim suffixOverrides=",">
             <foreach collection="returnFieldList" item="returnField" separator="," close=",">
                 <choose>
                     <when test="returnField == 'propertyId'">
@@ -140,31 +166,58 @@
                     </when>
                 </choose>
             </foreach>
-            <!-- 計算開始的可預定日期和結束可預定日期 -->
-            min(a.booking_availability_date) as start_available_date,
-            min(a.booking_availability_date) + #{filterMap.numOfAvailableDays, jdbcType = BIGINT} as end_available_date
+            <if test="filterMap.numOfAvailableDays != null">
+                min(a.booking_availability_date) as start_available_date,
+                min(a.booking_availability_date) + #{filterMap.numOfAvailableDays, jdbcType = BIGINT} as end_available_date,
+            </if>
+        </trim>
+
         from
-            available_periods as a
-            inner join property as p on a.property_id = p.property_id
+        property as p
+        <if test="filterMap.numOfAvailableDays != null">
+            inner  join
+            available_periods as a on a.property_id = p.property_id
+        </if>
+        <choose>
+            <when test="returnFieldList.contains('district') or sortFieldList.contains('district')">
+                left join
+                address as ad on p.address_id = ad.address_id
+                left join
+                join_district on ad.admin_area_level_3_district_id = join_district.district_id
+            </when>
+            <when test="returnFieldList.contains('address')">
+                left join
+                address as ad on p.address_id = ad.address_id
+            </when>
+        </choose>
+
+        <where>
             <choose>
-                <when test="returnFieldList.contains('district') or sortFieldList.contains('district')">
-                    left join address as ad on p.address_id = ad.address_id
-                    left join join_district on ad.admin_area_level_3_district_id = join_district.district_id
+                <when test="filterMap.numOfAvailableDays != null">
+                    a.consecutive_available_days >= #{filterMap.numOfAvailableDays}
                 </when>
-                <when test="returnFieldList.contains('address')">
-                    left join address as ad on p.address_id = ad.address_id
+                <when test="filterMap.startAvailableDay != null and filterMap.endAvailableDay != null ">
+                    p.property_id in (select property_id from property_availability)
                 </when>
             </choose>
-        where
-            <foreach collection="filterMap" index="key" item="value" open="" separator="and" close="">
-                <choose>
-                    <when test="key == 'numOfAvailableDays'">
-                        a.consecutive_available_days >= #{value}
-                    </when>
-                </choose>
-            </foreach>
-        group by
-            <trim suffixOverrides=",">
+            <trim prefix="and">
+                <foreach collection="filterMap" index="key" item="value" open="" separator="and" close="">
+                    <choose>
+                        <when test="key == 'numOfGuests'">
+                            p.max_num_of_guests >= #{value}
+                        </when>
+                        <when test="key == 'districtId'">
+                            (ad.admin_area_level_3_district_id = #{value}
+                            or
+                            join_district.parent_district_id = #{value})
+                        </when>
+                    </choose>
+                </foreach>
+            </trim>
+        </where>
+
+        <trim prefix="group by" suffixOverrides=",">
+            <if test="filterMap.numOfAvailableDays != null">
                 p.property_id,
                 <choose>
                     <when test="returnFieldList.contains('district') or sortFieldList.contains('district')">
@@ -175,11 +228,13 @@
                         join_district.district_name,
                     </when>
                     <when test="returnFieldList.contains('address')">
-                        ad.address_id
+                        ad.address_id,
                     </when>
                 </choose>
-            </trim>
-        order by
+            </if>
+        </trim>
+
+        <trim prefix="order by" prefixOverrides="">
             <foreach collection="sortFieldList" item="sortField" index="index" separator="," open="" close="">
                 <choose>
                     <when test="sortField == 'district'">
@@ -187,19 +242,22 @@
                         join_district.district_id
                     </when>
                     <when test="sortField == 'nearestAvailableDay'">
-                        min(a.booking_availability_date) - CURRENT_DATE
+                        <if test="filterMap.numOfAvailableDays != null">
+                            min(a.booking_availability_date) - CURRENT_DATE
+                        </if>
                     </when>
                 </choose>
             </foreach>
-            <if test="offset != null and limit != null">
-                limit #{limit}
-                offset #{offset}
-            </if>
+        </trim>
+
+        <if test="offset != null and limit != null">
+            limit #{limit}
+            offset #{offset}
+        </if>
         ;
     </select>
 
     <select id="countByNumOfAvailableDays" parameterType="java.lang.Integer" resultType="java.lang.Long">
-        <!-- 定義 available_periods 公用表達式（CTE），用於計算每個房源每個日期所在的連續可預定天數 -->
         with available_periods as (
             <include refid="available_periods_table"/>
         )
@@ -218,121 +276,5 @@
                 p.property_id
         ) qualified_property_id_value;
     </select>
-
-    <select id="listByStartAndEndAvailableDay" parameterType="com.penny.daoParam.propertyVoMapper.SelectPropertyParam" resultMap="BaseResultMap">
-        with property_availability as (
-            select
-                property_id
-            from
-                booking_availability
-            where
-                booking_availability_date between #{filterMap.startAvailableDay} and #{filterMap.endAvailableDay}
-            group by
-                property_id
-            having
-                sum(case when booking_availability_status = 'booked' then 1 else 0 end) = 0
-        ),
-        join_district as (
-            <include refid="join_district_table"/>
-        )
-
-        select
-            <foreach collection="returnFieldList" item="returnField" separator="," close="">
-                <choose>
-                    <when test="returnField == 'propertyId'">
-                        p.property_id
-                    </when>
-                    <when test="returnField == 'propertyTitle'">
-                        p.property_title
-                    </when>
-                    <when test="returnField == 'propertyDescription'">
-                        p.property_description
-                    </when>
-                    <when test="returnField == 'propertyMaxNumOfGuests'">
-                        p.max_num_of_guests
-                    </when>
-                    <when test="returnField == 'numOfBedrooms'">
-                        p.num_of_bedrooms
-                    </when>
-                    <when test="returnField == 'numOfBeds'">
-                        p.num_of_beds
-                    </when>
-                    <when test="returnField == 'numOfBathrooms'">
-                        p.num_of_bathrooms
-                    </when>
-                    <when test="returnField == 'priceOnWeekdays'">
-                        p.price_on_weekdays
-                    </when>
-                    <when test="returnField == 'priceOnWeekends'">
-                        p.price_on_weekends
-                    </when>
-                    <when test="returnField == 'isPublished'">
-                        p.is_published
-                    </when>
-                    <when test="returnField == 'averageRating'">
-                        p.average_rating
-                    </when>
-                    <when test="returnField == 'propertyGroupTypeId'">
-                        p.property_group_type_id
-                    </when>
-                    <when test="returnField == 'propertyShareTypeId'">
-                        p.property_share_type_id
-                    </when>
-                    <when test="returnField == 'addressId'">
-                        p.address_id
-                    </when>
-                    <when test="returnField == 'address'">
-                        ad.apartment_floor,
-                        ad.street,
-                        ad.admin_area_level_3_district_id
-                    </when>
-                    <when test="returnField == 'district'">
-                        join_district.parent_district_id,
-                        join_district.parent_district_name,
-                        join_district.district_id,
-                        join_district.district_name
-                    </when>
-                </choose>
-            </foreach>
-        from
-            property p
-        inner join
-            address ad on p.address_id = ad.address_id
-        left join
-            join_district on ad.admin_area_level_3_district_id = join_district.district_id
-        <where>
-            p.property_id in (select property_id from property_availability)
-            <foreach collection="filterMap" index="key" item="value" open="and" separator="and" close="">
-                <choose>
-                    <when test="key == 'numOfGuests'">
-                        p.max_num_of_guests >= #{value}
-                    </when>
-                    <when test="key == 'districtId'">
-                        (ad.admin_area_level_3_district_id = #{value}
-                        or
-                        join_district.parent_district_id = #{value})
-                    </when>
-                </choose>
-            </foreach>
-        </where>
-
-        <trim prefix="order by" prefixOverrides="">
-            <foreach collection="sortFieldList" item="sortField" index="index" open="" separator="," close="">
-                <choose>
-                    <when test="sortField == 'district'">
-                        join_district.parent_district_id asc,
-                        join_district.district_id  asc
-                    </when>
-                </choose>
-            </foreach>
-        </trim>
-
-        <if test="offset != null and limit != null">
-            limit #{limit}
-            offset #{offset}
-        </if>
-        ;
-    </select>
-
 
 </mapper>

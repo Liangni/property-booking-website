@@ -76,7 +76,7 @@ public class InitialPageService {
                 .build();
 
         // 根據房源查詢參數查詢房源列表
-        List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(selectPropertyParam);
+        List<PropertyVo> propertyVoList = propertyVoMapper.listByFilter(selectPropertyParam);
 
         // 計算圖片詳細資訊的偏移量並為每個房源設置圖片詳細資訊列表和評論數
         int pictureDtOffset = paginator.calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);
