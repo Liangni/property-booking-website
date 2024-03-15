@@ -117,7 +117,7 @@ public class PictureDtVoMapperTest {
         long district1Id = (long) district1.getDistrictId();  // 獲取地區資料 id
 
         // 新增地址資料
-        AddressBaseVo address1 = AddressBaseVo.builder().street("test street 1").adminAreaLevel1DistrictId(district1Id) // 帶入地區資料 id
+        AddressBaseVo address1 = AddressBaseVo.builder().street("test street 1").adminAreaLevel3DistrictId(district1Id) // 帶入地區資料 id
                 .build();
         addressBaseVoMapper.insertSelective(address1);
         long address1Id = (long) address1.getAddressId(); // 獲取地址資料 id
