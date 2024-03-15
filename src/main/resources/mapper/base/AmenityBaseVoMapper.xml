@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.AmenityBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.AmenityBaseVo">
+    <id column="amenity_id" jdbcType="BIGINT" property="amenityId" />
+    <result column="amenity_name" jdbcType="VARCHAR" property="amenityName" />
+    <result column="amenity_type_id" jdbcType="BIGINT" property="amenityTypeId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    amenity_id, amenity_name, amenity_type_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from amenity
+    where amenity_id = #{amenityId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from amenity
+    where amenity_id = #{amenityId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="amenity_id" keyProperty="amenityId" parameterType="com.penny.vo.base.AmenityBaseVo" useGeneratedKeys="true">
+    insert into amenity (amenity_name, amenity_type_id)
+    values (#{amenityName,jdbcType=VARCHAR}, #{amenityTypeId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="amenity_id" keyProperty="amenityId" parameterType="com.penny.vo.base.AmenityBaseVo" useGeneratedKeys="true">
+    insert into amenity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="amenityName != null">
+        amenity_name,
+      </if>
+      <if test="amenityTypeId != null">
+        amenity_type_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="amenityName != null">
+        #{amenityName,jdbcType=VARCHAR},
+      </if>
+      <if test="amenityTypeId != null">
+        #{amenityTypeId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.AmenityBaseVo">
+    update amenity
+    <set>
+      <if test="amenityName != null">
+        amenity_name = #{amenityName,jdbcType=VARCHAR},
+      </if>
+      <if test="amenityTypeId != null">
+        amenity_type_id = #{amenityTypeId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where amenity_id = #{amenityId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.AmenityBaseVo">
+    update amenity
+    set amenity_name = #{amenityName,jdbcType=VARCHAR},
+      amenity_type_id = #{amenityTypeId,jdbcType=BIGINT}
+    where amenity_id = #{amenityId,jdbcType=BIGINT}
+  </update>
+</mapper>

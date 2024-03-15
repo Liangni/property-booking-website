@@ -5,13 +5,10 @@
     <id column="address_id" jdbcType="BIGINT" property="addressId" />
     <result column="apartment_floor" jdbcType="VARCHAR" property="apartmentFloor" />
     <result column="street" jdbcType="VARCHAR" property="street" />
-    <result column="admin_area_level_1_district_id" jdbcType="BIGINT" property="adminAreaLevel1DistrictId" />
-    <result column="admin_area_level_2_district_id" jdbcType="BIGINT" property="adminAreaLevel2DistrictId" />
     <result column="admin_area_level_3_district_id" jdbcType="BIGINT" property="adminAreaLevel3DistrictId" />
   </resultMap>
   <sql id="Base_Column_List">
-    address_id, apartment_floor, street, admin_area_level_1_district_id, admin_area_level_2_district_id, 
-    admin_area_level_3_district_id
+    address_id, apartment_floor, street, admin_area_level_3_district_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,11 +21,9 @@
     where address_id = #{addressId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="address_id" keyProperty="addressId" parameterType="com.penny.vo.base.AddressBaseVo" useGeneratedKeys="true">
-    insert into address (apartment_floor, street, admin_area_level_1_district_id, 
-      admin_area_level_2_district_id, admin_area_level_3_district_id
+    insert into address (apartment_floor, street, admin_area_level_3_district_id
       )
-    values (#{apartmentFloor,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{adminAreaLevel1DistrictId,jdbcType=BIGINT}, 
-      #{adminAreaLevel2DistrictId,jdbcType=BIGINT}, #{adminAreaLevel3DistrictId,jdbcType=BIGINT}
+    values (#{apartmentFloor,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{adminAreaLevel3DistrictId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" keyColumn="address_id" keyProperty="addressId" parameterType="com.penny.vo.base.AddressBaseVo" useGeneratedKeys="true">
@@ -40,12 +35,6 @@
       <if test="street != null">
         street,
       </if>
-      <if test="adminAreaLevel1DistrictId != null">
-        admin_area_level_1_district_id,
-      </if>
-      <if test="adminAreaLevel2DistrictId != null">
-        admin_area_level_2_district_id,
-      </if>
       <if test="adminAreaLevel3DistrictId != null">
         admin_area_level_3_district_id,
       </if>
@@ -56,12 +45,6 @@
       </if>
       <if test="street != null">
         #{street,jdbcType=VARCHAR},
-      </if>
-      <if test="adminAreaLevel1DistrictId != null">
-        #{adminAreaLevel1DistrictId,jdbcType=BIGINT},
-      </if>
-      <if test="adminAreaLevel2DistrictId != null">
-        #{adminAreaLevel2DistrictId,jdbcType=BIGINT},
       </if>
       <if test="adminAreaLevel3DistrictId != null">
         #{adminAreaLevel3DistrictId,jdbcType=BIGINT},
@@ -77,12 +60,6 @@
       <if test="street != null">
         street = #{street,jdbcType=VARCHAR},
       </if>
-      <if test="adminAreaLevel1DistrictId != null">
-        admin_area_level_1_district_id = #{adminAreaLevel1DistrictId,jdbcType=BIGINT},
-      </if>
-      <if test="adminAreaLevel2DistrictId != null">
-        admin_area_level_2_district_id = #{adminAreaLevel2DistrictId,jdbcType=BIGINT},
-      </if>
       <if test="adminAreaLevel3DistrictId != null">
         admin_area_level_3_district_id = #{adminAreaLevel3DistrictId,jdbcType=BIGINT},
       </if>
@@ -93,8 +70,6 @@
     update address
     set apartment_floor = #{apartmentFloor,jdbcType=VARCHAR},
       street = #{street,jdbcType=VARCHAR},
-      admin_area_level_1_district_id = #{adminAreaLevel1DistrictId,jdbcType=BIGINT},
-      admin_area_level_2_district_id = #{adminAreaLevel2DistrictId,jdbcType=BIGINT},
       admin_area_level_3_district_id = #{adminAreaLevel3DistrictId,jdbcType=BIGINT}
     where address_id = #{addressId,jdbcType=BIGINT}
   </update>

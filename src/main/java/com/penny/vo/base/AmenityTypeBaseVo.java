@@ -9,12 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressBaseVo {
-    private Long addressId;
+public class AmenityTypeBaseVo {
+    private Long amenityTypeId;
 
-    private String apartmentFloor;
-
-    private String street;
-
-    private Long adminAreaLevel3DistrictId;
+    private String amenityTypeName;
 }
