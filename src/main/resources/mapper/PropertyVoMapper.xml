@@ -217,6 +217,50 @@
                             or
                             join_district.parent_district_id = #{value})
                         </when>
+                        <when test="key == 'numOfBedrooms'">
+                            p.num_of_bedrooms >= #{value}
+                        </when>
+                        <when test="key == 'numOfBeds'">
+                            p.num_of_beds >= #{value}
+                        </when>
+                        <when test="key == 'numOfBathrooms'">
+                            p.num_of_bathrooms >= #{value}
+                        </when>
+                        <when test="key == 'maxPrice'">
+                            #{value} >= p.price_on_weekdays
+                            and
+                            #{value} >= p.price_on_weekdays
+                        </when>
+                        <when test="key == 'minPrice'">
+                            p.price_on_weekdays >= #{value}
+                            and
+                            p.price_on_weekdays >= #{value}
+                        </when>
+                        <when test = "key == 'propertyGroupId'">
+                            p.property_group_type_id in (
+                            select
+                                property_group_type_id
+                            from
+                                property_group_type
+                            where property_group_id = # {value}
+                            )
+                        </when>
+                        <when test = "key == 'propertyShareTypeId">
+                            p.property_share_type_id = #{value}
+                        </when>
+                        <when test = "key == 'amenityIds'">
+                            p.property_id in (
+                            select
+                                property_id
+                            from
+                                property_amenity
+                            where
+                                amenity_id in
+                                <foreach collection="filterMap.amenityIds" item="amenityId" open="(" separator="," close=")">
+                                    #{amenityId}
+                                </foreach>
+                            )
+                        </when>
                     </choose>
                 </foreach>
             </trim>

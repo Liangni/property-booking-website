@@ -34,6 +34,12 @@ public class PropertyVoMapperTest {
     private AddressBaseVoMapper addressBaseVoMapper;
     @Autowired
     private BookingAvailabilityBaseVoMapper bookingAvailabilityBaseVoMapper;
+    @Autowired
+    private AmenityTypeBaseVoMapper amenityTypeBaseVoMapper;
+    @Autowired
+    private AmenityBaseVoMapper amenityBaseVoMapper;
+    @Autowired
+    private PropertyAmenityBaseVoMapper propertyAmenityBaseVoMapper;
 
     private static final int NUM_OF_BOOKING_DAY = 10;
 
@@ -41,7 +47,9 @@ public class PropertyVoMapperTest {
 
     private static final int FIRST_AVAILABLE_DAY_FROM_NOW = 2;
 
-    private static final int MAX_NUM_OF_GUESTS = 3;
+    private static final int BASE_MAX_NUM_OF_GUESTS = 3;
+
+    private static final long BASE_PRICE = 100;
 
     private static final List<Long> propertyIdList = new ArrayList<>();
 
@@ -93,9 +101,9 @@ public class PropertyVoMapperTest {
         // 新增房源資料
         // 房源1, 3 共享同個地址
         // 房源2 與其他兩者不同地址
-        propertyIdList.add(insertTestProperty("Property 1", addressIdList.get(0), ecUserId, MAX_NUM_OF_GUESTS));
-        propertyIdList.add(insertTestProperty("Property 2", addressIdList.get(1), ecUserId, MAX_NUM_OF_GUESTS));
-        propertyIdList.add(insertTestProperty("Property 3", addressIdList.get(0), ecUserId, MAX_NUM_OF_GUESTS));
+        propertyIdList.add(insertTestProperty("Property 1", addressIdList.get(0), ecUserId));
+        propertyIdList.add(insertTestProperty("Property 2", addressIdList.get(1), ecUserId));
+        propertyIdList.add(insertTestProperty("Property 3", addressIdList.get(0), ecUserId));
 
         // 設定兩種可預訂期間：
         // 1. 從今天開始數 FIRST_AVAILABLE_DAY_FROM_NOW 天至往後推 NUM_OF_AVAILABLE_DAY 個天數是「可預訂」
@@ -224,7 +232,6 @@ public class PropertyVoMapperTest {
         sortMap.put("district", "asc");
 
         Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("numOfGuests", 2);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -269,6 +276,63 @@ public class PropertyVoMapperTest {
         Assertions.assertTrue(actualPropertyIdList.containsAll(expectPropertyIdList));
         // 斷言房源 ID 基於排序標準的預期順序
         Assertions.assertTrue(actualPropertyIdList.indexOf(expectPropertyIdList.get(0)) < actualPropertyIdList.indexOf(expectPropertyIdList.get(1)));
+    }
+
+    @Test
+    @DisplayName("用房屋屬性來搜尋房源")
+    void listByPropertyAttributeTest(){
+        // 準備測試資料
+        // 插入測試的設施類型和設施
+        Long amenityTypeId = insertAmenityType("test amenity type");
+        Long amenityId = insertAmenity("test amenity", amenityTypeId);
+
+        // 從房源 ID 列表中選擇前兩個房源 ID 作為子房源 ID 列表
+        List<Long> subPropertyIdList = propertyIdList.subList(0, 2);
+
+        // 對於每個子房源 ID，插入房源設施，並更新基本屬性值
+        for (Long propertyId: subPropertyIdList) {
+            insertPropertyAmenity(propertyId, amenityId);
+
+            // 從數據庫中選擇並更新房源基本信息
+            PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
+            propertyBaseVo.setMaxNumOfGuests(BASE_MAX_NUM_OF_GUESTS);
+            propertyBaseVo.setPriceOnWeekdays(BASE_PRICE);
+            propertyBaseVo.setPriceOnWeekends(BASE_PRICE);
+            propertyBaseVoMapper.updateByPrimaryKey(propertyBaseVo);
+        }
+
+        // 構建房源篩選條件的 map
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("numOfGuests", BASE_MAX_NUM_OF_GUESTS);
+        filterMap.put("maxPrice", BASE_PRICE);
+        filterMap.put("minPrice", BASE_PRICE);
+
+        // 指定返回的房源字段列表
+        List<String> returnFiledList = List.of("propertyId", "numOfGuests", "priceOnWeekdays", "priceOnWeekends");
+
+        // 構建房源篩選參數
+        SelectPropertyParam param = SelectPropertyParam
+                .builder()
+                .filterMap(filterMap)
+                .returnFieldList(returnFiledList)
+                .sortMap(new HashMap<>())
+                .build();
+
+        // 根據篩選參數查詢房源列表
+        List<PropertyVo> propertyList = propertyVoMapper.listByFilter(param);
+
+        // 斷言返回的房源列表不為空，並且包含了指定字段的房源
+        Assertions.assertNotEquals(0, propertyList.size());
+
+        // 從返回的列表中提取房源 ID
+        List<Long> actualPropertyIdList = propertyList
+                .stream()
+                .map(PropertyVo::getPropertyId)
+                .toList();
+
+        // 斷言實際房源 ID 列表中包含了預期房源 ID 列表中的所有元素
+        Assertions.assertTrue(actualPropertyIdList.containsAll(subPropertyIdList));
+
     }
 
     private List<Long> insertTestAdminAreas(int numOfRowToInsert) {
@@ -317,12 +381,11 @@ public class PropertyVoMapperTest {
         return ecUser.getEcUserId();
     }
 
-    private Long insertTestProperty(String name, Long addressId, Long ecUserId, Integer maxNumOfGuests) {
+    private Long insertTestProperty(String name, Long addressId, Long ecUserId) {
         PropertyBaseVo property = PropertyBaseVo.builder()
                 .propertyTitle(name)
                 .addressId(addressId)
                 .hostId(ecUserId)
-                .maxNumOfGuests(maxNumOfGuests)
                 .build();
 
         propertyBaseVoMapper.insertSelective(property);
@@ -337,6 +400,35 @@ public class PropertyVoMapperTest {
                 .build();
 
         bookingAvailabilityBaseVoMapper.insertSelective(bookingAvailabilityBaseVo);
+    }
+
+    private  Long insertAmenityType(String name) {
+        AmenityTypeBaseVo amenityTypeBaseVo = AmenityTypeBaseVo
+                .builder()
+                .amenityTypeName(name)
+                .build();
+        amenityTypeBaseVoMapper.insertSelective(amenityTypeBaseVo);
+        return amenityTypeBaseVo.getAmenityTypeId();
+    }
+
+    private Long insertAmenity(String name, Long amenityTypeId) {
+        AmenityBaseVo amenityBaseVo = AmenityBaseVo
+                .builder()
+                .amenityTypeId(amenityTypeId)
+                .amenityName(name)
+                .build();
+
+        amenityBaseVoMapper.insertSelective(amenityBaseVo);
+        return amenityBaseVo.getAmenityId();
+    }
+
+    private void insertPropertyAmenity(Long propertyId, Long amenityId) {
+        PropertyAmenityBaseVo propertyAmenityBaseVo = PropertyAmenityBaseVo
+                .builder()
+                .propertyId(propertyId)
+                .amenityId(amenityId)
+                .build();
+        propertyAmenityBaseVoMapper.insertSelective(propertyAmenityBaseVo);
     }
 
 }
