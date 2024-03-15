@@ -63,7 +63,7 @@
         from
             booking_availability
         where
-            booking_availability_date between #{filterMap.startAvailableDay} and #{filterMap.endAvailableDay}
+            booking_availability_date between #{filterMap.startAvailableDate} and #{filterMap.endAvailableDate}
         group by
             property_id
         having
@@ -90,7 +90,7 @@
                     <include refid="available_periods_table"/>
                     ),
                 </when>
-                <when test="filterMap.startAvailableDay != null and filterMap.endAvailableDay != null ">
+                <when test="filterMap.startAvailableDate != null and filterMap.endAvailableDate != null ">
                     property_availability as (
                     <include refid="property_availability_table"/>
                     ),
@@ -160,6 +160,16 @@
                         join_district.district_id,
                         join_district.district_name
                     </when>
+                    <when test="returnField == 'startAvailableDate'">
+                        <if test="filterMap.numOfAvailableDays == null and filterMap.startAvailableDate != null">
+                            #{filterMap.startAvailableDate} as start_available_date
+                        </if>
+                    </when>
+                    <when test="returnField == 'endAvailableDate'">
+                        <if test="filterMap.numOfAvailableDays == null and filterMap.endAvailableDate != null">
+                            #{filterMap.endAvailableDate} as end_available_date
+                        </if>
+                    </when>
                 </choose>
             </foreach>
             <if test="filterMap.numOfAvailableDays != null">
@@ -192,7 +202,7 @@
                 <when test="filterMap.numOfAvailableDays != null">
                     a.consecutive_available_days >= #{filterMap.numOfAvailableDays}
                 </when>
-                <when test="filterMap.startAvailableDay != null and filterMap.endAvailableDay != null ">
+                <when test="filterMap.startAvailableDate != null and filterMap.endAvailableDate != null">
                     p.property_id in (select property_id from property_availability)
                 </when>
             </choose>

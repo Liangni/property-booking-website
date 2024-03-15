@@ -218,6 +218,7 @@ public class PropertyVoMapperTest {
         returnFieldList.add("address");
         returnFieldList.add("district");
         returnFieldList.add("propertyId");
+        returnFieldList.add("startAvailableDate");
 
         Map<String, String> sortMap = new HashMap<>();
         sortMap.put("district", "asc");
@@ -230,11 +231,11 @@ public class PropertyVoMapperTest {
 
         calendar.add(Calendar.DATE, FIRST_AVAILABLE_DAY_FROM_NOW);
         Date startAvailableDate = calendar.getTime();
-        filterMap.put("startAvailableDay", startAvailableDate);
+        filterMap.put("startAvailableDate", startAvailableDate);
 
         calendar.add(Calendar.DATE, NUM_OF_AVAILABLE_DAYS);
         Date endAvailableDate =  calendar.getTime();
-        filterMap.put("endAvailableDay", endAvailableDate);
+        filterMap.put("endAvailableDate", endAvailableDate);
 
         // 準備要使用的參數物件
         SelectPropertyParam param = SelectPropertyParam.builder()
@@ -254,6 +255,7 @@ public class PropertyVoMapperTest {
             Assertions.assertNotNull(property.getPropertyId());
             Assertions.assertNotNull(property.getStreet());
             Assertions.assertNotNull(property.getParentDistrictId());
+            Assertions.assertNotNull(property.getStartAvailableDate());
         }
 
         // 從返回的列表中提取房源 ID
