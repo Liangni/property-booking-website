@@ -167,5 +167,32 @@
             <generatedKey column="property_review_id" sqlStatement="JDBC" identity="true"/>
         </table>
 
+        <table schema="" tableName="amenity_type"
+               domainObjectName="AmenityTypeBaseVo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--是否使用實際列名,默認為false-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <generatedKey column="amenity_type_id" sqlStatement="JDBC" identity="true"/>
+        </table>
+
+        <table schema="" tableName="amenity"
+               domainObjectName="AmenityBaseVo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--是否使用實際列名,默認為false-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <generatedKey column="amenity_id" sqlStatement="JDBC" identity="true"/>
+        </table>
+
+        <table schema="" tableName="property_amenity"
+               domainObjectName="PropertyAmenityBaseVo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--是否使用實際列名,默認為false-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <generatedKey column="property_amenity_id" sqlStatement="JDBC" identity="true"/>
+        </table>
+
     </context>
 </generatorConfiguration>
