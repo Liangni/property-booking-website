@@ -330,9 +330,8 @@ public class PropertyVoMapperTest {
                 .map(PropertyVo::getPropertyId)
                 .toList();
 
-        // 斷言實際房源 ID 列表中包含了預期房源 ID 列表中的所有元素
+        // 斷言實際房源 ID 列表中包含了子房源 ID 列表中的所有元素
         Assertions.assertTrue(actualPropertyIdList.containsAll(subPropertyIdList));
-
     }
 
     private List<Long> insertTestAdminAreas(int numOfRowToInsert) {
