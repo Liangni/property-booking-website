@@ -68,7 +68,7 @@ public class PropertyVoMapperTest {
     void setup(){
         // 新增 3 筆行政區劃分層級的資料
         int adminAreaSize = 3;
-        List<Long> adminAreaIdList = insertTestAdminAreas(adminAreaSize);
+        List<Long> adminAreaIdList = insertAdminAreas(adminAreaSize);
         List<Long> parentAdminAreaIdList = adminAreaIdList.subList(0, adminAreaSize - 1);
         Long childAdminAreaId = adminAreaIdList.get(adminAreaSize);
 
@@ -76,7 +76,7 @@ public class PropertyVoMapperTest {
         List<Long> parentDistrictIdList = new ArrayList<>();
         int districtCount = 1;
         for (Long parentAdminAreaId: parentAdminAreaIdList) {
-            Long districtId = insertTestDistrict(
+            Long districtId = insertDistrict(
                     "test parent district " + districtCount,
                     parentAdminAreaId,
                     null);
@@ -88,24 +88,24 @@ public class PropertyVoMapperTest {
         List<Long> addressIdList = new ArrayList<>();
         int addressCount = 1;
         for (Long parentDistrictId : parentDistrictIdList) {
-            Long childDistrictId = insertTestDistrict(
+            Long childDistrictId = insertDistrict(
                     "test child district " + addressCount,
                     childAdminAreaId,
                     parentDistrictId);
 
-            Long addressId = insertTestAddress("test address" + addressCount, childDistrictId);
+            Long addressId = insertAddress("test address" + addressCount, childDistrictId);
             addressIdList.add(addressId);
         }
 
         // 新增使用者資料
-        Long ecUserId = insertTestEcUser("test user", "test email", "test password");
+        Long ecUserId = insertEcUser("test user", "test email", "test password");
 
         // 新增房源資料
         // 房源1, 3 共享同個地址
         // 房源2 與其他兩者不同地址
-        propertyIdList.add(insertTestProperty("Property 1", addressIdList.get(0), ecUserId));
-        propertyIdList.add(insertTestProperty("Property 2", addressIdList.get(1), ecUserId));
-        propertyIdList.add(insertTestProperty("Property 3", addressIdList.get(0), ecUserId));
+        propertyIdList.add(insertProperty("Property 1", addressIdList.get(0), ecUserId));
+        propertyIdList.add(insertProperty("Property 2", addressIdList.get(1), ecUserId));
+        propertyIdList.add(insertProperty("Property 3", addressIdList.get(0), ecUserId));
 
         // 設定兩種可預訂期間：
         // 1. 從今天開始數 FIRST_AVAILABLE_DAY_FROM_NOW 天至往後推 NUM_OF_AVAILABLE_DAY 個天數是「可預訂」
@@ -142,7 +142,7 @@ public class PropertyVoMapperTest {
                 }
 
                 // 新增房源預定日期資料
-                insertTestBookingAvailability(propertyId, currentDate, bookingStatus);
+                insertBookingAvailability(propertyId, currentDate, bookingStatus);
             }
             // 將當前日期向前推進一天
             currentDate = currentDate.plusDays(1);
@@ -359,7 +359,13 @@ public class PropertyVoMapperTest {
         Assertions.assertTrue(numOfPropertyCount >= propertyIdListWithSameAvailableDate.size());
     }
 
-    private List<Long> insertTestAdminAreas(int numOfRowToInsert) {
+    /**
+     * 插入行政區劃分資料至資料庫
+     *
+     * @param numOfRowToInsert 要插入的行數
+     * @return 插入的行政區劃分 ID 列表
+     */
+    private List<Long> insertAdminAreas(int numOfRowToInsert) {
         int numOfBaseLevel = 101;
         List<Long> administrativeAreaIdList = new ArrayList<>();
         for (int i = numOfBaseLevel; i <= numOfBaseLevel + numOfRowToInsert; i++) {
@@ -373,7 +379,15 @@ public class PropertyVoMapperTest {
         return administrativeAreaIdList;
     }
 
-    private Long insertTestDistrict(String districtName, Long administrativeAreaId, Long parentDistrictId) {
+    /**
+     * 插入行政區資料至資料庫
+     *
+     * @param districtName        行政區名稱
+     * @param administrativeAreaId 行政區劃分 ID
+     * @param parentDistrictId    父行政區 ID
+     * @return 新插入的行政區 ID
+     */
+    private Long insertDistrict(String districtName, Long administrativeAreaId, Long parentDistrictId) {
         DistrictBaseVo district = DistrictBaseVo.builder()
                 .districtName(districtName)
                 .administrativeAreaId(administrativeAreaId)
@@ -384,7 +398,14 @@ public class PropertyVoMapperTest {
         return district.getDistrictId();
     }
 
-    private Long insertTestAddress(String addressName, Long districtId) {
+    /**
+     * 插入地址資料至資料庫
+     *
+     * @param addressName 地址名稱
+     * @param districtId  行政區 ID
+     * @return 新插入的地址 ID
+     */
+    private Long insertAddress(String addressName, Long districtId) {
         AddressBaseVo address = AddressBaseVo.builder()
                 .street(addressName)
                 .adminAreaLevel3DistrictId(districtId)
@@ -394,7 +415,15 @@ public class PropertyVoMapperTest {
         return address.getAddressId();
     }
 
-    private Long insertTestEcUser(String name, String email, String password) {
+    /**
+     * 插入使用者資料至資料庫
+     *
+     * @param name     使用者名稱
+     * @param email    電子郵件地址
+     * @param password 密碼
+     * @return 新插入的使用者 ID
+     */
+    private Long insertEcUser(String name, String email, String password) {
         EcUserBaseVo ecUser = EcUserBaseVo.builder()
                 .ecUserName(name)
                 .ecUserEmail(email)
@@ -405,7 +434,15 @@ public class PropertyVoMapperTest {
         return ecUser.getEcUserId();
     }
 
-    private Long insertTestProperty(String name, Long addressId, Long ecUserId) {
+    /**
+     * 插入房源資料至資料庫
+     *
+     * @param name      房源名稱
+     * @param addressId 地址 ID
+     * @param ecUserId  用戶 ID
+     * @return 新插入的房源 ID
+     */
+    private Long insertProperty(String name, Long addressId, Long ecUserId) {
         PropertyBaseVo property = PropertyBaseVo.builder()
                 .propertyTitle(name)
                 .addressId(addressId)
@@ -416,7 +453,14 @@ public class PropertyVoMapperTest {
         return property.getPropertyId();
     }
 
-    private void insertTestBookingAvailability(Long propertyId, LocalDate date, String status){
+    /**
+     * 插入可預訂性資料至資料庫
+     *
+     * @param propertyId 房源 ID
+     * @param date       日期
+     * @param status     狀態
+     */
+    private void insertBookingAvailability(Long propertyId, LocalDate date, String status){
         BookingAvailabilityBaseVo bookingAvailabilityBaseVo = BookingAvailabilityBaseVo.builder()
                 .propertyId(propertyId)
                 .bookingAvailabilityDate(date)
@@ -426,6 +470,12 @@ public class PropertyVoMapperTest {
         bookingAvailabilityBaseVoMapper.insertSelective(bookingAvailabilityBaseVo);
     }
 
+    /**
+     * 插入設備類型資料至資料庫
+     *
+     * @param name 設備類型名稱
+     * @return 新插入的設備類型 ID
+     */
     private  Long insertAmenityType(String name) {
         AmenityTypeBaseVo amenityTypeBaseVo = AmenityTypeBaseVo
                 .builder()
@@ -435,6 +485,13 @@ public class PropertyVoMapperTest {
         return amenityTypeBaseVo.getAmenityTypeId();
     }
 
+    /**
+     * 插入設備資料至資料庫
+     *
+     * @param name           設施名稱
+     * @param amenityTypeId  設備類型 ID
+     * @return 新插入的設備 ID
+     */
     private Long insertAmenity(String name, Long amenityTypeId) {
         AmenityBaseVo amenityBaseVo = AmenityBaseVo
                 .builder()
@@ -446,6 +503,12 @@ public class PropertyVoMapperTest {
         return amenityBaseVo.getAmenityId();
     }
 
+    /**
+     * 將房源和設備的關聯插入到資料庫
+     *
+     * @param propertyId 房源的ID。
+     * @param amenityId 設備的ID。
+     */
     private void insertPropertyAmenity(Long propertyId, Long amenityId) {
         PropertyAmenityBaseVo propertyAmenityBaseVo = PropertyAmenityBaseVo
                 .builder()
