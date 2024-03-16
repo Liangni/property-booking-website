@@ -245,7 +245,7 @@
                             where property_group_id = # {value}
                             )
                         </when>
-                        <when test = "key == 'propertyShareTypeId">
+                        <when test = "key == 'propertyShareTypeId'">
                             p.property_share_type_id = #{value}
                         </when>
                         <when test = "key == 'amenityIds'">
