@@ -80,6 +80,12 @@ public class PropertyService {
         return resultMap;
     }
 
+    /**
+     * 驗證房源搜尋請求中的篩選條件。
+     *
+     * @param propertySearchRequest 房源搜尋請求物件，包含要進行驗證的篩選條件。
+     * @throws FieldConflictException 當篩選條件存在衝突時拋出異常。
+     */
     private void validateFilters(PropertySearchRequest propertySearchRequest){
         Map<String, Object> requestFilterMap = propertySearchRequest.getFilterMap();
         Integer numOfAvailableDays = (Integer) requestFilterMap.get("numOfAvailableDays");
@@ -132,7 +138,14 @@ public class PropertyService {
         }
     }
 
-    // 獲取房源列表
+    /**
+     * 根據房源搜索請求，獲取房源列表。
+     *
+     * @param propertySearchRequest 房源搜索請求物件，包含要應用於查詢的篩選條件、返回欄位和排序方式。
+     * @param offset                查詢結果的偏移量。
+     * @param limit                 查詢結果的限制數量。
+     * @return 包含房源列表的結果 Map。
+     */
     private List<PropertyVo> fetchProperties(PropertySearchRequest propertySearchRequest, int offset, int limit) {
         Map<String, Object> requestFilterMap = propertySearchRequest.getFilterMap();
         List<String> requestReturnFieldList = propertySearchRequest.getReturnFieldList();
@@ -150,7 +163,13 @@ public class PropertyService {
         return propertyVoMapper.listByFilter(selectPropertyParam);
     }
 
-    // 轉換為精簡的房源Map列表
+    /**
+     * 將房源物件列表轉換為精簡的房源 Map 列表。
+     *
+     * @param propertyVoList       房源物件列表。
+     * @param requestReturnFieldList 返回的房源屬性欄位列表。
+     * @return 包含精簡的房源 Map 的列表。
+     */
     private List<Map<String, Object>> convertToLeanPropertyMapList(List<PropertyVo> propertyVoList, List<String> requestReturnFieldList) {
         List<Map<String, Object>> leanPropertyMapList = new ArrayList<>();
 
