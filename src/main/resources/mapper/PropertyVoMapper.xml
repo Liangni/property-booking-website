@@ -327,4 +327,21 @@
         ) qualified_property_id_value;
     </select>
 
+    <select id="countByStartAndEndAvailableDate" parameterType="java.util.Map" resultType="java.lang.Long">
+        select
+            count(property_id)
+        from (
+                 select
+                     property_id
+                 from
+                     booking_availability
+                 where
+                     booking_availability_date between #{startAvailableDate} and #{endAvailableDate}
+                 group by
+                     property_id
+                 having
+                     sum(case when booking_availability_status = 'booked' then 1 else 0 end) = 0
+             ) property_availability
+    </select>
+
 </mapper>

@@ -53,6 +53,8 @@ public class PropertyVoMapperTest {
 
     private static final List<Long> propertyIdList = new ArrayList<>();
 
+    private static List<Long>  propertyIdListWithSameAvailableDate = new ArrayList<>();
+
     /**
      * 在每次測試運行之前設置測試環境，包括新增
      * - 行政區劃分層級資料
@@ -116,14 +118,18 @@ public class PropertyVoMapperTest {
         // 新增今日後 NUM_OF_BOOKING_DAY 天數的預定資料
         LocalDate currentDate = LocalDate.now();
 
+        // 選擇具有相同可用日期的房源 ID 子列表
+        propertyIdListWithSameAvailableDate = propertyIdList.subList(0,2);
+
         // 對每個天數進行迭代
         for (int day = 0; day < NUM_OF_BOOKING_DAY ; day ++) {
 
             // 對每個房源進行迭代
             for (int propertyIndex = 0; propertyIndex < propertyIdList.size(); propertyIndex++) {
+                Long propertyId = propertyIdList.get(propertyIndex);
 
                 List<Integer> range;
-                if (propertyIndex == 0 || propertyIndex == 1) {
+                if (propertyIdListWithSameAvailableDate.contains(propertyId)) {
                     range = availableRanges.get(0); // 房源1, 2 可預訂日相同
                 } else {
                     range = availableRanges.get(1); // 房源 3 可預訂日較前者遲 5 天
@@ -136,7 +142,7 @@ public class PropertyVoMapperTest {
                 }
 
                 // 新增房源預定日期資料
-                insertTestBookingAvailability(propertyIdList.get(propertyIndex), currentDate, bookingStatus);
+                insertTestBookingAvailability(propertyId, currentDate, bookingStatus);
             }
             // 將當前日期向前推進一天
             currentDate = currentDate.plusDays(1);
@@ -263,8 +269,8 @@ public class PropertyVoMapperTest {
                 .stream()
                 .map(PropertyVo::getPropertyId)
                 .toList();
-        List<Long> expectPropertyIdList = propertyIdList.subList(0,2);
-
+        List<Long> expectPropertyIdList = propertyIdListWithSameAvailableDate;
+        System.out.println(actualPropertyIdList);
         // 斷言實際房源 ID 列表中包含了預期房源 ID 列表中的所有元素
         Assertions.assertTrue(actualPropertyIdList.containsAll(expectPropertyIdList));
         // 斷言房源 ID 基於排序標準的預期順序
@@ -325,6 +331,24 @@ public class PropertyVoMapperTest {
 
         // 斷言實際房源 ID 列表中包含了子房源 ID 列表中的所有元素
         Assertions.assertTrue(actualPropertyIdList.containsAll(subPropertyIdList));
+    }
+
+    @Test
+    @DisplayName("用開始和結束可預訂日來計算房源數量")
+    void countByStartAndEndAvailableDayTest(){
+        // 獲取當前日期
+        LocalDate currentDate = LocalDate.now();
+        // 計算開始可預訂日期
+        LocalDate startAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW);
+        // 計算結束可預訂日期
+        LocalDate endAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS);
+
+        // 調用方法計算房源數量
+        Long numOfPropertyCount = propertyVoMapper.countByStartAndEndAvailableDate(startAvailableDate, endAvailableDate);
+
+        // 斷言房源數量不為空且大於等於具有相同可用日期的房源數量
+        Assertions.assertNotNull(numOfPropertyCount);
+        Assertions.assertTrue(numOfPropertyCount >= propertyIdListWithSameAvailableDate.size());
     }
 
     private List<Long> insertTestAdminAreas(int numOfRowToInsert) {
