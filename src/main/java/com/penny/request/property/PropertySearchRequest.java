@@ -1,11 +1,13 @@
 package com.penny.request.property;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 import java.util.Map;
 
 @Data
+@Builder
 public class PropertySearchRequest {
     private Map<String, Object> filterMap;
     private List<String> returnFieldList;
