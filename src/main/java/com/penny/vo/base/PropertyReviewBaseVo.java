@@ -1,6 +1,6 @@
 package com.penny.vo.base;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +27,7 @@ public class PropertyReviewBaseVo {
 
     private String propertyReviewComment;
 
-    private Date propertyReviewCreatedAt;
+    private LocalDateTime propertyReviewCreatedAt;
 
     private Long propertyId;
 

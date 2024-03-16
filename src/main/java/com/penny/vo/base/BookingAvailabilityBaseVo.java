@@ -1,6 +1,6 @@
 package com.penny.vo.base;
 
-import java.util.Date;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ public class BookingAvailabilityBaseVo {
 
     private String bookingAvailabilityStatus;
 
-    private Date bookingAvailabilityDate;
+    private LocalDate bookingAvailabilityDate;
 
     private Long propertyId;
 }

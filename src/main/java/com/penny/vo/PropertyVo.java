@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +29,9 @@ public class PropertyVo extends PropertyBaseVo {
 
     private String parentDistrictName;
 
-    private Date startAvailableDate;
+    private LocalDate startAvailableDate;
 
-    private Date endAvailableDate;
+    private LocalDate endAvailableDate;
 
     private List<PictureDtVo> pictureDtVoList;
 

@@ -114,9 +114,7 @@ public class PropertyVoMapperTest {
         );
 
         // 新增今日後 NUM_OF_BOOKING_DAY 天數的預定資料
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
+        LocalDate currentDate = LocalDate.now();
 
         // 對每個天數進行迭代
         for (int day = 0; day < NUM_OF_BOOKING_DAY ; day ++) {
@@ -141,8 +139,7 @@ public class PropertyVoMapperTest {
                 insertTestBookingAvailability(propertyIdList.get(propertyIndex), currentDate, bookingStatus);
             }
             // 將當前日期向前推進一天
-            calendar.add(Calendar.DATE, 1);
-            currentDate = calendar.getTime();
+            currentDate = currentDate.plusDays(1);
         }
 
     }
@@ -232,16 +229,12 @@ public class PropertyVoMapperTest {
         sortMap.put("district", "asc");
 
         Map<String, Object> filterMap = new HashMap<>();
+        LocalDate currentDate = LocalDate.now();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-
-        calendar.add(Calendar.DATE, FIRST_AVAILABLE_DAY_FROM_NOW);
-        Date startAvailableDate = calendar.getTime();
+        LocalDate startAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW);
         filterMap.put("startAvailableDate", startAvailableDate);
 
-        calendar.add(Calendar.DATE, NUM_OF_AVAILABLE_DAYS);
-        Date endAvailableDate =  calendar.getTime();
+        LocalDate endAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS);
         filterMap.put("endAvailableDate", endAvailableDate);
 
         // 準備要使用的參數物件
@@ -391,7 +384,7 @@ public class PropertyVoMapperTest {
         return property.getPropertyId();
     }
 
-    private void insertTestBookingAvailability(Long propertyId, Date date, String status){
+    private void insertTestBookingAvailability(Long propertyId, LocalDate date, String status){
         BookingAvailabilityBaseVo bookingAvailabilityBaseVo = BookingAvailabilityBaseVo.builder()
                 .propertyId(propertyId)
                 .bookingAvailabilityDate(date)

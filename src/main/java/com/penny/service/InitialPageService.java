@@ -10,6 +10,7 @@ import com.penny.vo.PropertyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -86,8 +87,8 @@ public class InitialPageService {
             Long priceOnWeekdays = propertyVo.getPriceOnWeekdays();
             String districtName = propertyVo.getDistrictName();
             String parentDistrictName = propertyVo.getParentDistrictName();
-            Date startAvailableDate = propertyVo.getStartAvailableDate();
-            Date endAvailableDate = propertyVo.getEndAvailableDate();
+            LocalDate startAvailableDate = propertyVo.getStartAvailableDate();
+            LocalDate endAvailableDate = propertyVo.getEndAvailableDate();
             Double averageRating = propertyVo.getAverageRating();
 
             // 創建一個新的房源 Map，存放房源的資訊

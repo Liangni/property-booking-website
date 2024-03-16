@@ -49,6 +49,8 @@
                 false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
                 true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal-->
             <property name="forceBigDecimals" value="true"/>
+            <!-- 當將 useJSR310Types 設置為 true 時，MyBatis Generator 將使用 JSR-310 中的 LocalDate、LocalTime、LocalDateTime、OffsetDateTime 等類型來映射相應的日期和時間欄位。-->
+            <property name="useJSR310Types" value="true"/>
         </javaTypeResolver>
 
         <!-- 要產生的model位置，targetProject的值為專案的Source folder，所以是 src/main/java -->

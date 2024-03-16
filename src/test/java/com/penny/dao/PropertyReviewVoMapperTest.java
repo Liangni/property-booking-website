@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @SpringBootTest
@@ -93,7 +94,7 @@ public class PropertyReviewVoMapperTest {
                 .propertyReviewCheckin(3)
                 .propertyReviewLocation(3)
                 .propertyReviewValue(3)
-                .propertyReviewCreatedAt(new Date())
+                .propertyReviewCreatedAt(LocalDateTime.now())
                 .build();
 
         propertyReviewBaseVoMapper.insertSelective(propertyReview);
