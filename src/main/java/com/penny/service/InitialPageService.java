@@ -80,7 +80,7 @@ public class InitialPageService {
 
         // 計算圖片詳細資訊的偏移量並為每個房源設置圖片詳細資訊列表和評論數
         int pictureDtOffset = paginator.calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);
-        List<Map<String, Object>> leanProeprtyList= new ArrayList<>();
+        List<Map<String, Object>> leanPropertyList= new ArrayList<>();
 
         for(PropertyVo propertyVo: propertyVoList) {
             Long propertyId = propertyVo.getPropertyId();
@@ -110,7 +110,7 @@ public class InitialPageService {
             propertyMap.put("reviewCount", reviewCount);
 
             // 將房源 Map 添加到 leanPropertyList 中
-            leanProeprtyList.add(propertyMap);
+            leanPropertyList.add(propertyMap);
         }
 
         // 獲取總房源數和總頁數，並構建分頁資訊 Map
@@ -120,7 +120,7 @@ public class InitialPageService {
 
         // 構建結果 Map，包含房源列表和分頁資訊
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("result", leanProeprtyList);
+        resultMap.put("result", leanPropertyList);
         resultMap.put("pagination", pagination);
 
         return resultMap;
