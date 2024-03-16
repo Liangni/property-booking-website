@@ -63,7 +63,15 @@
         from
             booking_availability
         where
-            booking_availability_date between #{filterMap.startAvailableDate} and #{filterMap.endAvailableDate}
+            booking_availability_date between
+                <choose>
+                    <when test="filterMap != null">
+                        #{filterMap.startAvailableDate} and #{filterMap.endAvailableDate}
+                    </when>
+                    <otherwise>
+                        #{startAvailableDate} and #{endAvailableDate}
+                    </otherwise>
+                </choose>
         group by
             property_id
         having
@@ -96,7 +104,7 @@
                     ),
                 </when>
             </choose>
-            <if test="returnFieldList.contains('district') or sortMap.district != null">
+            <if test="filterMap.districtId != null or returnFieldList.contains('district') or sortMap.district != null">
                 join_district as (
                 <include refid="join_district_table"/>
                 ),
@@ -185,7 +193,7 @@
             available_periods as a on a.property_id = p.property_id
         </if>
         <choose>
-            <when test="returnFieldList.contains('district') or sortMap.district != null">
+            <when test="filterMap.districtId != null or returnFieldList.contains('district') or sortMap.district != null">
                 left join
                 address as ad on p.address_id = ad.address_id
                 left join
@@ -307,41 +315,110 @@
         ;
     </select>
 
-    <select id="countByNumOfAvailableDays" parameterType="java.lang.Integer" resultType="java.lang.Long">
-        with available_periods as (
-            <include refid="available_periods_table"/>
-        )
-        select
-            count(qualified_property_id_value.property_id)
-        from (
-            select
-                p.property_id
-            from
-                available_periods as a
-            join
-                property as p on a.property_id = p.property_id
-            where
-                a.consecutive_available_days >= #{numOfAvailableDay, jdbcType = BIGINT}
-            group by
-                p.property_id
-        ) qualified_property_id_value;
-    </select>
+    <select id="countByFilter" parameterType="java.util.Map" resultType="java.lang.Long">
+        <trim prefix="with" suffixOverrides=",">
+            <choose>
+                <when test="numOfAvailableDays != null">
+                    available_periods as (
+                    <include refid="available_periods_table"/>
+                    ),
+                </when>
+                <when test="startAvailableDate != null and endAvailableDate != null ">
+                    property_availability as (
+                    <include refid="property_availability_table"/>
+                    ),
+                </when>
+            </choose>
+            <if test="districtId != null">
+                join_district as (
+                <include refid="join_district_table"/>
+                ),
+            </if>
+        </trim>
 
-    <select id="countByStartAndEndAvailableDate" parameterType="java.util.Map" resultType="java.lang.Long">
         select
-            count(property_id)
-        from (
-                 select
-                     property_id
-                 from
-                     booking_availability
-                 where
-                     booking_availability_date between #{startAvailableDate} and #{endAvailableDate}
-                 group by
-                     property_id
-                 having
-                     sum(case when booking_availability_status = 'booked' then 1 else 0 end) = 0
-             ) property_availability
+            count(distinct p.property_id)
+        from
+            property as p
+            <if test="numOfAvailableDays != null">
+                inner  join
+                available_periods as a on a.property_id = p.property_id
+            </if>
+
+            <if test="districtId != null">
+                left join
+                address as ad on p.address_id = ad.address_id
+                left join
+                join_district on ad.admin_area_level_3_district_id = join_district.district_id
+            </if>
+
+            <where>
+                <choose>
+                    <when test="numOfAvailableDays != null">
+                        a.consecutive_available_days >= #{numOfAvailableDays}
+                    </when>
+                    <when test="startAvailableDate != null and endAvailableDate != null">
+                        p.property_id in (select property_id from property_availability)
+                    </when>
+                </choose>
+
+                <trim prefix="and">
+                            <if test="numOfGuests != null">
+                                p.max_num_of_guests >= #{numOfGuests}
+                            </if>
+                            <if test="districtId != null">
+                                (ad.admin_area_level_3_district_id = #{districtId}
+                                or
+                                join_district.parent_district_id = #{districtId})
+                            </if>
+                            <if test="numOfBedrooms != null">
+                                p.num_of_bedrooms >= #{numOfBedrooms}
+                            </if>
+                            <if test="numOfBeds != null">
+                                p.num_of_beds >= #{numOfBeds}
+                            </if>
+                            <if test="numOfBathrooms != null">
+                                p.num_of_bathrooms >= #{numOfBathrooms}
+                            </if>
+                            <if test="maxPrice != null">
+                                #{maxPrice} >= p.price_on_weekdays
+                                and
+                                #{maxPrice} >= p.price_on_weekdays
+                            </if>
+                            <if test="minPrice != null">
+                                p.price_on_weekdays >= #{minPrice}
+                                and
+                                p.price_on_weekdays >= #{minPrice}
+                            </if>
+                            <if test = "propertyGroupId != null">
+                                p.property_group_type_id in (
+                                    select
+                                        property_group_type_id
+                                    from
+                                        property_group_type
+                                    where
+                                        property_group_id = # {propertyGroupId}
+                                )
+                            </if>
+                            <if test = "propertyShareTypeId != null">
+                                p.property_share_type_id = #{propertyShareTypeId}
+                            </if>
+                            <if test = "amenityIds != null">
+                                p.property_id in (
+                                    select
+                                        property_id
+                                    from
+                                        property_amenity
+                                    where
+                                        amenity_id in
+                                    <foreach collection="amenityIds" item="amenityId" open="(" separator="," close=")">
+                                        #{amenityId}
+                                    </foreach>
+                                )
+                            </if>
+                </trim>
+            </where>
+
     </select>
 
 </mapper>

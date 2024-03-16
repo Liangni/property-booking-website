@@ -214,10 +214,16 @@ public class PropertyVoMapperTest {
     @Test
     @DisplayName("用連續可預訂天數來計算房源數量")
     void countByNumOfAvailableDaysTest(){
-        // 調用 countByNumOfAvailableDays 方法，統計房源數量
-        Long count = propertyVoMapper.countByNumOfAvailableDays(NUM_OF_AVAILABLE_DAYS);
-        // 斷言房源數量不等於零
-        Assertions.assertNotEquals(count, 0L);
+        // 調用 countByFilter 方法，統計房源數量
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("numOfAvailableDays", NUM_OF_AVAILABLE_DAYS);
+
+        Long count = propertyVoMapper.countByFilter(filterMap);
+
+        // 斷言房源數量不為空
+        Assertions.assertNotNull(count);
+        // 斷言房源數量大於等於測試房源數量
+        Assertions.assertTrue(count >= propertyIdList.size());
     }
 
     @Test
@@ -336,18 +342,20 @@ public class PropertyVoMapperTest {
     @Test
     @DisplayName("用開始和結束可預訂日來計算房源數量")
     void countByStartAndEndAvailableDayTest(){
+        Map<String, Object> filterMap = new HashMap<>();
         // 獲取當前日期
         LocalDate currentDate = LocalDate.now();
         // 計算開始可預訂日期
-        LocalDate startAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW);
+        filterMap.put("startAvailableDate", currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW));
         // 計算結束可預訂日期
-        LocalDate endAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS);
+        filterMap.put("endAvailableDate",currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS));
 
         // 調用方法計算房源數量
-        Long numOfPropertyCount = propertyVoMapper.countByStartAndEndAvailableDate(startAvailableDate, endAvailableDate);
+        Long numOfPropertyCount = propertyVoMapper.countByFilter(filterMap);
 
-        // 斷言房源數量不為空且大於等於具有相同可用日期的房源數量
+        // 斷言房源數量不為空
         Assertions.assertNotNull(numOfPropertyCount);
+        // 斷言房源數量大於等於具有相同可用日期的房源數量
         Assertions.assertTrue(numOfPropertyCount >= propertyIdListWithSameAvailableDate.size());
     }
 

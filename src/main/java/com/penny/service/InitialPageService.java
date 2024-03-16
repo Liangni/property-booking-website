@@ -114,7 +114,7 @@ public class InitialPageService {
         }
 
         // 獲取總房源數和總頁數，並構建分頁資訊 Map
-        long totalResultCount = propertyVoMapper.countByNumOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAYS);
+        long totalResultCount = propertyVoMapper.countByFilter(filterMap);
         long totalPages = paginator.calculateTotalPages(totalResultCount, DEFAULT_PROPERTY_LIMIT);
         Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, DEFAULT_PROPERTY_PAGE, totalPages, DEFAULT_PROPERTY_LIMIT);
 
