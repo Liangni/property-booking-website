@@ -44,21 +44,23 @@ public class PropertyService {
     }
 
     public Map<String, Object> getPropertiesByFilter(PropertySearchRequest propertySearchRequest) {
-        // 確認 filterMap 中 numOfAvailableDays 屬性與 startAvailableDate 或 endAvailableDate 屬性不同時存在
-        Map<String, Object> requestFilterMap = propertySearchRequest.getFilterMap();
+        Integer numOfAvailableDays = null;
+        LocalDate startAvailableDate = null;
+        LocalDate endAvailableDate = null;
 
+        Map<String, Object> requestFilterMap = propertySearchRequest.getFilterMap();
         if (requestFilterMap != null) {
-            boolean isNumOfAvailableDaysPresentWithValueNotNull = Optional.ofNullable(requestFilterMap.get("numOfAvailableDays")).isPresent();
-            boolean isStartAvailableDatePresentWithValueNotNull = Optional.ofNullable(requestFilterMap.get("startAvailableDate")).isPresent();
-            boolean isEndAvailableDatePresentWithValueNotNull =Optional.ofNullable(requestFilterMap.get("endAvailableDate")).isPresent();
+            numOfAvailableDays = (Integer) requestFilterMap.get("numOfAvailableDays");
+            String startAvailableDateString = (String) requestFilterMap.get("startAvailableDate");
+            String endAvailableDateString = (String) requestFilterMap.get("endAvailableDate");
 
             // 檢查是否 numOfAvailableDays 和 startAvailableDate 同時存在
             boolean isNumOfAvailableDaysAndStartAvailableDatePresent =
-                    isNumOfAvailableDaysPresentWithValueNotNull && isStartAvailableDatePresentWithValueNotNull;
+                    numOfAvailableDays != null && startAvailableDateString != null;
 
             // 檢查是否 numOfAvailableDays 和 endAvailableDate 同時存在
             boolean isNumOfAvailableDaysAndEndAvailableDatePresent =
-                    isNumOfAvailableDaysPresentWithValueNotNull && isEndAvailableDatePresentWithValueNotNull;
+                    numOfAvailableDays != null && endAvailableDateString != null;
 
             // 如果有其中一種情況存在，則拋出異常
             if (isNumOfAvailableDaysAndStartAvailableDatePresent || isNumOfAvailableDaysAndEndAvailableDatePresent) {
@@ -68,22 +70,22 @@ public class PropertyService {
             // 確認 filterMap 中的 startAvailableDate 和 endAvailableDate 成對出現
             // 檢查是否只有其中一個存在且值不為 null
             boolean isOnlyOneDatePresentWithValueNotNull =
-                    (isStartAvailableDatePresentWithValueNotNull && !isEndAvailableDatePresentWithValueNotNull) ||
-                            (!isStartAvailableDatePresentWithValueNotNull && isEndAvailableDatePresentWithValueNotNull);
+                    (startAvailableDateString != null && endAvailableDateString == null) ||
+                            (startAvailableDateString == null && endAvailableDateString != null);
 
             if (isOnlyOneDatePresentWithValueNotNull) {
                 throw new FieldConflictException("filter startAvailableDate and endAvailableDate should exist together");
             }
 
             // 若 filterMap 中的 startAvailableDate 和 endAvailableDate 同時存在，確認 startAvailableDate 不晚於 endAvailableDate
-            boolean isStartAndEndAvailableDatePresent = isStartAvailableDatePresentWithValueNotNull && isEndAvailableDatePresentWithValueNotNull;
+            boolean isStartAndEndAvailableDatePresent = startAvailableDateString != null && endAvailableDateString != null;
             if (isStartAndEndAvailableDatePresent) {
                 // 定義日期格式
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
                 // 解析日期字符串為 LocalDate
-                LocalDate startAvailableDate = LocalDate.parse(String.valueOf(requestFilterMap.get("startAvailableDate")), formatter);
-                LocalDate endAvailableDate = LocalDate.parse(String.valueOf(requestFilterMap.get("endAvailableDate")), formatter);
+                startAvailableDate = LocalDate.parse(startAvailableDateString, formatter);
+                endAvailableDate = LocalDate.parse(endAvailableDateString, formatter);
 
                 if (startAvailableDate.isAfter(endAvailableDate)) {
                     throw new FieldConflictException("filter startAvailableDate cannot be later than endAvailableDate");
@@ -97,7 +99,7 @@ public class PropertyService {
         // 確認 returnFieldList 的元素在定義的範圍內
         List<String> requestReturnFieldList = Optional.ofNullable(propertySearchRequest.getReturnFieldList()).orElse(new ArrayList<>());
         if (!requestReturnFieldList.isEmpty()) {
-            for (String field: requestReturnFieldList) {
+            for (String field : requestReturnFieldList) {
                 if (allowedReturnFiledList.contains(field)) continue;
                 throw new FieldConflictException(String.format("return field [%s] is not allowed", field));
             }
@@ -124,10 +126,10 @@ public class PropertyService {
         List<PropertyVo> propertyVoList = propertyVoMapper.listByFilter(selectPropertyParam);
 
         List<Map<String, Object>> leanPropertyMapList = new ArrayList<>();
-        for (PropertyVo propertyVo: propertyVoList) {
+        for (PropertyVo propertyVo : propertyVoList) {
             Map<String, Object> propertyMap = new HashMap<>();
 
-            for (String field: requestReturnFieldList) {
+            for (String field : requestReturnFieldList) {
                 // address
                 if (field.equals("address")) {
                     propertyMap.put("apartmentFloor", propertyVo.getApartmentFloor());
@@ -155,7 +157,7 @@ public class PropertyService {
                     // 調用 getter 方法獲取屬性值
                     Object value = getterMethod.invoke(propertyVo);
                     propertyMap.put(field, value);
-;
+                    ;
                 } catch (Exception e) {
                     logger.error("PropertyVo does not have getter method for property: {}", field, e);
                 }
@@ -164,10 +166,16 @@ public class PropertyService {
             leanPropertyMapList.add(propertyMap);
         }
 
+        // 計算 pagination
+        long totalResultCount = propertyVoMapper.countByFilter(requestFilterMap);
+        long totalPages = paginator.calculateTotalPages(totalResultCount, limit);
+        Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, page, totalPages, limit);
+
+        // 構建結果 Map，包含房源列表和分頁資訊
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", leanPropertyMapList);
+        resultMap.put("pagination", pagination);
 
         return resultMap;
-        // 計算 pagination
     }
 }
