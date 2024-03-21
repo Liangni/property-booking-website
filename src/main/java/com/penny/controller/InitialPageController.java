@@ -14,7 +14,7 @@ import java.util.Map;
 public class InitialPageController {
     private final InitialPageService initialPageService;
 
-    @GetMapping()
+    @GetMapping("/init")
     public Map<String, Object> getInitialPage(
     ) {
         return initialPageService.getInitialPageData();
