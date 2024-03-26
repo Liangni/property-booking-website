@@ -98,7 +98,7 @@ public class PropertyVoMapperTest {
         }
 
         // 新增使用者資料
-        Long ecUserId = insertEcUser("test user", "test email", "test password");
+        Long ecUserId = insertEcUser("test user", "test username","test email", "test password");
 
         // 新增房源資料
         // 房源1, 3 共享同個地址
@@ -423,11 +423,12 @@ public class PropertyVoMapperTest {
      * @param password 密碼
      * @return 新插入的使用者 ID
      */
-    private Long insertEcUser(String name, String email, String password) {
+    private Long insertEcUser(String name, String username,String email, String password) {
         EcUserBaseVo ecUser = EcUserBaseVo.builder()
                 .ecUserName(name)
                 .ecUserEmail(email)
-                .ecUserHashedPassword(password)
+                .ecUserUsername(username)
+                .ecUserPassword(password)
                 .build();
 
         ecUserBaseVoMapper.insertSelective(ecUser);

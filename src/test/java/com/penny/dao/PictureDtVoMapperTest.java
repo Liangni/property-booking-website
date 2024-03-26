@@ -100,7 +100,12 @@ public class PictureDtVoMapperTest {
     void listByPropertyIdTest() {
         // 在測試執行前設置測試環境
         // 新增使用者資料
-        EcUserBaseVo ecUser = EcUserBaseVo.builder().ecUserName("test user").ecUserEmail("test@email.com").ecUserHashedPassword("1234567").build();
+        EcUserBaseVo ecUser = EcUserBaseVo
+                .builder()
+                .ecUserName("test user")
+                .ecUserEmail("test@email.com")
+                .ecUserPassword("1234567")
+                .build();
         ecUserBaseVoMapper.insertSelective(ecUser);
         long ecUserId = (long) ecUser.getEcUserId(); // 獲取使用者資料 id
 

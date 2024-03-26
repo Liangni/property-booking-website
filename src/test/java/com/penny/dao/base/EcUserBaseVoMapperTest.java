@@ -1,5 +1,6 @@
 package com.penny.dao.base;
 
+import com.penny.dao.EcUserVoMapper;
 import com.penny.vo.base.EcUserBaseVo;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ class EcUserBaseVoMapperTest {
                 .ecUserId(null)
                 .ecUserName("test name")
                 .ecUserEmail("test email")
-                .ecUserHashedPassword("test hashed password")
+                .ecUserUsername("test username")
+                .ecUserPassword("test hashed password")
                 .ecUserIntroduction("test introduction")
                 .build();
 
@@ -56,7 +58,8 @@ class EcUserBaseVoMapperTest {
                 .ecUserId(insertedEcUserId)
                 .ecUserName("updated test name")
                 .ecUserEmail("updated test email")
-                .ecUserHashedPassword("updated test hashed password")
+                .ecUserUsername("updated test username")
+                .ecUserPassword("updated test hashed password")
                 .ecUserIntroduction("updated test introduction")
                 .build();
 
@@ -95,7 +98,7 @@ class EcUserBaseVoMapperTest {
         // 搜尋到的物件 email 以外屬性資料 和 ecUser 仍相同
         Assertions.assertEquals(foundEcUser.getEcUserId(), ecUser.getEcUserId());
         Assertions.assertEquals(foundEcUser.getEcUserName(), ecUser.getEcUserName());
-        Assertions.assertEquals(foundEcUser.getEcUserHashedPassword(), ecUser.getEcUserHashedPassword());
+        Assertions.assertEquals(foundEcUser.getEcUserPassword(), ecUser.getEcUserPassword());
         Assertions.assertEquals(foundEcUser.getEcUserIntroduction(), ecUser.getEcUserIntroduction());
     }
 

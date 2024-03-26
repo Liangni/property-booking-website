@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.EcUserVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.EcUserVo">
+        <id column="ec_user_id" jdbcType="BIGINT" property="ecUserId" />
+        <result column="ec_user_name" jdbcType="VARCHAR" property="ecUserName" />
+        <result column="ec_user_username" jdbcType="VARCHAR" property="ecUserUsername" />
+        <result column="ec_user_email" jdbcType="VARCHAR" property="ecUserEmail" />
+        <result column="ec_user_password" jdbcType="VARCHAR" property="ecUserPassword" />
+        <result column="ec_user_introduction" jdbcType="VARCHAR" property="ecUserIntroduction" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        ec_user_id, ec_user_name, ec_user_username, ec_user_email, ec_user_password, ec_user_introduction
+    </sql>
+    <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ec_user
+        where ec_user_username = #{username,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ec_user
+        where ec_user_email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPassword" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ec_user
+        where ec_user_password = #{password,jdbcType=VARCHAR}
+    </select>
+</mapper>

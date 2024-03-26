@@ -77,7 +77,7 @@ public class PropertyPictureVoMapperTest {
         EcUserBaseVo ecUser = EcUserBaseVo.builder()
                 .ecUserName("test user")
                 .ecUserEmail("test@email.com")
-                .ecUserHashedPassword("1234567")
+                .ecUserPassword("1234567")
                 .build();
         ecUserBaseVoMapper.insertSelective(ecUser);
         long ecUserId = (long) ecUser.getEcUserId(); // 獲取使用者資料 id

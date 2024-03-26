@@ -4,12 +4,13 @@
   <resultMap id="BaseResultMap" type="com.penny.vo.base.EcUserBaseVo">
     <id column="ec_user_id" jdbcType="BIGINT" property="ecUserId" />
     <result column="ec_user_name" jdbcType="VARCHAR" property="ecUserName" />
+    <result column="ec_user_username" jdbcType="VARCHAR" property="ecUserUsername" />
     <result column="ec_user_email" jdbcType="VARCHAR" property="ecUserEmail" />
-    <result column="ec_user_hashed_password" jdbcType="VARCHAR" property="ecUserHashedPassword" />
+    <result column="ec_user_password" jdbcType="VARCHAR" property="ecUserPassword" />
     <result column="ec_user_introduction" jdbcType="VARCHAR" property="ecUserIntroduction" />
   </resultMap>
   <sql id="Base_Column_List">
-    ec_user_id, ec_user_name, ec_user_email, ec_user_hashed_password, ec_user_introduction
+    ec_user_id, ec_user_name, ec_user_username, ec_user_email, ec_user_password, ec_user_introduction
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -22,10 +23,10 @@
     where ec_user_id = #{ecUserId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="ec_user_id" keyProperty="ecUserId" parameterType="com.penny.vo.base.EcUserBaseVo" useGeneratedKeys="true">
-    insert into ec_user (ec_user_name, ec_user_email, ec_user_hashed_password, 
-      ec_user_introduction)
-    values (#{ecUserName,jdbcType=VARCHAR}, #{ecUserEmail,jdbcType=VARCHAR}, #{ecUserHashedPassword,jdbcType=VARCHAR}, 
-      #{ecUserIntroduction,jdbcType=VARCHAR})
+    insert into ec_user (ec_user_name, ec_user_username, ec_user_email, 
+      ec_user_password, ec_user_introduction)
+    values (#{ecUserName,jdbcType=VARCHAR}, #{ecUserUsername,jdbcType=VARCHAR}, #{ecUserEmail,jdbcType=VARCHAR}, 
+      #{ecUserPassword,jdbcType=VARCHAR}, #{ecUserIntroduction,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="ec_user_id" keyProperty="ecUserId" parameterType="com.penny.vo.base.EcUserBaseVo" useGeneratedKeys="true">
     insert into ec_user
@@ -33,11 +34,14 @@
       <if test="ecUserName != null">
         ec_user_name,
       </if>
+      <if test="ecUserUsername != null">
+        ec_user_username,
+      </if>
       <if test="ecUserEmail != null">
         ec_user_email,
       </if>
-      <if test="ecUserHashedPassword != null">
-        ec_user_hashed_password,
+      <if test="ecUserPassword != null">
+        ec_user_password,
       </if>
       <if test="ecUserIntroduction != null">
         ec_user_introduction,
@@ -47,11 +51,14 @@
       <if test="ecUserName != null">
         #{ecUserName,jdbcType=VARCHAR},
       </if>
+      <if test="ecUserUsername != null">
+        #{ecUserUsername,jdbcType=VARCHAR},
+      </if>
       <if test="ecUserEmail != null">
         #{ecUserEmail,jdbcType=VARCHAR},
       </if>
-      <if test="ecUserHashedPassword != null">
-        #{ecUserHashedPassword,jdbcType=VARCHAR},
+      <if test="ecUserPassword != null">
+        #{ecUserPassword,jdbcType=VARCHAR},
       </if>
       <if test="ecUserIntroduction != null">
         #{ecUserIntroduction,jdbcType=VARCHAR},
@@ -64,11 +71,14 @@
       <if test="ecUserName != null">
         ec_user_name = #{ecUserName,jdbcType=VARCHAR},
       </if>
+      <if test="ecUserUsername != null">
+        ec_user_username = #{ecUserUsername,jdbcType=VARCHAR},
+      </if>
       <if test="ecUserEmail != null">
         ec_user_email = #{ecUserEmail,jdbcType=VARCHAR},
       </if>
-      <if test="ecUserHashedPassword != null">
-        ec_user_hashed_password = #{ecUserHashedPassword,jdbcType=VARCHAR},
+      <if test="ecUserPassword != null">
+        ec_user_password = #{ecUserPassword,jdbcType=VARCHAR},
       </if>
       <if test="ecUserIntroduction != null">
         ec_user_introduction = #{ecUserIntroduction,jdbcType=VARCHAR},
@@ -79,8 +89,9 @@
   <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.EcUserBaseVo">
     update ec_user
     set ec_user_name = #{ecUserName,jdbcType=VARCHAR},
+      ec_user_username = #{ecUserUsername,jdbcType=VARCHAR},
       ec_user_email = #{ecUserEmail,jdbcType=VARCHAR},
-      ec_user_hashed_password = #{ecUserHashedPassword,jdbcType=VARCHAR},
+      ec_user_password = #{ecUserPassword,jdbcType=VARCHAR},
       ec_user_introduction = #{ecUserIntroduction,jdbcType=VARCHAR}
     where ec_user_id = #{ecUserId,jdbcType=BIGINT}
   </update>

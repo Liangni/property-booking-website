@@ -14,9 +14,11 @@ public class EcUserBaseVo {
 
     private String ecUserName;
 
+    private String ecUserUsername;
+
     private String ecUserEmail;
 
-    private String ecUserHashedPassword;
+    private String ecUserPassword;
 
     private String ecUserIntroduction;
 }
