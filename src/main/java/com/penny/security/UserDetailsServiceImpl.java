@@ -22,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        System.out.println("enter loadUserByUsername");
         EcUserVo ecUserVo = Optional.ofNullable(ecUserVoMapper.selectByUsername(username))
                 .orElseThrow(() -> new AuthenticationException("Username not found"));
         // 下方 User 類是 UserDetails interface 的 implementation

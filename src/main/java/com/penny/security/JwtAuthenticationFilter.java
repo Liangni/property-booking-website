@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("doFilterInternal");
+
         // 檢查請求中是否包含 Authorization 標頭
         String authHeader = request.getHeader("Authorization");
 
@@ -45,10 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
             // 讓請求繼續傳遞到下一個過濾器
             filterChain.doFilter(request, response);
-            System.out.println("authHeader not exist, leave internal filter");
+
             return;
         }
-        System.out.println("Internal Filter continue");
+
         // 從 Authorization 標頭中提取出 token
         String token = authHeader.substring(7);
 
