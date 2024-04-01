@@ -25,7 +25,7 @@ public class InitialPageService {
 
     private static final int DEFAULT_PICTURE_DT_LIMIT = 10;
 
-    private static final String DEFAULT_PICTURE_DT_SIZE = "small";
+    private static final Integer DEFAULT_PICTURE_DT_SIZE = 1;
 
     private final PropertyVoMapper propertyVoMapper;
 
@@ -102,7 +102,7 @@ public class InitialPageService {
             propertyMap.put("averageRating", averageRating);
 
             // 查詢房源的圖片詳細資訊列表
-            List<PictureDtVo> pictureDtVoList = pictureDtVoMapper.listByPropertyId(propertyId, DEFAULT_PICTURE_DT_SIZE, pictureDtOffset, DEFAULT_PICTURE_DT_LIMIT);
+            List<PictureDtVo> pictureDtVoList = pictureDtVoMapper.listByPropertyIdAndSize(propertyId, DEFAULT_PICTURE_DT_SIZE, pictureDtOffset, DEFAULT_PICTURE_DT_LIMIT);
             propertyMap.put("pictureDtList", pictureDtVoList);
 
             // 查詢房源的評論數

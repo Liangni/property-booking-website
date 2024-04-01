@@ -1,27 +1,41 @@
 package com.penny.service;
 
+import com.amazonaws.HttpMethod;
+import com.penny.dao.PictureDtVoMapper;
+import com.penny.dao.PropertyPictureVoMapper;
 import com.penny.dao.PropertyVoMapper;
+import com.penny.dao.base.PictureBaseVoMapper;
+import com.penny.dao.base.PictureDtBaseVoMapper;
+import com.penny.dao.base.PropertyPictureBaseVoMapper;
 import com.penny.daoParam.propertyVoMapper.SelectPropertyParam;
+import com.penny.enums.PictureDtSize;
 import com.penny.exception.FieldConflictException;
-import com.penny.exception.UnknownException;
 import com.penny.request.property.PropertySearchRequest;
+import com.penny.request.property.PropertyUploadImageRequest;
+import com.penny.s3.S3Buckets;
 import com.penny.util.Paginator;
+import com.penny.vo.PictureDtVo;
+import com.penny.vo.PropertyPictureVo;
 import com.penny.vo.PropertyVo;
+import com.penny.vo.base.PictureBaseVo;
+import com.penny.vo.base.PictureDtBaseVo;
+import com.penny.vo.base.PropertyPictureBaseVo;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class PropertyService {
 
     private static final Logger logger = LoggerFactory.getLogger(PropertyService.class);
+
     private static final int DEFAULT_PAGE = 1;
 
     private static final int DEFAULT_LIMIT = 10;
@@ -30,11 +44,20 @@ public class PropertyService {
 
     private final Paginator paginator;
 
-    @Autowired
-    public PropertyService(PropertyVoMapper propertyVoMapper, Paginator paginator){
-        this.propertyVoMapper = propertyVoMapper;
-        this.paginator = paginator;
-    }
+    private final PictureBaseVoMapper pictureBaseVoMapper;
+
+    private final PropertyPictureBaseVoMapper propertyPictureBaseVoMapper;
+
+    private final PropertyPictureVoMapper propertyPictureVoMapper;
+
+    private final PictureDtBaseVoMapper pictureDtBaseVoMapper;
+
+    private final PictureDtVoMapper pictureDtVoMapper;
+
+    private final S3Service s3Service;
+
+    private final S3Buckets s3Buckets;
+
 
     /**
      * 根據給定的搜尋請求，獲取房源列表並進行篩選。
@@ -78,6 +101,99 @@ public class PropertyService {
         resultMap.put("pagination", pagination);
 
         return resultMap;
+    }
+
+
+    public Map<String, String> getImageUploadUrl(PropertyUploadImageRequest uploadImageRequest) {
+        // 檢驗參數
+        Long propertyId = uploadImageRequest.getPropertyId();
+        String fileExtension = uploadImageRequest.getFileExtension();
+        if (propertyId == null) { throw new FieldConflictException("propertyId is required");}
+        if (fileExtension == null) { throw new FieldConflictException("fileExtension is required");}
+
+        String pictureBucketPath;
+        PictureBaseVo pictureBaseVo;
+
+        // 創建圖片
+        pictureBucketPath = generateBucketPath(propertyId, "original", fileExtension);
+        pictureBaseVo = new PictureBaseVo(null, pictureBucketPath);
+        pictureBaseVoMapper.insertSelective(pictureBaseVo);
+
+        // 更新房源圖片關係表
+        List<PropertyPictureVo> propertyPicList = propertyPictureVoMapper.listByPropertyId(propertyId);
+
+        // 依 propertyPictureOrder 排序房源圖片，找出最大的 propertyPictureOrder 數字
+        Collections.sort(propertyPicList, Comparator.comparingLong(PropertyPictureVo::getPropertyPictureOrder));
+        // 獲取房源圖片列表中最後一張圖片的排序值，並將其增加1，以生成新的圖片排序值
+        Long newPictureOrder = propertyPicList.get(propertyPicList.size() - 1).getPropertyPictureOrder() + 1L;
+
+
+        // 新增房源圖片
+        propertyPictureBaseVoMapper.insertSelective(PropertyPictureBaseVo
+                .builder()
+                    .propertyId(propertyId)
+                    .pictureId(pictureBaseVo.getPictureId()) // 插入剛創建的圖片 id
+                    .propertyPictureOrder(newPictureOrder) // 插入新的圖片排序值
+                .build()
+        );
+
+        // 初始化結果
+        Map<String, String> resultMap = new HashMap<>();
+        // 將上傳原始尺寸圖像的預簽名URL 加進 result map
+        resultMap.put(
+                "sizeOriginal",
+                s3Service.generatePreSignedUrl(s3Buckets.getCustomer(), pictureBucketPath, HttpMethod.PUT)
+        );
+
+        // 創建圖片DT及其對應的預簽名URL
+        PictureDtSize.stream()
+                .forEach(size -> {
+                    int pictureSizeNum = size.getNum();
+                    String picDtBucketPath = generateBucketPath(propertyId, String.valueOf(pictureSizeNum), fileExtension);
+
+                    pictureDtBaseVoMapper.insertSelective(PictureDtBaseVo
+                            .builder()
+                                    .pictureDtUrl(picDtBucketPath)
+                                    .pictureDtSize(pictureSizeNum)
+                                    .pictureId(pictureBaseVo.getPictureId())
+                            .build()
+                    );
+
+                    // 將上傳指定尺寸圖像的預簽名URL 加進 result map
+                    resultMap.put(
+                            "size%s".formatted(pictureSizeNum),
+                            s3Service.generatePreSignedUrl(s3Buckets.getCustomer(), picDtBucketPath, HttpMethod.PUT)
+                    );
+                });
+
+        return resultMap;
+    }
+
+    public List<String> getImageDownloadUrl(Long propertyId, Integer sizeNum) {
+        // 檢驗 propertyId, sizeNum
+        if (propertyId == null || sizeNum == null) {
+           throw new FieldConflictException("propertyId and sizeNum are required in query string");
+        }
+
+        // 從房源圖片表找尋 propertyId 相符的房源圖片
+        List<PropertyPictureVo> propertyPictureVoList = propertyPictureVoMapper.listByPropertyId(propertyId);
+        // 依 propertyPictureOrder 排序房源圖片
+        Collections.sort(propertyPictureVoList, Comparator.comparingLong(PropertyPictureVo::getPropertyPictureOrder));
+
+        List<String> resultList = new ArrayList<>();
+        for (PropertyPictureVo propertyPictureVo: propertyPictureVoList) {
+            // 找出 pictureId 與 sizeNum 相符的所有圖片DT物件
+            PictureDtVo pictureDtVo = pictureDtVoMapper.selectByPictureIdAndSizeNum(propertyPictureVo.getPictureId(), sizeNum);
+
+            if (pictureDtVo != null) {
+                // 取得圖片DT物件的Url
+                String pictureDtDownloadPath = pictureDtVo.getPictureDtUrl();
+                // 產生與DT物件的Url對應的預簽名Url
+                resultList.add(s3Service.generatePreSignedUrl(s3Buckets.getCustomer(), pictureDtDownloadPath, HttpMethod.GET));
+            }
+        }
+
+        return resultList;
     }
 
     /**
@@ -210,5 +326,9 @@ public class PropertyService {
         }
 
         return leanPropertyMapList;
+    }
+
+    private String generateBucketPath(Long propertyId, String size,  String extension) {
+        return "properties/%s/%s/%s".formatted(propertyId, "size-" + size, UUID.randomUUID() + "." + extension);
     }
 }

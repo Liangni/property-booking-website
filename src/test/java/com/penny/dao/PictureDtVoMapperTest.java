@@ -44,7 +44,7 @@ public class PictureDtVoMapperTest {
     PropertyPictureBaseVoMapper propertyPictureBaseVoMapper;
 
     List<Long> pictureIdList = new ArrayList<>();
-    List<String> sizeList = List.of("large", "medium", "small");
+    List<Integer> sizeList = List.of(1, 2, 3);
 
     long propertyId;
 
@@ -65,7 +65,7 @@ public class PictureDtVoMapperTest {
 
             // 創建圖片詳細資訊並插入到資料庫中
             PictureDtBaseVo pictureDt = null;
-            for (String size : sizeList) {
+            for (int size : sizeList) {
                 pictureDt = PictureDtBaseVo.builder().pictureId(pictureId).pictureDtUrl("www.test.image" + i + "." + size + ".com").pictureDtSize(size).build();
 
                 pictureDtBaseVoMapper.insertSelective(pictureDt);
@@ -143,11 +143,11 @@ public class PictureDtVoMapperTest {
 
         // 進入測試
         // 從尺寸列表中取得第一個尺寸
-        String size = sizeList.get(0);
+        int size = sizeList.get(0);
         int offset = 0;
         int limit = numOfPictureToInsert + 1; // 確保取回的圖片詳細資訊列表數量大於插入的圖片數量
         // 根據房源ID和尺寸查詢圖片詳細資訊列表
-        List<PictureDtVo> pictureDtList = pictureDtVoMapper.listByPropertyId(propertyId, size, offset, limit);
+        List<PictureDtVo> pictureDtList = pictureDtVoMapper.listByPropertyIdAndSize(propertyId, size, offset, limit);
 
         // 斷言圖片詳細資訊列表不為空
         Assertions.assertFalse(pictureDtList.isEmpty());

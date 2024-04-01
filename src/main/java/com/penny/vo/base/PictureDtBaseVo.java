@@ -14,7 +14,7 @@ public class PictureDtBaseVo {
 
     private String pictureDtUrl;
 
-    private String pictureDtSize;
+    private Integer pictureDtSize;
 
     private Long pictureId;
 }

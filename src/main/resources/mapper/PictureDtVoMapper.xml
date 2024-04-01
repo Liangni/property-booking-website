@@ -6,7 +6,7 @@
         <id column="picture_dt_id" jdbcType="BIGINT" property="pictureDtId" />
         <id column="picture_id" jdbcType="BIGINT" property="pictureId" />
         <id column="picture_dt_url" jdbcType="VARCHAR" property="pictureDtUrl" />
-        <id column="picture_dt_size" jdbcType="VARCHAR" property="pictureDtSize" />
+        <id column="picture_dt_size" jdbcType="INTEGER" property="pictureDtSize" />
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -27,18 +27,26 @@
               </foreach>
     </select>
 
-    <select id="listByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="listByPropertyIdAndSize" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
             <include refid="Join_Column_List"/>
         from property_picture as pp
         left join picture_dt as pd on pp.picture_id = pd.picture_id
         where pp.property_id = #{propertyId, jdbcType=BIGINT}
             <if test="size != null">
-                and pd.picture_dt_size = #{size, jdbcType=VARCHAR}
+                and pd.picture_dt_size = #{size, jdbcType=BIGINT}
             </if>
         <if test="offset != null and limit != null">
             limit #{limit} offset #{offset}
         </if>
+    </select>
+
+    <select id="selectByPictureIdAndSizeNum" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from picture_dt
+        where picture_id = #{pictureId}
+        and picture_dt_size = #{sizeNum}
     </select>
 
 </mapper>

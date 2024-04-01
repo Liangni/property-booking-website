@@ -14,4 +14,11 @@ public interface PropertyPictureVoMapper {
      */
     List<PropertyPictureVo>  listByPropertyIdList(List<Long> propertyIdList);
 
+    /**
+     * 根據房源ID列出房源圖片列表。
+     *
+     * @param propertyId 房源ID，用於查詢相關的房源圖片。
+     * @return 返回一個列表，其中包含與給定房源ID相關的所有房源圖片。
+     */
+    List<PropertyPictureVo> listByPropertyId(Long propertyId);
 }

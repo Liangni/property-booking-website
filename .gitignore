@@ -52,3 +52,6 @@ README.html
 *.iml
 .idea
 .exercism
+
+application-withSecret.properties
+

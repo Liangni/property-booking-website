@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.penny.vo.base.PictureDtBaseVo">
     <id column="picture_dt_id" jdbcType="BIGINT" property="pictureDtId" />
     <result column="picture_dt_url" jdbcType="VARCHAR" property="pictureDtUrl" />
-    <result column="picture_dt_size" jdbcType="VARCHAR" property="pictureDtSize" />
+    <result column="picture_dt_size" jdbcType="INTEGER" property="pictureDtSize" />
     <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -23,7 +23,7 @@
   <insert id="insert" keyColumn="picture_dt_id" keyProperty="pictureDtId" parameterType="com.penny.vo.base.PictureDtBaseVo" useGeneratedKeys="true">
     insert into picture_dt (picture_dt_url, picture_dt_size, picture_id
       )
-    values (#{pictureDtUrl,jdbcType=VARCHAR}, #{pictureDtSize,jdbcType=VARCHAR}, #{pictureId,jdbcType=BIGINT}
+    values (#{pictureDtUrl,jdbcType=VARCHAR}, #{pictureDtSize,jdbcType=INTEGER}, #{pictureId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" keyColumn="picture_dt_id" keyProperty="pictureDtId" parameterType="com.penny.vo.base.PictureDtBaseVo" useGeneratedKeys="true">
@@ -44,7 +44,7 @@
         #{pictureDtUrl,jdbcType=VARCHAR},
       </if>
       <if test="pictureDtSize != null">
-        #{pictureDtSize,jdbcType=VARCHAR},
+        #{pictureDtSize,jdbcType=INTEGER},
       </if>
       <if test="pictureId != null">
         #{pictureId,jdbcType=BIGINT},
@@ -58,7 +58,7 @@
         picture_dt_url = #{pictureDtUrl,jdbcType=VARCHAR},
       </if>
       <if test="pictureDtSize != null">
-        picture_dt_size = #{pictureDtSize,jdbcType=VARCHAR},
+        picture_dt_size = #{pictureDtSize,jdbcType=INTEGER},
       </if>
       <if test="pictureId != null">
         picture_id = #{pictureId,jdbcType=BIGINT},
@@ -69,7 +69,7 @@
   <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PictureDtBaseVo">
     update picture_dt
     set picture_dt_url = #{pictureDtUrl,jdbcType=VARCHAR},
-      picture_dt_size = #{pictureDtSize,jdbcType=VARCHAR},
+      picture_dt_size = #{pictureDtSize,jdbcType=INTEGER},
       picture_id = #{pictureId,jdbcType=BIGINT}
     where picture_dt_id = #{pictureDtId,jdbcType=BIGINT}
   </update>

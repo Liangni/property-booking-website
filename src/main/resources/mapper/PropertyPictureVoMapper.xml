@@ -20,4 +20,10 @@
             <foreach collection="propertyIdList" item="propertyId" open="(" separator="," close=")">#{propertyId, jdbcType=BIGINT}</foreach>
     </select>
 
+    <select id="listByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from property_picture
+        where property_id = #{propertyId}
+    </select>
 </mapper>
