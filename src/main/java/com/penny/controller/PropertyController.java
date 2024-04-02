@@ -4,6 +4,7 @@ import com.amazonaws.Response;
 import com.penny.request.property.PropertySearchRequest;
 import com.penny.request.property.PropertyUploadImageRequest;
 import com.penny.service.PropertyService;
+import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +32,10 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getImageUploadUrl(uploadImageRequest));
     }
 
-    @GetMapping("download-image-url")
+    @GetMapping("{propertyId}/download-image-url")
     public ResponseEntity<List<String>> getPropertyImageDownloadUrl(
-            @RequestParam Long propertyId, Integer sizeNum
+            @PathVariable Long propertyId,
+            @RequestParam Integer sizeNum
     ) {
         return ResponseEntity.ok(propertyService.getImageDownloadUrl(propertyId, sizeNum));
     }
