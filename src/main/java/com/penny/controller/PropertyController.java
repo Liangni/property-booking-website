@@ -40,4 +40,10 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getImageDownloadUrl(propertyId, sizeNum));
     }
 
+    @GetMapping("{propertyId}")
+    public ResponseEntity<PropertyBaseVo> getProperty(
+            @PathVariable("propertyId") Long propertyId
+    ) {
+        return ResponseEntity.ok(propertyService.getProperty(propertyId));
+    }
 }

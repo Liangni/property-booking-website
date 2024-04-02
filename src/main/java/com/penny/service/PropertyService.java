@@ -6,10 +6,12 @@ import com.penny.dao.PropertyPictureVoMapper;
 import com.penny.dao.PropertyVoMapper;
 import com.penny.dao.base.PictureBaseVoMapper;
 import com.penny.dao.base.PictureDtBaseVoMapper;
+import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.PropertyPictureBaseVoMapper;
 import com.penny.daoParam.propertyVoMapper.SelectPropertyParam;
 import com.penny.enums.PictureDtSize;
 import com.penny.exception.FieldConflictException;
+import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.property.PropertySearchRequest;
 import com.penny.request.property.PropertyUploadImageRequest;
 import com.penny.s3.S3Buckets;
@@ -19,6 +21,7 @@ import com.penny.vo.PropertyPictureVo;
 import com.penny.vo.PropertyVo;
 import com.penny.vo.base.PictureBaseVo;
 import com.penny.vo.base.PictureDtBaseVo;
+import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.PropertyPictureBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -41,6 +44,8 @@ public class PropertyService {
     private static final int DEFAULT_LIMIT = 10;
 
     private final PropertyVoMapper propertyVoMapper;
+
+    private final PropertyBaseVoMapper propertyBaseVoMapper;
 
     private final Paginator paginator;
 
@@ -102,6 +107,11 @@ public class PropertyService {
 
         return resultMap;
     }
+
+    public PropertyBaseVo getProperty(Long propertyId) {
+        return Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
+                .orElseThrow(() -> new ResourceNotFoundException("property %s is not found".formatted(propertyId)))
+;    }
 
 
     public Map<String, String> getImageUploadUrl(PropertyUploadImageRequest uploadImageRequest) {
