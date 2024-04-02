@@ -113,7 +113,13 @@ public class PropertyService {
                 .orElseThrow(() -> new ResourceNotFoundException("property %s is not found".formatted(propertyId)))
 ;    }
 
-
+    /**
+     * 根據上傳圖像請求獲取圖像上傳 URL。
+     *
+     * @param uploadImageRequest 包含房源ID和圖片附檔名的上傳圖像請求。
+     * @return 返回一個包含不同尺寸圖像上傳 URL 的 map，鍵是尺寸標識，值是對應的預簽名 URL。
+     * @throws FieldConflictException 如果房源ID或圖片附檔名為空，則拋出 FieldConflictException 異常。
+     */
     public Map<String, String> getImageUploadUrl(PropertyUploadImageRequest uploadImageRequest) {
         // 檢驗參數
         Long propertyId = uploadImageRequest.getPropertyId();
@@ -179,6 +185,14 @@ public class PropertyService {
         return resultMap;
     }
 
+    /**
+     * 根據房源ID和圖片尺寸編號獲取圖片下載 URL 列表。
+     *
+     * @param propertyId 要查詢的房源ID。
+     * @param sizeNum 要查詢的圖片尺寸編號。
+     * @return 返回一個包含圖片下載 URL 的列表，如果找不到符合條件的圖片，則返回空列表。
+     * @throws FieldConflictException 如果房源ID或圖片尺寸編號為空，則拋出 FieldConflictException 異常。
+     */
     public List<String> getImageDownloadUrl(Long propertyId, Integer sizeNum) {
         // 檢驗 propertyId, sizeNum
         if (propertyId == null || sizeNum == null) {
@@ -338,6 +352,14 @@ public class PropertyService {
         return leanPropertyMapList;
     }
 
+    /**
+     * 生成存儲桶路徑。
+     *
+     * @param propertyId 房源ID。
+     * @param size 尺寸標識。
+     * @param extension 文件擴展名。
+     * @return 返回生成的存儲桶路徑。
+     */
     private String generateBucketPath(Long propertyId, String size,  String extension) {
         return "properties/%s/%s/%s".formatted(propertyId, "size-" + size, UUID.randomUUID() + "." + extension);
     }
