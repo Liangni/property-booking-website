@@ -24,10 +24,10 @@ public class PropertyController {
         private final BedroomService bedroomService;
 
     @PostMapping("search")
-    public Map<String, Object> getPropertiesByFilter(
+    public ResponseEntity<Map<String, Object>> getPropertiesByFilter(
             @RequestBody PropertySearchRequest propertySearchRequest
     ) {
-        return propertyService.getPropertiesByFilter(propertySearchRequest);
+        return ResponseEntity.ok(propertyService.getPropertiesByFilter(propertySearchRequest));
     }
 
     @PostMapping("upload-image-url")

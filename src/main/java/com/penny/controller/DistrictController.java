@@ -1,10 +1,12 @@
 package com.penny.controller;
 
+import com.amazonaws.Response;
 import com.penny.request.district.DistrictSearchRequest;
 import com.penny.service.DistrictService;
 import com.penny.vo.DistrictVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +25,9 @@ public class DistrictController {
      * @return 包含符合條件的行政區資訊和分頁資訊的 map。
      */
     @PostMapping("search")
-    public Map<String, Object> getDistrictsByKeyword(
+    public ResponseEntity<Map<String, Object>> getDistrictsByKeyword(
             @RequestBody DistrictSearchRequest districtSearchRequest
     ) {
-        return districtService.getDistrictsByKeyword(districtSearchRequest);
+        return ResponseEntity.ok(districtService.getDistrictsByKeyword(districtSearchRequest));
     }
 }
