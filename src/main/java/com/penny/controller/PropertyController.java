@@ -3,7 +3,10 @@ package com.penny.controller;
 import com.amazonaws.Response;
 import com.penny.request.property.PropertySearchRequest;
 import com.penny.request.property.PropertyUploadImageRequest;
+import com.penny.service.BedroomService;
 import com.penny.service.PropertyService;
+import com.penny.vo.BedroomVo;
+import com.penny.vo.base.BedroomBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PropertyController {
         private final PropertyService propertyService;
+
+        private final BedroomService bedroomService;
 
     @PostMapping("search")
     public Map<String, Object> getPropertiesByFilter(
@@ -45,5 +50,12 @@ public class PropertyController {
             @PathVariable("propertyId") Long propertyId
     ) {
         return ResponseEntity.ok(propertyService.getProperty(propertyId));
+    }
+
+    @GetMapping("{propertyId}/rooms")
+    public  ResponseEntity<List<BedroomVo>> getPropertyRoom(
+            @PathVariable("propertyId") Long propertyId
+    ) {
+        return ResponseEntity.ok(bedroomService.getPropertyBedroomList(propertyId));
     }
 }

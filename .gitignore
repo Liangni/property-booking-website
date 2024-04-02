@@ -53,5 +53,6 @@ README.html
 .idea
 .exercism
 
+application.properties
 application-withSecret.properties
 
