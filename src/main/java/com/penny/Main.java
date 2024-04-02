@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.penny.dao")
-public class PropertyBookingWebsiteApplication {
+public class Main {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PropertyBookingWebsiteApplication.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 
 }
