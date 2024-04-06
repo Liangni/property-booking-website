@@ -46,4 +46,5 @@
     <include file="/db/scripts/example_data/06_insert_example_picture_dt.sql"/>
     <include file="/db/scripts/example_data/07_insert_example_property_picture.sql"/>
     <include file="/db/scripts/example_data/08_insert_example_property_review.sql"/>
+    <include file="/db/scripts/example_data/09_insert_example_property_amenity.sql"/>
 </databaseChangeLog>

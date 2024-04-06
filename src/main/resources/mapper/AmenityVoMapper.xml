@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.AmenityVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.AmenityVo">
+        <id column="amenity_id" jdbcType="BIGINT" property="amenityId" />
+        <result column="amenity_name" jdbcType="VARCHAR" property="amenityName" />
+        <result column="amenity_type_id" jdbcType="BIGINT" property="amenityTypeId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        amenity_id, amenity_name, amenity_type_id
+    </sql>
+    <select id="listByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+         a.amenity_id, a.amenity_name, a.amenity_type_id
+        from property_amenity as pa
+        inner join
+            amenity as a on a.amenity_id = pa.amenity_id
+        where pa.property_id = #{propertyId,jdbcType=BIGINT}
+    </select>
+</mapper>
