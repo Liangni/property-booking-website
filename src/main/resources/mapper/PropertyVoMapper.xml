@@ -90,7 +90,266 @@
             district d2 on d1.district_id = d2.parent_district_id
     </sql>
 
-    <select id="listByFilter" parameterType="com.penny.daoParam.propertyVoMapper.SelectPropertyParam" resultMap="BaseResultMap">
+    <select id="listByNumOfAvailableDays" parameterType="com.penny.request.property.PropertySearchParam" resultMap="BaseResultMap">
+        with available_periods as (
+        -- 對 booking_availability 表進行查詢，選擇房源ID、可預訂日期以及計算其所在的連續可預定天數（consecutive_available_days）
+        select
+        property_id,
+        booking_availability_date,
+        count(*) over (partition by property_id, available_period_group) as consecutive_available_days
+        from
+        (
+        -- 子查詢：計算每個房源的連續可預定天數分組
+        -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
+        -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
+        select
+        property_id,
+        booking_availability_date,
+        row_number() over (partition by property_id order by booking_availability_date) as nth_available_day,
+        booking_availability_date - row_number() over (partition by property_id, booking_availability_status order by booking_availability_date) * interval '1 DAY' as available_period_group
+        from
+        booking_availability
+        where
+        booking_availability_status = 'available'
+        ) as subquery
+        ),
+        join_district as (
+        <include refid="join_district_table"/>
+        )
+        select
+        pr.*,
+        ad.*,
+        jd.*,
+        min(ap.booking_availability_date) as start_available_date,
+        min(ap.booking_availability_date) + #{numOfAvailableDays} as end_available_date
+        from
+        property as pr
+        inner join
+        available_periods as ap on ap.property_id = pr.property_id
+        left join
+        address as ad on pr.address_id = ad.address_id
+        left join
+        join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
+        <where>
+            ap.consecutive_available_days >= #{numOfAvailableDays}
+            <if test="numOfGuests != null">
+                and pr.max_num_of_guests >= #{numOfGuests}
+            </if>
+            <if test="numOfBedrooms != null">
+                and pr.num_of_bedrooms >= #{numOfBedrooms}
+            </if>
+            <if test="numOfBeds != null">
+                and pr.num_of_beds >= #{numOfBeds}
+            </if>
+            <if test="numOfBathrooms != null">
+                and pr.num_of_bathrooms >= #{numOfBathrooms}
+            </if>
+            <if test="maxPrice != null">
+                and #{maxPrice} >= pr.price_on_weekdays
+                and #{maxPrice} >= pr.price_on_weekends
+            </if>
+            <if test="minPrice != null">
+                and pr.price_on_weekdays >= #{minPrice}
+                and pr.price_on_weekends >= #{minPrice}
+            </if>
+            <if test = "propertyGroupId != null">
+                and pr.property_group_type_id in (
+                select
+                property_group_type_id
+                from
+                property_group_type
+                where property_group_id = # {propertyGroupId}
+                )
+            </if>
+            <if test = "propertyShareTypeId != null">
+                and pr.property_share_type_id = #{propertyShareTypeId}
+            </if>
+            <if test = "amenityIds != null">
+                and pr.property_id in (
+                select
+                property_id
+                from
+                property_amenity
+                where
+                amenity_id in
+                <foreach collection="amenityIds" item="amenityId" open="(" separator="," close=")">
+                    #{amenityId}
+                </foreach>
+                )
+            </if>
+            <if test="districtId != null">
+                and (
+                ad.admin_area_level_3_district_id = #{districtId}
+                or jd.parent_district_id = #{districtId}
+                )
+            </if>
+        </where>
+        group by
+        pr.property_id,
+        ad.address_id,
+        jd.parent_district_id,
+        jd.parent_district_name,
+        jd.district_id,
+        jd.district_name
+        having
+        min(ap.booking_availability_date) &lt; (current_date + interval '2 years');
+    </select>
+
+    <select id="listByStartAndEndAvailableDate" parameterType="com.penny.request.property.PropertySearchParam" resultMap="BaseResultMap">
+        with property_availability as (
+        select
+            property_id
+        from
+            booking_availability
+        where
+            booking_availability_date between #{startAvailableDate} and #{endAvailableDate}
+        group by
+            property_id
+        having
+            sum(case when booking_availability_status = 'booked' then 1 else 0 end) = 0
+        ),
+        join_district as (
+        <include refid="join_district_table"/>
+        )
+        select
+            pr.*,
+            ad.*,
+            jd.*,
+            #{startAvailableDate} as start_available_date,
+            #{endAvailableDate} as end_available_date
+        from
+            property as pr
+            left join
+            address as ad on pr.address_id = ad.address_id
+            left join
+            join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
+        <where>
+            pr.property_id in (select property_id from property_availability)
+            <if test="numOfGuests != null">
+                and pr.max_num_of_guests >= #{numOfGuests}
+            </if>
+            <if test="numOfBedrooms != null">
+                and pr.num_of_bedrooms >= #{numOfBedrooms}
+            </if>
+            <if test="numOfBeds != null">
+                and pr.num_of_beds >= #{numOfBeds}
+            </if>
+            <if test="numOfBathrooms != null">
+                and pr.num_of_bathrooms >= #{numOfBathrooms}
+            </if>
+            <if test="maxPrice != null">
+                and #{maxPrice} >= pr.price_on_weekdays
+                and #{maxPrice} >= pr.price_on_weekends
+            </if>
+            <if test="minPrice != null">
+                and pr.price_on_weekdays >= #{minPrice}
+                and pr.price_on_weekends >= #{minPrice}
+            </if>
+            <if test = "propertyGroupId != null">
+                and pr.property_group_type_id in (
+                select
+                property_group_type_id
+                from
+                property_group_type
+                where property_group_id = # {propertyGroupId}
+                )
+            </if>
+            <if test = "propertyShareTypeId != null">
+                and pr.property_share_type_id = #{propertyShareTypeId}
+            </if>
+            <if test = "amenityIds != null">
+                and pr.property_id in (
+                select
+                property_id
+                from
+                property_amenity
+                where
+                amenity_id in
+                <foreach collection="amenityIds" item="amenityId" open="(" separator="," close=")">
+                    #{amenityId}
+                </foreach>
+                )
+            </if>
+            <if test="districtId != null">
+                and (
+                ad.admin_area_level_3_district_id = #{districtId}
+                or jd.parent_district_id = #{districtId}
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="listByPropertyAttributes" parameterType="com.penny.request.property.PropertySearchParam" resultMap="BaseResultMap">
+        with join_district as (
+        <include refid="join_district_table"/>
+        )
+        select
+            pr.*,
+            ad.*,
+            jd.*
+        from
+            property as pr
+            left join
+            address as ad on pr.address_id = ad.address_id
+            left join
+            join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
+        <trim prefix="where" prefixOverrides="and |or ">
+            <if test="numOfGuests != null">
+                pr.max_num_of_guests >= #{numOfGuests}
+            </if>
+            <if test="numOfBedrooms != null">
+                and pr.num_of_bedrooms >= #{numOfBedrooms}
+            </if>
+            <if test="numOfBeds != null">
+                and pr.num_of_beds >= #{numOfBeds}
+            </if>
+            <if test="numOfBathrooms != null">
+                and pr.num_of_bathrooms >= #{numOfBathrooms}
+            </if>
+            <if test="maxPrice != null">
+                and #{maxPrice} >= pr.price_on_weekdays
+                and #{maxPrice} >= pr.price_on_weekends
+            </if>
+            <if test="minPrice != null">
+                and pr.price_on_weekdays >= #{minPrice}
+                and pr.price_on_weekends >= #{minPrice}
+            </if>
+            <if test = "propertyGroupId != null">
+                and pr.property_group_type_id in (
+                select
+                property_group_type_id
+                from
+                property_group_type
+                where
+                property_group_id = # {propertyGroupId}
+                )
+            </if>
+            <if test = "propertyShareTypeId != null">
+                and pr.property_share_type_id = #{propertyShareTypeId}
+            </if>
+            <if test = "amenityIds != null">
+                and pr.property_id in (
+                select
+                property_id
+                from
+                property_amenity
+                where
+                amenity_id in
+                <foreach collection="amenityIds" item="amenityId" open="(" separator="," close=")">
+                    #{amenityId}
+                </foreach>
+                )
+            </if>
+            <if test="districtId != null">
+                and (
+                ad.admin_area_level_3_district_id = #{districtId}
+                or jd.parent_district_id = #{districtId}
+                )
+            </if>
+        </trim>
+    </select>
+
+    <select id="listByFilter" parameterType="com.penny.request.property.PropertySearchParam" resultMap="BaseResultMap">
         <trim prefix="with" suffixOverrides=",">
             <choose>
                 <when test="filterMap.numOfAvailableDays != null">

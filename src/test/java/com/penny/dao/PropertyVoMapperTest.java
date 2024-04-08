@@ -1,7 +1,7 @@
 package com.penny.dao;
 
 import com.penny.dao.base.*;
-import com.penny.daoParam.propertyVoMapper.SelectPropertyParam;
+import com.penny.request.property.PropertySearchParam;
 import com.penny.vo.PropertyVo;
 import com.penny.vo.base.*;
 import org.junit.jupiter.api.Assertions;
@@ -49,7 +49,7 @@ public class PropertyVoMapperTest {
 
     private static final int BASE_MAX_NUM_OF_GUESTS = 3;
 
-    private static final long BASE_PRICE = 100;
+    private static final int BASE_PRICE = 100;
 
     private static final List<Long> propertyIdList = new ArrayList<>();
 
@@ -151,48 +151,30 @@ public class PropertyVoMapperTest {
     }
 
     /**
-     * 測試根據連續可訂天數搜尋房源的方法
-     * 此測試驗證根據指定的連續可訂天數搜尋房源的功能
-     * 它確保返回的列表房源具有指定屬性，並根據給定的排序屬性進行排序
+     * 測試根據可預訂天數搜索房源的方法 listByNumOfAvailableDays。
      */
     @Test
     @DisplayName("用連續可訂天數來搜尋房源")
-    void listByNumOfAvailableDaysTest(){
-        // 準備過濾屬性 map
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("numOfAvailableDays", NUM_OF_AVAILABLE_DAYS);
-
-        // 準備要返回和排序的 field 列表
-        List<String> returnFieldList = new ArrayList<>();
-        returnFieldList.add("address");
-        returnFieldList.add("district");
-        returnFieldList.add("propertyId");
-
-
-        Map<String, String> sortMap = new HashMap<>();
-        sortMap.put("district", "asc");
-        sortMap.put("nearestAvailableDay", "asc");
-
-        // 準備要使用的參數物件
-        SelectPropertyParam param = SelectPropertyParam.builder()
-                .filterMap(filterMap)
-                .returnFieldList(returnFieldList)
-                .sortMap(sortMap)
-                .offset(0)
-                .limit(10)
+    void listByNumOfAvailableDaysTest1(){
+        PropertySearchParam request = PropertySearchParam
+                .builder()
+                .numOfAvailableDays(NUM_OF_AVAILABLE_DAYS)
                 .build();
 
         // 使用指定的參數調用 PropertyVoMapper 的 listByNumOfAvailableDays 方法
-        List<PropertyVo> propertyList = propertyVoMapper.listByFilter(param);
+        List<PropertyVo> propertyList = propertyVoMapper.listByNumOfAvailableDays(request);
 
-        // 確認返回的房源列表不為空，並且包含了指定 field 的房源
+        // 確認返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());
+
         for (PropertyVo property : propertyList) {
+            Assertions.assertNotNull(property.getStartAvailableDate());
+            Assertions.assertNotNull(property.getEndAvailableDate());
             Assertions.assertNotNull(property.getPropertyId());
             Assertions.assertNotNull(property.getStreet());
             Assertions.assertNotNull(property.getAdminAreaLevel3DistrictId());
         }
-        System.out.println(propertyList.get(1).toString());
+
         // 從返回的列表中提取房源 ID
         List<Long> actualPropertyIdList = propertyList
                 .stream()
@@ -201,73 +183,38 @@ public class PropertyVoMapperTest {
 
         // 斷言實際房源 ID 列表中包含了預期房源 ID 列表中的所有元素
         Assertions.assertTrue(actualPropertyIdList.containsAll(propertyIdList));
-        // 斷言房源 ID 基於排序標準的預期順序
-        Assertions.assertTrue(
-                actualPropertyIdList.indexOf(propertyIdList.get(0)) < actualPropertyIdList.indexOf(propertyIdList.get(2))
-                && actualPropertyIdList.indexOf(propertyIdList.get(2)) < actualPropertyIdList.indexOf(propertyIdList.get(1))
-        );
     }
+
     /**
-     * 測試根據連續可預訂天數來計算房源數量
-     * 此測試確保根據連續可預訂天數統計的房源數量不為零
+     * 測試根據開始和結束可預訂日期搜索房源的方法 listByStartAndEndAvailableDay。
      */
     @Test
-    @DisplayName("用連續可預訂天數來計算房源數量")
-    void countByNumOfAvailableDaysTest(){
-        // 調用 countByFilter 方法，統計房源數量
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("numOfAvailableDays", NUM_OF_AVAILABLE_DAYS);
-
-        Long count = propertyVoMapper.countByFilter(filterMap);
-
-        // 斷言房源數量不為空
-        Assertions.assertNotNull(count);
-        // 斷言房源數量大於等於測試房源數量
-        Assertions.assertTrue(count >= propertyIdList.size());
-    }
-
-    @Test
     @DisplayName("用開始和結束可預訂日來搜尋房源")
-    void listByStartAndEndAvailableDayTest(){
+    void listByStartAndEndAvailableDayTest1(){
 
-        // 準備要返回和排序的 field 列表
-        List<String> returnFieldList = new ArrayList<>();
-        returnFieldList.add("address");
-        returnFieldList.add("district");
-        returnFieldList.add("propertyId");
-        returnFieldList.add("startAvailableDate");
-
-        Map<String, String> sortMap = new HashMap<>();
-        sortMap.put("district", "asc");
-
-        Map<String, Object> filterMap = new HashMap<>();
         LocalDate currentDate = LocalDate.now();
-
         LocalDate startAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW);
-        filterMap.put("startAvailableDate", startAvailableDate);
-
         LocalDate endAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS);
-        filterMap.put("endAvailableDate", endAvailableDate);
 
         // 準備要使用的參數物件
-        SelectPropertyParam param = SelectPropertyParam.builder()
-                .filterMap(filterMap)
-                .returnFieldList(returnFieldList)
-                .sortMap(sortMap)
-                .offset(0)
-                .limit(10)
+        PropertySearchParam request = PropertySearchParam
+                .builder()
+                .startAvailableDate(startAvailableDate)
+                .endAvailableDate(endAvailableDate)
                 .build();
-        List<PropertyVo> propertyList = propertyVoMapper.listByFilter(param);
 
-        // 確認返回的房源列表不為空，並且包含了指定 field 的房源
+        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDate(request);
+
+        // 確認返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());
-        // 確認返回的房源列表不為空，並且包含了指定 field 的房源
+
         Assertions.assertNotEquals(0, propertyList.size());
         for (PropertyVo property : propertyList) {
+            Assertions.assertNotNull(property.getStartAvailableDate());
+            Assertions.assertNotNull(property.getEndAvailableDate());
             Assertions.assertNotNull(property.getPropertyId());
             Assertions.assertNotNull(property.getStreet());
             Assertions.assertNotNull(property.getParentDistrictId());
-            Assertions.assertNotNull(property.getStartAvailableDate());
         }
 
         // 從返回的列表中提取房源 ID
@@ -276,16 +223,17 @@ public class PropertyVoMapperTest {
                 .map(PropertyVo::getPropertyId)
                 .toList();
         List<Long> expectPropertyIdList = propertyIdListWithSameAvailableDate;
-        System.out.println(actualPropertyIdList);
+
         // 斷言實際房源 ID 列表中包含了預期房源 ID 列表中的所有元素
         Assertions.assertTrue(actualPropertyIdList.containsAll(expectPropertyIdList));
-        // 斷言房源 ID 基於排序標準的預期順序
-        Assertions.assertTrue(actualPropertyIdList.indexOf(expectPropertyIdList.get(0)) < actualPropertyIdList.indexOf(expectPropertyIdList.get(1)));
     }
 
+    /**
+     * 測試根據房屋屬性搜索房源的方法 listByPropertyAttribute。
+     */
     @Test
     @DisplayName("用房屋屬性來搜尋房源")
-    void listByPropertyAttributeTest(){
+    void listByPropertyAttributeTest1(){
         // 準備測試資料
         // 插入測試的設施類型和設施
         Long amenityTypeId = insertAmenityType("test amenity type");
@@ -298,7 +246,7 @@ public class PropertyVoMapperTest {
         for (Long propertyId: subPropertyIdList) {
             insertPropertyAmenity(propertyId, amenityId);
 
-            // 從數據庫中選擇並更新房源基本信息
+            // 從資料庫中選擇房源並更新基本資訊
             PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
             propertyBaseVo.setMaxNumOfGuests(BASE_MAX_NUM_OF_GUESTS);
             propertyBaseVo.setPriceOnWeekdays(BASE_PRICE);
@@ -306,28 +254,25 @@ public class PropertyVoMapperTest {
             propertyBaseVoMapper.updateByPrimaryKey(propertyBaseVo);
         }
 
-        // 構建房源篩選條件的 map
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("numOfGuests", BASE_MAX_NUM_OF_GUESTS);
-        filterMap.put("maxPrice", BASE_PRICE);
-        filterMap.put("minPrice", BASE_PRICE);
 
-        // 指定返回的房源字段列表
-        List<String> returnFiledList = List.of("propertyId", "numOfGuests", "priceOnWeekdays", "priceOnWeekends");
-
-        // 構建房源篩選參數
-        SelectPropertyParam param = SelectPropertyParam
+        PropertySearchParam request = PropertySearchParam
                 .builder()
-                .filterMap(filterMap)
-                .returnFieldList(returnFiledList)
-                .sortMap(new HashMap<>())
+                .numOfGuests(BASE_MAX_NUM_OF_GUESTS)
+                .maxPrice(BASE_PRICE)
+                .minPrice(BASE_PRICE)
                 .build();
 
         // 根據篩選參數查詢房源列表
-        List<PropertyVo> propertyList = propertyVoMapper.listByFilter(param);
+        List<PropertyVo> propertyList = propertyVoMapper.listByPropertyAttributes(request);
 
-        // 斷言返回的房源列表不為空，並且包含了指定字段的房源
+        // 斷言返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());
+
+        for (PropertyVo property : propertyList) {
+            Assertions.assertNotNull(property.getPropertyId());
+            Assertions.assertNotNull(property.getStreet());
+            Assertions.assertNotNull(property.getParentDistrictId());
+        }
 
         // 從返回的列表中提取房源 ID
         List<Long> actualPropertyIdList = propertyList
@@ -339,25 +284,6 @@ public class PropertyVoMapperTest {
         Assertions.assertTrue(actualPropertyIdList.containsAll(subPropertyIdList));
     }
 
-    @Test
-    @DisplayName("用開始和結束可預訂日來計算房源數量")
-    void countByStartAndEndAvailableDayTest(){
-        Map<String, Object> filterMap = new HashMap<>();
-        // 獲取當前日期
-        LocalDate currentDate = LocalDate.now();
-        // 計算開始可預訂日期
-        filterMap.put("startAvailableDate", currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW));
-        // 計算結束可預訂日期
-        filterMap.put("endAvailableDate",currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS));
-
-        // 調用方法計算房源數量
-        Long numOfPropertyCount = propertyVoMapper.countByFilter(filterMap);
-
-        // 斷言房源數量不為空
-        Assertions.assertNotNull(numOfPropertyCount);
-        // 斷言房源數量大於等於具有相同可用日期的房源數量
-        Assertions.assertTrue(numOfPropertyCount >= propertyIdListWithSameAvailableDate.size());
-    }
 
     /**
      * 插入行政區劃分資料至資料庫

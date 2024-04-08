@@ -24,13 +24,15 @@ public class PropertyBaseVo {
 
     private Integer numOfBathrooms;
 
-    private Long priceOnWeekdays;
+    private Integer priceOnWeekdays;
 
-    private Long priceOnWeekends;
+    private Integer priceOnWeekends;
 
     private Boolean isPublished;
 
     private Double averageRating;
+
+    private Integer reviewCount;
 
     private Long propertyGroupTypeId;
 

@@ -1,28 +1,35 @@
 package com.penny.dao;
 
-import com.penny.daoParam.propertyVoMapper.SelectPropertyParam;
+import com.penny.request.property.PropertySearchParam;
 import com.penny.vo.PropertyVo;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface PropertyVoMapper {
     /**
-     * 根據提供的篩選條件，查詢房源的列表。
+     * 根據指定的可預訂天數搜尋房源。
      *
-     * @param selectPropertyParam 包含用於篩選房源的參數物件
-     * @return 符合指定篩選條件的物件列表
+     * @param request 搜尋資訊，包含可預訂天數等資訊。
+     * @return 符合條件的房源列表。
      */
-    List<PropertyVo> listByFilter(SelectPropertyParam selectPropertyParam);
+    List<PropertyVo> listByNumOfAvailableDays(PropertySearchParam request);
+
     /**
-     * 根據提供的過濾條件計算記錄的數量。
+     * 根據指定的開始和結束可預訂日期搜尋房源。
      *
-     * @param filterMap 包含過濾條件的映射
-     *                  其中鍵是列名，值是過濾值
-     * @return 符合過濾條件的記錄數量
+     * @param request 搜尋資訊，包含開始和結束可預訂日期等資訊。
+     * @return 符合條件的房源列表。
      */
-    Long countByFilter(Map<String, Object> filterMap);
+    List<PropertyVo> listByStartAndEndAvailableDate(PropertySearchParam request);
+
+    /**
+     * 根據指定的房屋屬性搜尋房源。
+     *
+     * @param request 搜尋資訊，包含房屋屬性等資訊。
+     * @return 符合條件的房源列表。
+     */
+    List<PropertyVo> listByPropertyAttributes(PropertySearchParam request);
+
 }

@@ -1,129 +1,111 @@
 package com.penny.service;
 
-import com.penny.dao.PictureDtVoMapper;
-import com.penny.dao.PropertyReviewVoMapper;
 import com.penny.dao.PropertyVoMapper;
-import com.penny.daoParam.propertyVoMapper.SelectPropertyParam;
-import com.penny.util.Paginator;
-import com.penny.vo.PictureDtVo;
+import com.penny.request.property.PropertySearchParam;
 import com.penny.vo.PropertyVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class InitialPageService {
-    private static final int DEFAULT_PROPERTY_PAGE = 1;
-
-    private static final int DEFAULT_PROPERTY_LIMIT = 10;
-
     private static final int DEFAULT_NUM_OF_AVAILABLE_DAYS = 5;
-
-    private static final int DEFAULT_PICTURE_DT_PAGE = 1;
-
-    private static final int DEFAULT_PICTURE_DT_LIMIT = 10;
-
     private static final Integer DEFAULT_PICTURE_DT_SIZE = 1;
 
     private final PropertyVoMapper propertyVoMapper;
+    private final PropertyService propertyService;
 
-    private final PictureDtVoMapper pictureDtVoMapper;
-
-    private final PropertyReviewVoMapper propertyReviewVoMapper;
-
-    private final Paginator paginator;
-
-    @Autowired
-    public InitialPageService(PropertyVoMapper propertyVoMapper, PictureDtVoMapper pictureDtVoMapper, PropertyReviewVoMapper propertyReviewVoMapper, Paginator paginator){
-        this.propertyVoMapper = propertyVoMapper;
-        this.pictureDtVoMapper = pictureDtVoMapper;
-        this.propertyReviewVoMapper = propertyReviewVoMapper;
-        this.paginator = paginator;
-    }
     /**
-     * 獲取初始頁面數據。
-     * 此方法構建並返回用於初始頁面的數據，包括房源列表、分頁信息等。
+     * 獲取初始頁面資料，包括房源圖片和相關屬性。
      *
-     * @return 返回包含初始頁面數據的 Map。其中，鍵為 "result"，值為房源列表；鍵為 "pagination"，值為分頁信息。
+     * @return 包含初始頁面資料的 Map
      */
     public Map<String, Object> getInitialPageData(){
-        // 準備過濾屬性 map
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("numOfAvailableDays", DEFAULT_NUM_OF_AVAILABLE_DAYS);
-
-        // 準備返回屬性列表
-        List<String> returnFieldList = new ArrayList<>();
-        returnFieldList.add("propertyId");
-        returnFieldList.add("district");
-        returnFieldList.add("priceOnWeekdays");
-
-        // 準備排序 map
-        Map<String, String> sortMap = new HashMap<>();
-        sortMap.put("district", "asc");
-
-        // 計算房源的偏移量
-        int propertyOffset = paginator.calculateOffset(DEFAULT_PROPERTY_PAGE, DEFAULT_PROPERTY_LIMIT);
         // 準備房源查詢參數
-        SelectPropertyParam selectPropertyParam = SelectPropertyParam
+        PropertySearchParam request = PropertySearchParam
                 .builder()
-                .filterMap(filterMap)
-                .returnFieldList(returnFieldList)
-                .sortMap(sortMap)
-                .offset(propertyOffset)
-                .limit(DEFAULT_PROPERTY_LIMIT)
+                .numOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAYS)
                 .build();
 
         // 根據房源查詢參數查詢房源列表
-        List<PropertyVo> propertyVoList = propertyVoMapper.listByFilter(selectPropertyParam);
+        List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(request);
 
-        // 計算圖片詳細資訊的偏移量並為每個房源設置圖片詳細資訊列表和評論數
-        int pictureDtOffset = paginator.calculateOffset(DEFAULT_PICTURE_DT_PAGE, DEFAULT_PICTURE_DT_LIMIT);
-        List<Map<String, Object>> leanPropertyList= new ArrayList<>();
-
+        // 準備用於存儲房源資訊的列表
+        List<Map<String, Object>> propertyMapList = new ArrayList<>();
         for(PropertyVo propertyVo: propertyVoList) {
-            Long propertyId = propertyVo.getPropertyId();
-            Long priceOnWeekdays = propertyVo.getPriceOnWeekdays();
-            String districtName = propertyVo.getDistrictName();
-            String parentDistrictName = propertyVo.getParentDistrictName();
-            LocalDate startAvailableDate = propertyVo.getStartAvailableDate();
-            LocalDate endAvailableDate = propertyVo.getEndAvailableDate();
-            Double averageRating = propertyVo.getAverageRating();
-
-            // 創建一個新的房源 Map，存放房源的資訊
-            Map<String, Object> propertyMap = new HashMap<>();
-            propertyMap.put("propertyId", propertyId);
-            propertyMap.put("priceOnWeekdays", priceOnWeekdays);
-            propertyMap.put("parentDistrictName", parentDistrictName);
-            propertyMap.put("districtName", districtName);
-            propertyMap.put("startAvailableDate", startAvailableDate);
-            propertyMap.put("endAvailableDate", endAvailableDate);
-            propertyMap.put("averageRating", averageRating);
-
-            // 查詢房源的圖片詳細資訊列表
-            List<PictureDtVo> pictureDtVoList = pictureDtVoMapper.listByPropertyIdAndSize(propertyId, DEFAULT_PICTURE_DT_SIZE, pictureDtOffset, DEFAULT_PICTURE_DT_LIMIT);
-            propertyMap.put("pictureDtList", pictureDtVoList);
-
-            // 查詢房源的評論數
-            Long reviewCount = propertyReviewVoMapper.countByPropertyId(propertyId);
-            propertyMap.put("reviewCount", reviewCount);
-
-            // 將房源 Map 添加到 leanPropertyList 中
-            leanPropertyList.add(propertyMap);
+            // 查詢房源的 DEFAULT_SIZE 的圖片DT列表，並取得下載圖片的預簽名 url
+            List<String> propertyImageUrlList= propertyService.getImageDownloadUrl(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
+            // 準備房源資訊的 Map
+            Map<String, Object> propertyMap = preparePropertyMap(propertyVo, propertyImageUrlList);
+            // 將房源資訊加入列表
+            propertyMapList.add(propertyMap);
         }
 
-        // 獲取總房源數和總頁數，並構建分頁資訊 Map
-        long totalResultCount = propertyVoMapper.countByFilter(filterMap);
-        long totalPages = paginator.calculateTotalPages(totalResultCount, DEFAULT_PROPERTY_LIMIT);
-        Map<String, Object> pagination = paginator.buildPaginationMap(totalResultCount, DEFAULT_PROPERTY_PAGE, totalPages, DEFAULT_PROPERTY_LIMIT);
-
-        // 構建結果 Map，包含房源列表和分頁資訊
+        // 準備用於存儲結果的 Map
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("result", leanPropertyList);
-        resultMap.put("pagination", pagination);
+        resultMap.put("propertyList", propertyMapList);
 
         return resultMap;
+    }
+
+    /**
+     * 準備房源資訊的 Map。
+     *
+     * @param propertyVo          房源對象
+     * @param propertyImageUrlList 房源圖片的 URL 列表
+     * @return 房源資訊的 Map
+     */
+    private Map<String, Object> preparePropertyMap(PropertyVo propertyVo, List<String> propertyImageUrlList) {
+        return new MapBuilder()
+                .put("imageUrls", propertyImageUrlList)
+                .put("districtId", propertyVo.getDistrictId())
+                .put("districtName", propertyVo.getDistrictName())
+                .put("parentDistrictId", propertyVo.getParentDistrictId())
+                .put("parentDistrictName", propertyVo.getParentDistrictName())
+                .put("propertyId", propertyVo.getPropertyId())
+                .put("propertyTitle", propertyVo.getPropertyTitle())
+                .put("priceOnWeekends", propertyVo.getPriceOnWeekends())
+                .put("priceOnWeekdays", propertyVo.getPriceOnWeekdays())
+                .put("averageRating", propertyVo.getAverageRating())
+                .put("reviewCount", propertyVo.getReviewCount())
+                .build();
+    }
+
+    /**
+     * 用於動態構建 Map 的內部類。
+     */
+    private static class MapBuilder {
+        private final Map<String, Object> map;
+
+        /**
+         * 創建一個新的 MapBuilder 實例。
+         */
+        public MapBuilder() {
+            this.map = new HashMap<>();
+        }
+
+        /**
+         * 在 Map 中添加鍵值對。
+         *
+         * @param key   鍵
+         * @param value 值
+         * @return 返回當前 MapBuilder 實例
+         */
+        public MapBuilder put(String key, Object value) {
+            map.put(key, value);
+            return this;
+        }
+
+        /**
+         * 構建並返回最終的 Map 物件。
+         *
+         * @return 構建完成的 Map 物件
+         */
+        public Map<String, Object> build() {
+            return map;
+        }
     }
 
 }
