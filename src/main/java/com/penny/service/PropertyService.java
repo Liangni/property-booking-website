@@ -14,6 +14,7 @@ import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.property.PropertySearchParam;
 import com.penny.request.property.PropertyUploadImageRequest;
 import com.penny.s3.S3Buckets;
+import com.penny.s3.S3Service;
 import com.penny.vo.PictureDtVo;
 import com.penny.vo.PropertyPictureVo;
 import com.penny.vo.PropertyVo;
@@ -22,8 +23,6 @@ import com.penny.vo.base.PictureDtBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.PropertyPictureBaseVo;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

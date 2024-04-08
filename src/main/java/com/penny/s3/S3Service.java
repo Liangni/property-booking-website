@@ -1,4 +1,4 @@
-package com.penny.service;
+package com.penny.s3;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
