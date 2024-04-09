@@ -14,6 +14,11 @@ import java.util.Map;
 public class InitialPageController {
     private final InitialPageService initialPageService;
 
+    /**
+     * 獲取初始頁面資料。
+     *
+     * @return 包含初始頁面資料的 Map
+     */
     @GetMapping("init")
     public Map<String, Object> getInitialPage(
     ) {
