@@ -41,10 +41,10 @@ public class PropertyController {
     }
 
     /**
-     * 上傳圖片URL以設置房源的圖片。
+     * 獲取房源圖片的上傳URL。
      *
      * @param uploadImageRequest 上傳圖片請求
-     * @return 圖片上傳URL的映射
+     * @return 圖片上傳URL的 map
      */
     @PostMapping("upload-image-url")
     public ResponseEntity<Map<String, String>> getPropertyImageUploadUrl(
@@ -54,7 +54,7 @@ public class PropertyController {
     }
 
     /**
-     * 獲取房源的圖片下載URL。
+     * 獲取房源圖片的下載URL。
      *
      * @param propertyId 房源ID
      * @param sizeNum 圖片大小編號
