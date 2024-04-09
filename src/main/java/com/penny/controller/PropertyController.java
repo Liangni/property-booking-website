@@ -5,10 +5,7 @@ import com.penny.request.property.PropertyUploadImageRequest;
 import com.penny.service.AmenityService;
 import com.penny.service.BedroomService;
 import com.penny.service.PropertyService;
-import com.penny.vo.AmenityVo;
-import com.penny.vo.BedroomVo;
-import com.penny.vo.BookingAvailabilityVo;
-import com.penny.vo.PropertyVo;
+import com.penny.vo.*;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -118,5 +115,18 @@ public class PropertyController {
             @PathVariable("propertyId") Long propertyId
     ) {
         return ResponseEntity.ok(propertyService.getPropertyBookingAvailability(propertyId));
+    }
+
+    /**
+     * 根據房源ID獲取房源評論。
+     *
+     * @param propertyId 房源ID
+     * @return 包含房源評論的 ResponseEntity
+     */
+    @GetMapping("{propertyId}/property-reviews")
+    public ResponseEntity<List<PropertyReviewVo>> getPropertyReviews(
+            @PathVariable("propertyId") Long propertyId
+    ) {
+        return ResponseEntity.ok(propertyService.getPropertyReviews(propertyId));
     }
 }

@@ -1,10 +1,7 @@
 package com.penny.service;
 
 import com.amazonaws.HttpMethod;
-import com.penny.dao.BookingAvailabilityVoMapper;
-import com.penny.dao.PictureDtVoMapper;
-import com.penny.dao.PropertyPictureVoMapper;
-import com.penny.dao.PropertyVoMapper;
+import com.penny.dao.*;
 import com.penny.dao.base.PictureBaseVoMapper;
 import com.penny.dao.base.PictureDtBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
@@ -16,10 +13,7 @@ import com.penny.request.property.PropertySearchParam;
 import com.penny.request.property.PropertyUploadImageRequest;
 import com.penny.s3.S3Buckets;
 import com.penny.s3.S3Service;
-import com.penny.vo.BookingAvailabilityVo;
-import com.penny.vo.PictureDtVo;
-import com.penny.vo.PropertyPictureVo;
-import com.penny.vo.PropertyVo;
+import com.penny.vo.*;
 import com.penny.vo.base.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,6 +47,8 @@ public class PropertyService {
     private final S3Buckets s3Buckets;
 
     private final BookingAvailabilityVoMapper bookingAvailabilityVoMapper;
+
+    private final PropertyReviewVoMapper propertyReviewVoMapper;
 
     /**
      * 根據給定的搜尋參數，獲取房源資訊。
@@ -221,6 +217,16 @@ public class PropertyService {
      */
     public List<BookingAvailabilityVo> getPropertyBookingAvailability(Long propertyId) {
         return bookingAvailabilityVoMapper.listByPropertyId(propertyId);
+    }
+
+    /**
+     * 獲取特定房源的評論列表。
+     *
+     * @param propertyId 房源ID
+     * @return 房源評論列表
+     */
+    public List<PropertyReviewVo> getPropertyReviews(Long propertyId) {
+        return propertyReviewVoMapper.listByPropertyId(propertyId);
     }
 
     /**

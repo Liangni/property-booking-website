@@ -35,18 +35,17 @@
         customer_id
     </sql>
 
-    <select id="countByPropertyIdList" parameterType="java.util.List" resultMap="CountByPropertyIdResultMap">
-        select count(property_review_id), property_id
-        from property_review
-        where property_id in
-        <foreach collection="propertyIdList" item="propertyId" open="(" separator="," close=")">
-            #{propertyId, jdbcType=BIGINT}
-        </foreach>
-        group by property_id
-    </select>
-
-    <select id="countByPropertyId" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select count(property_review_id)
+    <select id="listByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+            (
+                property_review_cleanliness +
+                property_review_accuracy +
+                property_review_checkin +
+                property_review_communication +
+                property_review_location +
+                property_review_value
+            ) / 6 as property_average_rating,
+            <include refid="Base_Column_List" />
         from property_review
         where property_id = #{propertyId, jdbcType=BIGINT}
     </select>
