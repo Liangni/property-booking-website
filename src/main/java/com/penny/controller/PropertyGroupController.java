@@ -16,6 +16,11 @@ import java.util.List;
 public class PropertyGroupController {
     private final PropertyGroupService propertyGroupService;
 
+    /**
+     * 獲取所有房屋分組。
+     *
+     * @return 房屋分組列表
+     */
     @GetMapping
     public ResponseEntity<List<PropertyGroupVo>> getPropertyGroups(
     ) {
