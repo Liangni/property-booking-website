@@ -35,7 +35,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         // 對 "/login/**" 和 "/register/**" 請求進行授權，允許所有人訪問
-                        req -> req.requestMatchers("/api/v1/auth/login","/api/v1/auth/register", "/error", "api/v1/properties/**", "api/v1/initialPage/**")
+                        req -> req.requestMatchers(
+                                    "/api/v1/auth/login",
+                                    "/api/v1/auth/register",
+                                    "/error",
+                                    "api/v1/properties/**",
+                                    "api/v1/initialPage/**",
+                                    "api/v1/property-groups/**"
+                                )
                                 .permitAll()
                                 // 對於任何其他請求：需要身份驗證
                                 .anyRequest()

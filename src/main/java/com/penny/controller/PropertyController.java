@@ -1,8 +1,6 @@
 package com.penny.controller;
 
-import com.amazonaws.Response;
 import com.penny.request.property.PropertySearchParam;
-import com.penny.request.property.PropertySearchRequest;
 import com.penny.request.property.PropertyUploadImageRequest;
 import com.penny.service.AmenityService;
 import com.penny.service.BedroomService;
@@ -10,8 +8,6 @@ import com.penny.service.PropertyService;
 import com.penny.vo.AmenityVo;
 import com.penny.vo.BedroomVo;
 import com.penny.vo.PropertyVo;
-import com.penny.vo.base.AmenityBaseVo;
-import com.penny.vo.base.BedroomBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
