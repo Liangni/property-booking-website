@@ -7,6 +7,7 @@ import com.penny.service.BedroomService;
 import com.penny.service.PropertyService;
 import com.penny.vo.AmenityVo;
 import com.penny.vo.BedroomVo;
+import com.penny.vo.BookingAvailabilityVo;
 import com.penny.vo.PropertyVo;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
@@ -104,5 +105,18 @@ public class PropertyController {
             @PathVariable("propertyId") Long propertyId
     ) {
         return ResponseEntity.ok(amenityService.getPropertyAmenity(propertyId));
+    }
+
+    /**
+     * 根據房源ID獲取預定日期。
+     *
+     * @param propertyId 房源ID
+     * @return ResponseEntity<List<BookingAvailabilityVo>> 包含房源預定日期的 ResponseEntity
+     */
+    @GetMapping("{propertyId}/booking-availability")
+    public ResponseEntity<List<BookingAvailabilityVo>> getPropertyBookingAvailability(
+            @PathVariable("propertyId") Long propertyId
+    ) {
+        return ResponseEntity.ok(propertyService.getPropertyBookingAvailability(propertyId));
     }
 }
