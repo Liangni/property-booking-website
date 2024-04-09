@@ -26,6 +26,12 @@ public class PropertyController {
 
         private final AmenityService amenityService;
 
+    /**
+     * 獲取所有房源。
+     *
+     * @param request 房源搜索參數
+     * @return 房源列表
+     */
     @GetMapping
     public ResponseEntity<List<PropertyVo>> getProperties(
             @ModelAttribute PropertySearchParam request
@@ -33,6 +39,12 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getProperties(request));
     }
 
+    /**
+     * 上傳圖片URL以設置房源的圖片。
+     *
+     * @param uploadImageRequest 上傳圖片請求
+     * @return 圖片上傳URL的映射
+     */
     @PostMapping("upload-image-url")
     public ResponseEntity<Map<String, String>> getPropertyImageUploadUrl(
             @RequestBody PropertyUploadImageRequest uploadImageRequest
@@ -40,6 +52,13 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getImageUploadUrl(uploadImageRequest));
     }
 
+    /**
+     * 獲取房源的圖片下載URL。
+     *
+     * @param propertyId 房源ID
+     * @param sizeNum 圖片大小編號
+     * @return 圖片下載URL列表
+     */
     @GetMapping("{propertyId}/download-image-url")
     public ResponseEntity<List<String>> getPropertyImageDownloadUrl(
             @PathVariable Long propertyId,
@@ -48,6 +67,12 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getImageDownloadUrl(propertyId, sizeNum));
     }
 
+    /**
+     * 獲取單個房源的資訊。
+     *
+     * @param propertyId 房源ID
+     * @return 房源資訊
+     */
     @GetMapping("{propertyId}")
     public ResponseEntity<PropertyBaseVo> getProperty(
             @PathVariable("propertyId") Long propertyId
@@ -55,6 +80,12 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getProperty(propertyId));
     }
 
+    /**
+     * 獲取房源的房間列表。
+     *
+     * @param propertyId 房源ID
+     * @return 房間列表
+     */
     @GetMapping("{propertyId}/rooms")
     public  ResponseEntity<List<BedroomVo>> getPropertyRoom(
             @PathVariable("propertyId") Long propertyId
@@ -62,6 +93,12 @@ public class PropertyController {
         return ResponseEntity.ok(bedroomService.getPropertyBedroomList(propertyId));
     }
 
+    /**
+     * 獲取房源的設施列表。
+     *
+     * @param propertyId 房源ID
+     * @return 設施列表的 map
+     */
     @GetMapping("{propertyId}/amenity")
     public ResponseEntity<Map<String, List<AmenityVo>>> getPropertyAmenity(
             @PathVariable("propertyId") Long propertyId
