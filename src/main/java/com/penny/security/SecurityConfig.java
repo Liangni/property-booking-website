@@ -41,7 +41,8 @@ public class SecurityConfig {
                                     "/error",
                                     "api/v1/properties/**",
                                     "api/v1/initial-page/**",
-                                    "api/v1/property-groups/**"
+                                    "api/v1/property-groups/**",
+                                    "api/v1/property-share-types/**"
                                 )
                                 .permitAll()
                                 // 對於任何其他請求：需要身份驗證

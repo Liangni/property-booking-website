@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.PropertyShareTypeVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.PropertyShareTypeVo">
+        <id column="property_share_type_id" jdbcType="BIGINT" property="propertyShareTypeId" />
+        <result column="property_share_type_name" jdbcType="VARCHAR" property="propertyShareTypeName" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        property_share_type_id, property_share_type_name
+    </sql>
+    <select id="listAll"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from property_share_type
+    </select>
+</mapper>
