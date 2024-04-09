@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/initialPage")
+@RequestMapping("api/v1/initial-page")
 @RequiredArgsConstructor
 public class InitialPageController {
     private final InitialPageService initialPageService;
