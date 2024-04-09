@@ -53,59 +53,24 @@ public class InitialPageService {
     /**
      * 準備房源資訊的 Map。
      *
-     * @param propertyVo          房源對象
+     * @param propertyVo          房源物件
      * @param propertyImageUrlList 房源圖片的 URL 列表
      * @return 房源資訊的 Map
      */
     private Map<String, Object> preparePropertyMap(PropertyVo propertyVo, List<String> propertyImageUrlList) {
-        return new MapBuilder()
-                .put("imageUrls", propertyImageUrlList)
-                .put("districtId", propertyVo.getDistrictId())
-                .put("districtName", propertyVo.getDistrictName())
-                .put("parentDistrictId", propertyVo.getParentDistrictId())
-                .put("parentDistrictName", propertyVo.getParentDistrictName())
-                .put("propertyId", propertyVo.getPropertyId())
-                .put("propertyTitle", propertyVo.getPropertyTitle())
-                .put("priceOnWeekends", propertyVo.getPriceOnWeekends())
-                .put("priceOnWeekdays", propertyVo.getPriceOnWeekdays())
-                .put("averageRating", propertyVo.getAverageRating())
-                .put("reviewCount", propertyVo.getReviewCount())
-                .build();
-    }
-
-    /**
-     * 用於動態構建 Map 的內部類。
-     */
-    private static class MapBuilder {
-        private final Map<String, Object> map;
-
-        /**
-         * 創建一個新的 MapBuilder 實例。
-         */
-        public MapBuilder() {
-            this.map = new HashMap<>();
-        }
-
-        /**
-         * 在 Map 中添加鍵值對。
-         *
-         * @param key   鍵
-         * @param value 值
-         * @return 返回當前 MapBuilder 實例
-         */
-        public MapBuilder put(String key, Object value) {
-            map.put(key, value);
-            return this;
-        }
-
-        /**
-         * 構建並返回最終的 Map 物件。
-         *
-         * @return 構建完成的 Map 物件
-         */
-        public Map<String, Object> build() {
-            return map;
-        }
+        return Map.ofEntries(
+                Map.entry("imageUrls", propertyImageUrlList),
+                Map.entry("districtId", propertyVo.getDistrictId()),
+                Map.entry("districtName", propertyVo.getDistrictName()),
+                Map.entry("parentDistrictId", propertyVo.getParentDistrictId()),
+                Map.entry("parentDistrictName", propertyVo.getParentDistrictName()),
+                Map.entry("propertyId", propertyVo.getPropertyId()),
+                Map.entry("propertyTitle", propertyVo.getPropertyTitle()),
+                Map.entry("priceOnWeekends", propertyVo.getPriceOnWeekends()),
+                Map.entry("priceOnWeekdays", propertyVo.getPriceOnWeekdays()),
+                Map.entry("averageRating", propertyVo.getAverageRating()),
+                Map.entry("reviewCount", propertyVo.getReviewCount())
+        );
     }
 
 }
