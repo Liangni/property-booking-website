@@ -19,6 +19,12 @@ public class AuthenticationController {
 
     private final AuthenticationService authService;
 
+    /**
+     * 註冊新使用者。
+     *
+     * @param request 註冊請求
+     * @return 認證回應實體
+     */
     @PostMapping("register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody EcUserBaseVo request
@@ -27,10 +33,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(authService.register(request));
     }
 
+    /**
+     * 使用者登入。
+     *
+     * @param request 登入請求
+     * @return 認證回應實體
+     */
     @PostMapping("login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody EcUserBaseVo request
-    ) throws AuthenticationException {
+    )  {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 }
