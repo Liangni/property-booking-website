@@ -16,6 +16,11 @@ import java.util.List;
 public class PropertyShareTypeController {
     private final PropertyShareTypeService propertyShareTypeService;
 
+    /**
+     * 獲取所有房屋共享類型。
+     *
+     * @return 包含所有房屋共享類型的 ResponseEntity
+     */
     @GetMapping
     public ResponseEntity<List<PropertyShareTypeVo>> getPropertyShareTypes(
     ) {
