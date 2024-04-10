@@ -9,5 +9,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper=true)
 @ToString(callSuper=true)
 public class PropertyReviewVo extends PropertyReviewBaseVo {
-    private Integer propertyAverageRating;
+    private Double propertyAverageRating;
 }

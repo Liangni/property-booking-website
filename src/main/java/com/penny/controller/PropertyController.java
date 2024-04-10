@@ -2,9 +2,7 @@ package com.penny.controller;
 
 import com.penny.request.property.PropertySearchParam;
 import com.penny.request.property.PropertyUploadImageRequest;
-import com.penny.service.AmenityService;
-import com.penny.service.BedroomService;
-import com.penny.service.PropertyService;
+import com.penny.service.*;
 import com.penny.vo.*;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,12 @@ public class PropertyController {
 
         private final AmenityService amenityService;
 
+        private final BookingAvailabilityService bookingAvailabilityService;
+
+        private final PropertyReviewService propertyReviewService;
+
+        private final PictureService pictureService;
+
     /**
      * 獲取所有房源。
      *
@@ -40,14 +44,14 @@ public class PropertyController {
     /**
      * 獲取房源圖片的上傳URL。
      *
-     * @param uploadImageRequest 上傳圖片請求
+     * @param request 上傳圖片請求
      * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
      */
     @PostMapping("upload-image-url")
-    public ResponseEntity<Map<String, String>> getPropertyImageUploadUrl(
-            @RequestBody PropertyUploadImageRequest uploadImageRequest
+    public ResponseEntity<Map<String, String>> getPropertyImageUploadUrlMap(
+            @RequestBody PropertyUploadImageRequest request
             ) {
-        return ResponseEntity.ok(propertyService.getImageUploadUrl(uploadImageRequest));
+        return ResponseEntity.ok(pictureService.getPropertyImageUploadUrlMap(request));
     }
 
     /**
@@ -58,11 +62,11 @@ public class PropertyController {
      * @return 包含圖片下載 URL 列表的 ResponseEntity
      */
     @GetMapping("{propertyId}/download-image-url")
-    public ResponseEntity<List<String>> getPropertyImageDownloadUrl(
+    public ResponseEntity<List<String>> getPropertyImageDownloadUrls(
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
     ) {
-        return ResponseEntity.ok(propertyService.getImageDownloadUrl(propertyId, sizeNum));
+        return ResponseEntity.ok(pictureService.listPropertyImageDownloadUrls(propertyId, sizeNum));
     }
 
     /**
@@ -85,10 +89,10 @@ public class PropertyController {
      * @return 包含房間列表的 ResponseEntity
      */
     @GetMapping("{propertyId}/rooms")
-    public  ResponseEntity<List<BedroomVo>> getPropertyRoom(
+    public  ResponseEntity<List<BedroomVo>> getPropertyRooms(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(bedroomService.getPropertyBedroomList(propertyId));
+        return ResponseEntity.ok(bedroomService.listPropertyBedrooms(propertyId));
     }
 
     /**
@@ -98,10 +102,10 @@ public class PropertyController {
      * @return 包含設施列表的 Map 的 ResponseEntity
      */
     @GetMapping("{propertyId}/amenity")
-    public ResponseEntity<Map<String, List<AmenityVo>>> getPropertyAmenity(
+    public ResponseEntity<Map<String, List<AmenityVo>>> getGroupedPropertyAmenityMap(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(amenityService.getPropertyAmenity(propertyId));
+        return ResponseEntity.ok(amenityService.listGroupedPropertyAmenities(propertyId));
     }
 
     /**
@@ -114,7 +118,7 @@ public class PropertyController {
     public ResponseEntity<List<BookingAvailabilityVo>> getPropertyBookingAvailability(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(propertyService.getPropertyBookingAvailability(propertyId));
+        return ResponseEntity.ok(bookingAvailabilityService.listPropertyBookingAvailability(propertyId));
     }
 
     /**
@@ -127,6 +131,6 @@ public class PropertyController {
     public ResponseEntity<List<PropertyReviewVo>> getPropertyReviews(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(propertyService.getPropertyReviews(propertyId));
+        return ResponseEntity.ok(propertyReviewService.listPropertyReview(propertyId));
     }
 }

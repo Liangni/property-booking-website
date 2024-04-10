@@ -30,7 +30,7 @@ public class AmenityService {
      * @return 返回一個 map，其中包含根據設施類型分類的設施列表。
      * @throws FieldConflictException 如果房源ID為空，則拋出 FieldConflictException 異常。
      */
-    public Map<String, List<AmenityVo>> getPropertyAmenity(Long propertyId) {
+    public Map<String, List<AmenityVo>> listGroupedPropertyAmenities(Long propertyId) {
         // 檢查參數，如果房源ID為空，拋出異常
         if(propertyId == null) {
             throw new FieldConflictException("propertyId is required");
@@ -40,7 +40,7 @@ public class AmenityService {
         List<AmenityVo> propertyAmenityList = amenityVoMapper.listByPropertyId(propertyId);
 
         // 將設施列表按類型分類並返回
-        return classifyByAmenityType(propertyAmenityList);
+        return groupByAmenityType(propertyAmenityList);
     }
 
     /**
@@ -49,7 +49,7 @@ public class AmenityService {
      * @param amenityList 要分類的設施列表。
      * @return 返回一個 map，其中包含根據設施類型分類的設施列表。
      */
-    private Map<String, List<AmenityVo>> classifyByAmenityType(List<AmenityVo> amenityList) {
+    private Map<String, List<AmenityVo>> groupByAmenityType(List<AmenityVo> amenityList) {
         Map<String, List<AmenityVo>> resultMap = new HashMap<>();
         Map<Long, String> amenityIdNameMap = new HashMap<>();
 

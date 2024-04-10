@@ -14,7 +14,7 @@ public class BedroomService {
 
     private final BedroomVoMapper bedroomVoMapper;
 
-    public List<BedroomVo> getPropertyBedroomList(Long propertyId) {
+    public List<BedroomVo> listPropertyBedrooms(Long propertyId) {
         return bedroomVoMapper.listByPropertyId(propertyId);
     }
 }

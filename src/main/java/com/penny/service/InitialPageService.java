@@ -16,6 +16,7 @@ public class InitialPageService {
 
     private final PropertyVoMapper propertyVoMapper;
     private final PropertyService propertyService;
+    private final PictureService pictureService;
 
     /**
      * 獲取初始頁面資料，包括房源圖片和相關屬性。
@@ -36,7 +37,7 @@ public class InitialPageService {
         List<Map<String, Object>> propertyMapList = new ArrayList<>();
         for(PropertyVo propertyVo: propertyVoList) {
             // 查詢房源的 DEFAULT_SIZE 的圖片DT列表，並取得下載圖片的預簽名 url
-            List<String> propertyImageUrlList= propertyService.getImageDownloadUrl(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
+            List<String> propertyImageUrlList= pictureService.listPropertyImageDownloadUrls(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
             // 準備房源資訊的 Map
             Map<String, Object> propertyMap = preparePropertyMap(propertyVo, propertyImageUrlList);
             // 將房源資訊加入列表
