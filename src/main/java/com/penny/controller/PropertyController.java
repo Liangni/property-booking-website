@@ -28,6 +28,8 @@ public class PropertyController {
 
         private final PictureService pictureService;
 
+        private final DiscountService discountService;
+
     /**
      * 獲取所有房源。
      *
@@ -132,5 +134,18 @@ public class PropertyController {
             @PathVariable("propertyId") Long propertyId
     ) {
         return ResponseEntity.ok(propertyReviewService.listPropertyReview(propertyId));
+    }
+
+    /**
+     * 獲取特定房源的折扣列表。
+     *
+     * @param propertyId 房源ID
+     * @return 包含房源折扣列表的 ResponseEntity
+     */
+    @GetMapping("{propertyId}/discounts")
+    public ResponseEntity<List<DiscountVo>> getPropertyDiscounts(
+            @PathVariable("propertyId") Long propertyId
+    ) {
+        return ResponseEntity.ok(discountService.getPropertyDiscount(propertyId));
     }
 }

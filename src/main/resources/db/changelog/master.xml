@@ -25,6 +25,7 @@
     <include file="/db/scripts/schema/16_create_property_picture_table.sql"/>
     <include file="/db/scripts/schema/17_create_property_review_table.sql"/>
     <include file="/db/scripts/schema/18_create_booking_availability_table.sql"/>
+    <include file="/db/scripts/schema/19_create_discount_table.sql"/>
 
     <!--  initial data-->
     <include file="/db/scripts/initial_data/01_insert_data_property_group.sql"/>
@@ -47,4 +48,5 @@
     <include file="/db/scripts/example_data/07_insert_example_property_picture.sql"/>
     <include file="/db/scripts/example_data/08_insert_example_property_review.sql"/>
     <include file="/db/scripts/example_data/09_insert_example_property_amenity.sql"/>
+    <include file="/db/scripts/example_data/10_insert_example_discount.sql"/>
 </databaseChangeLog>

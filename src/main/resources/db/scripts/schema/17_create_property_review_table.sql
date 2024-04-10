@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS property_review
     property_review_location INT NOT NULL,
     property_review_value INT NOT NULL,
     property_review_comment TEXT,
-    property_review_created_at TIMESTAMP NOT NULL,
+    property_review_created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     property_id BIGINT NOT NULL,
     customer_id BIGINT NOT NULL,
     FOREIGN KEY (property_id) REFERENCES property(property_id),
