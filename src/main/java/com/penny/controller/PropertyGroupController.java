@@ -19,7 +19,7 @@ public class PropertyGroupController {
     /**
      * 獲取所有房屋分組。
      *
-     * @return 房屋分組列表
+     * @return 包含房屋分組列表的 ResponseEntity
      */
     @GetMapping
     public ResponseEntity<List<PropertyGroupVo>> getPropertyGroups(

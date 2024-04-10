@@ -23,7 +23,7 @@ public class AuthenticationController {
      * 註冊新使用者。
      *
      * @param request 註冊請求
-     * @return 認證回應實體
+     * @return 包含認證回應實體的 ResponseEntity
      */
     @PostMapping("register")
     public ResponseEntity<AuthenticationResponse> register(
@@ -37,7 +37,7 @@ public class AuthenticationController {
      * 使用者登入。
      *
      * @param request 登入請求
-     * @return 認證回應實體
+     * @return 包含認證回應實體的 ResponseEntity
      */
     @PostMapping("login")
     public ResponseEntity<AuthenticationResponse> login(

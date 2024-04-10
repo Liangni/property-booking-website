@@ -17,7 +17,7 @@ public class InitialPageController {
     /**
      * 獲取初始頁面資料。
      *
-     * @return 包含初始頁面資料的 Map
+     * @return 包含初始頁面資料的 Map 的 ResponseEntity
      */
     @GetMapping("init")
     public Map<String, Object> getInitialPage(

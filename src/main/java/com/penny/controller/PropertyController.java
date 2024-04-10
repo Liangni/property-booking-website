@@ -28,7 +28,7 @@ public class PropertyController {
      * 獲取所有房源。
      *
      * @param request 房源搜索參數
-     * @return 房源列表
+     * @return 包含房源列表的 ResponseEntity
      */
     @GetMapping
     public ResponseEntity<List<PropertyVo>> getProperties(
@@ -41,7 +41,7 @@ public class PropertyController {
      * 獲取房源圖片的上傳URL。
      *
      * @param uploadImageRequest 上傳圖片請求
-     * @return 圖片上傳URL的 map
+     * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
      */
     @PostMapping("upload-image-url")
     public ResponseEntity<Map<String, String>> getPropertyImageUploadUrl(
@@ -55,7 +55,7 @@ public class PropertyController {
      *
      * @param propertyId 房源ID
      * @param sizeNum 圖片大小編號
-     * @return 圖片下載URL列表
+     * @return 包含圖片下載 URL 列表的 ResponseEntity
      */
     @GetMapping("{propertyId}/download-image-url")
     public ResponseEntity<List<String>> getPropertyImageDownloadUrl(
@@ -69,7 +69,7 @@ public class PropertyController {
      * 獲取單個房源的資訊。
      *
      * @param propertyId 房源ID
-     * @return 房源資訊
+     * @return 包含房源資訊的 ResponseEntity
      */
     @GetMapping("{propertyId}")
     public ResponseEntity<PropertyBaseVo> getProperty(
@@ -82,7 +82,7 @@ public class PropertyController {
      * 獲取房源的房間列表。
      *
      * @param propertyId 房源ID
-     * @return 房間列表
+     * @return 包含房間列表的 ResponseEntity
      */
     @GetMapping("{propertyId}/rooms")
     public  ResponseEntity<List<BedroomVo>> getPropertyRoom(
@@ -95,7 +95,7 @@ public class PropertyController {
      * 獲取房源的設施列表。
      *
      * @param propertyId 房源ID
-     * @return 設施列表的 map
+     * @return 包含設施列表的 Map 的 ResponseEntity
      */
     @GetMapping("{propertyId}/amenity")
     public ResponseEntity<Map<String, List<AmenityVo>>> getPropertyAmenity(
