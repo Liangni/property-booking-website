@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,35 +43,47 @@ public class PropertyService {
      * @throws FieldConflictException 如果 startAvailableDateString 存在而 endAvailableDateString 不存在
      * @throws FieldConflictException 如果 startAvailableDateString 或 endAvailableDateString 格式錯誤
      */
-    public List<PropertyVo> getProperties(PropertySearchParam request) {
+    public List<PropertyVo> getPublishedProperties(PropertySearchParam request) {
+        // 從查詢參數中獲取可預定天數、開始預定日期字串和結束預定日期字串
         Integer numOfAvailableDays = request.getNumOfAvailableDays();
         String startAvailableDateString = request.getStartAvailableDateString();
         String endAvailableDateString = request.getEndAvailableDateString();
 
+        // 檢查參數中是否存在衝突情況
         if (numOfAvailableDays != null && startAvailableDateString != null) {
             throw new FieldConflictException("numOfAvailableDays and startAvailableDateString cannot coexist");
         }
 
+        // 如果存在開始預定日期但沒有結束預定日期，則拋出異常
         if (startAvailableDateString != null && endAvailableDateString == null) {
             throw new FieldConflictException("startAvailableDateString cannot exist without endAvailableDateString");
         }
 
+        // 檢查日期格式是否有效，若無效則拋出異常
         if(!isValidDateString(startAvailableDateString) || !isValidDateString(endAvailableDateString)) {
             throw new FieldConflictException("invalid startAvailableDateString and endAvailableDateString format");
         }
 
-        if (numOfAvailableDays != null) {
-            return propertyVoMapper.listByNumOfAvailableDays(request);
-        }
+        // 初始化結果列表
+        List<PropertyVo> resultList;
 
-        if (startAvailableDateString != null) {
+        // 根據情況執行不同的查詢操作並賦值給結果列表
+        if (numOfAvailableDays != null) {
+            resultList =  propertyVoMapper.listByNumOfAvailableDays(request);
+        } else if (startAvailableDateString != null) {
             request.setStartAvailableDate(parseDateString(startAvailableDateString));
             request.setEndAvailableDate(parseDateString(endAvailableDateString));
 
-            return propertyVoMapper.listByStartAndEndAvailableDate(request);
+            resultList =  propertyVoMapper.listByStartAndEndAvailableDate(request);
+        } else  {
+            resultList = propertyVoMapper.listByPropertyAttributes(request);
         }
 
-        return propertyVoMapper.listByPropertyAttributes(request);
+        // 將結果列表中已發佈的房源過濾出來並返回
+        return resultList
+            .stream()
+            .filter(PropertyVo::getIsPublished)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -78,11 +91,19 @@ public class PropertyService {
      *
      * @param propertyId 房源 ID
      * @return 房源基本資訊
-     * @throws ResourceNotFoundException 如果找不到對應的房源
+     * @throws ResourceNotFoundException 如果找不到指定的房源或房源未發佈，則拋出此異常
      */
-    public PropertyBaseVo getProperty(Long propertyId) {
-        return Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
+    public PropertyBaseVo getPublishedProperty(Long propertyId) {
+        // 根據房源 ID 查詢房源基本資訊
+        PropertyBaseVo property = Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
                 .orElseThrow(() -> new ResourceNotFoundException("property %s is not found".formatted(propertyId)));
+
+        // 如果房源未發佈，則拋出異常
+        if (!property.getIsPublished()) {
+            throw new ResourceNotFoundException("property %s is not found".formatted(propertyId));
+        }
+
+        return property;
     }
 
     /**

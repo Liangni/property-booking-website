@@ -40,7 +40,7 @@ public class PropertyController {
     public ResponseEntity<List<PropertyVo>> getProperties(
             @ModelAttribute PropertySearchParam request
     ) {
-        return ResponseEntity.ok(propertyService.getProperties(request));
+        return ResponseEntity.ok(propertyService.getPublishedProperties(request));
     }
 
     /**
@@ -81,7 +81,7 @@ public class PropertyController {
     public ResponseEntity<PropertyBaseVo> getProperty(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(propertyService.getProperty(propertyId));
+        return ResponseEntity.ok(propertyService.getPublishedProperty(propertyId));
     }
 
     /**
