@@ -68,7 +68,7 @@ public class PropertyController {
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
     ) {
-        return ResponseEntity.ok(pictureService.listPropertyImageDownloadUrls(propertyId, sizeNum));
+        return ResponseEntity.ok(pictureService.listPublishedPropertyImageDownloadUrls(propertyId, sizeNum));
     }
 
     /**
