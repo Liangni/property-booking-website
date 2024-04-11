@@ -36,12 +36,14 @@ public class InitialPageService {
         // 準備用於存儲房源資訊的列表
         List<Map<String, Object>> propertyMapList = new ArrayList<>();
         for(PropertyVo propertyVo: propertyVoList) {
+            // 只保留已發布的房源資訊
+            if (!propertyVo.getIsPublished()) continue;
+
             // 查詢房源的 DEFAULT_SIZE 的圖片DT列表，並取得下載圖片的預簽名 url
             List<String> propertyImageUrlList= pictureService.listPropertyImageDownloadUrls(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
-            // 準備房源資訊的 Map
-            Map<String, Object> propertyMap = preparePropertyMap(propertyVo, propertyImageUrlList);
+
             // 將房源資訊加入列表
-            propertyMapList.add(propertyMap);
+            propertyMapList.add(preparePropertyMap(propertyVo, propertyImageUrlList));
         }
 
         // 準備用於存儲結果的 Map
