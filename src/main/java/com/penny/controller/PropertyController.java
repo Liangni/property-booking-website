@@ -146,6 +146,6 @@ public class PropertyController {
     public ResponseEntity<List<DiscountVo>> getPropertyDiscounts(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(discountService.getPropertyDiscount(propertyId));
+        return ResponseEntity.ok(discountService.getPublishedPropertyDiscount(propertyId));
     }
 }
