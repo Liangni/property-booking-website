@@ -133,7 +133,7 @@ public class PropertyController {
     public ResponseEntity<List<PropertyReviewVo>> getPropertyReviews(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(propertyReviewService.listPropertyReview(propertyId));
+        return ResponseEntity.ok(propertyReviewService.listPublishedPropertyReview(propertyId));
     }
 
     /**
