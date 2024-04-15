@@ -120,7 +120,7 @@ public class PropertyController {
     public ResponseEntity<List<BookingAvailabilityVo>> getPropertyBookingAvailability(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(bookingAvailabilityService.listPropertyBookingAvailability(propertyId));
+        return ResponseEntity.ok(bookingAvailabilityService.listPublishedPropertyBookingAvailability(propertyId));
     }
 
     /**
