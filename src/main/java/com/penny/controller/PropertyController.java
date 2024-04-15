@@ -94,7 +94,7 @@ public class PropertyController {
     public  ResponseEntity<List<BedroomVo>> getPropertyRooms(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(bedroomService.listPropertyBedrooms(propertyId));
+        return ResponseEntity.ok(bedroomService.listPublishedPropertyBedrooms(propertyId));
     }
 
     /**
