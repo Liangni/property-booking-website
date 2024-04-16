@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.BookingOrderBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.BookingOrderBaseVo">
+    <id column="booking_order_id" jdbcType="BIGINT" property="bookingOrderId" />
+    <result column="checkin_date" jdbcType="DATE" property="checkinDate" />
+    <result column="checkout_date" jdbcType="DATE" property="checkoutDate" />
+    <result column="guest_name" jdbcType="VARCHAR" property="guestName" />
+    <result column="guest_email" jdbcType="VARCHAR" property="guestEmail" />
+    <result column="guest_phone" jdbcType="VARCHAR" property="guestPhone" />
+    <result column="arrival_time" jdbcType="VARCHAR" property="arrivalTime" />
+    <result column="guest_message" jdbcType="VARCHAR" property="guestMessage" />
+    <result column="order_total" jdbcType="NUMERIC" property="orderTotal" />
+    <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+    <result column="host_id" jdbcType="BIGINT" property="hostId" />
+    <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+    <result column="discount_id" jdbcType="BIGINT" property="discountId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    booking_order_id, checkin_date, checkout_date, guest_name, guest_email, guest_phone, 
+    arrival_time, guest_message, order_total, property_id, host_id, customer_id, discount_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from booking_order
+    where booking_order_id = #{bookingOrderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from booking_order
+    where booking_order_id = #{bookingOrderId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="booking_order_id" keyProperty="bookingOrderId" parameterType="com.penny.vo.base.BookingOrderBaseVo" useGeneratedKeys="true">
+    insert into booking_order (checkin_date, checkout_date, guest_name, 
+      guest_email, guest_phone, arrival_time, 
+      guest_message, order_total, property_id, 
+      host_id, customer_id, discount_id
+      )
+    values (#{checkinDate,jdbcType=DATE}, #{checkoutDate,jdbcType=DATE}, #{guestName,jdbcType=VARCHAR}, 
+      #{guestEmail,jdbcType=VARCHAR}, #{guestPhone,jdbcType=VARCHAR}, #{arrivalTime,jdbcType=VARCHAR}, 
+      #{guestMessage,jdbcType=VARCHAR}, #{orderTotal,jdbcType=NUMERIC}, #{propertyId,jdbcType=BIGINT}, 
+      #{hostId,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT}, #{discountId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="booking_order_id" keyProperty="bookingOrderId" parameterType="com.penny.vo.base.BookingOrderBaseVo" useGeneratedKeys="true">
+    insert into booking_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="checkinDate != null">
+        checkin_date,
+      </if>
+      <if test="checkoutDate != null">
+        checkout_date,
+      </if>
+      <if test="guestName != null">
+        guest_name,
+      </if>
+      <if test="guestEmail != null">
+        guest_email,
+      </if>
+      <if test="guestPhone != null">
+        guest_phone,
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time,
+      </if>
+      <if test="guestMessage != null">
+        guest_message,
+      </if>
+      <if test="orderTotal != null">
+        order_total,
+      </if>
+      <if test="propertyId != null">
+        property_id,
+      </if>
+      <if test="hostId != null">
+        host_id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="discountId != null">
+        discount_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="checkinDate != null">
+        #{checkinDate,jdbcType=DATE},
+      </if>
+      <if test="checkoutDate != null">
+        #{checkoutDate,jdbcType=DATE},
+      </if>
+      <if test="guestName != null">
+        #{guestName,jdbcType=VARCHAR},
+      </if>
+      <if test="guestEmail != null">
+        #{guestEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="guestPhone != null">
+        #{guestPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalTime != null">
+        #{arrivalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="guestMessage != null">
+        #{guestMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTotal != null">
+        #{orderTotal,jdbcType=NUMERIC},
+      </if>
+      <if test="propertyId != null">
+        #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="hostId != null">
+        #{hostId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="discountId != null">
+        #{discountId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.BookingOrderBaseVo">
+    update booking_order
+    <set>
+      <if test="checkinDate != null">
+        checkin_date = #{checkinDate,jdbcType=DATE},
+      </if>
+      <if test="checkoutDate != null">
+        checkout_date = #{checkoutDate,jdbcType=DATE},
+      </if>
+      <if test="guestName != null">
+        guest_name = #{guestName,jdbcType=VARCHAR},
+      </if>
+      <if test="guestEmail != null">
+        guest_email = #{guestEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="guestPhone != null">
+        guest_phone = #{guestPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time = #{arrivalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="guestMessage != null">
+        guest_message = #{guestMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTotal != null">
+        order_total = #{orderTotal,jdbcType=NUMERIC},
+      </if>
+      <if test="propertyId != null">
+        property_id = #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="hostId != null">
+        host_id = #{hostId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="discountId != null">
+        discount_id = #{discountId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where booking_order_id = #{bookingOrderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.BookingOrderBaseVo">
+    update booking_order
+    set checkin_date = #{checkinDate,jdbcType=DATE},
+      checkout_date = #{checkoutDate,jdbcType=DATE},
+      guest_name = #{guestName,jdbcType=VARCHAR},
+      guest_email = #{guestEmail,jdbcType=VARCHAR},
+      guest_phone = #{guestPhone,jdbcType=VARCHAR},
+      arrival_time = #{arrivalTime,jdbcType=VARCHAR},
+      guest_message = #{guestMessage,jdbcType=VARCHAR},
+      order_total = #{orderTotal,jdbcType=NUMERIC},
+      property_id = #{propertyId,jdbcType=BIGINT},
+      host_id = #{hostId,jdbcType=BIGINT},
+      customer_id = #{customerId,jdbcType=BIGINT},
+      discount_id = #{discountId,jdbcType=BIGINT}
+    where booking_order_id = #{bookingOrderId,jdbcType=BIGINT}
+  </update>
+</mapper>

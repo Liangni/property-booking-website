@@ -17,4 +17,26 @@
         from booking_availability
         where property_id = #{propertyId,jdbcType=BIGINT}
     </select>
+
+    <select id="listByStartAndEndDate" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from booking_availability
+        where property_id = #{propertyId,jdbcType=BIGINT}
+            and
+            booking_availability_date >= #{startDate}
+            and
+            booking_availability_date &lt;= #{endDate};
+    </select>
+
+    <update id="setStatusToBookingByPrimaryKeyList" parameterType="java.util.List">
+        update booking_availability
+        <set>
+            booking_availability_status = 'booked'
+        </set>
+        where booking_availability_id in
+        <foreach collection="bookingAvailabilityIdList" item="bookingAvailabilityId" open="(" separator="," close=")">
+            #{bookingAvailabilityId, jdbcType=BIGINT}
+        </foreach>
+    </update>
 </mapper>
