@@ -1,14 +1,17 @@
 package com.penny.service;
 
 import com.penny.dao.BookingAvailabilityVoMapper;
+import com.penny.dao.BookingOrderVoMapper;
 import com.penny.dao.DiscountVoMapper;
 import com.penny.dao.base.BookingOrderBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
+import com.penny.exception.UnauthorizedException;
 import com.penny.request.bookingOrder.BookingOrderCreateRequest;
 import com.penny.util.DateHelper;
 import com.penny.vo.BookingAvailabilityVo;
+import com.penny.vo.BookingOrderVo;
 import com.penny.vo.DiscountVo;
 import com.penny.vo.base.BookingOrderBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
@@ -31,6 +34,8 @@ public class BookingOrderService {
     private final DiscountVoMapper discountVoMapper;
 
     private final BookingOrderBaseVoMapper bookingOrderBaseVoMapper;
+
+    private final BookingOrderVoMapper bookingOrderVoMapper;
 
     private final EcUserService ecUserService;
 
@@ -136,6 +141,26 @@ public class BookingOrderService {
                 .map(BookingAvailabilityVo::getBookingAvailabilityId)
                 .collect(Collectors.toList());
         bookingAvailabilityVoMapper.setStatusToBookingByPrimaryKeyList(bookingAvailabilityIdList);
+    }
+
+    /**
+     * 根據用戶類型取得使用者的預訂訂單列表。
+     *
+     * @param ecUserId 使用者ID
+     * @param isHost 是否為房東
+     * @return 符合條件的預訂訂單列表
+     */
+    public List<BookingOrderVo> getUserBookingOrders(Long ecUserId, Boolean isHost) {
+        Long loginEcUserId = ecUserService.getLoginUser().getEcUserId();
+
+        if (!ecUserId.equals(loginEcUserId)) {
+            throw new UnauthorizedException("login user is not authorized to the resource");
+        }
+
+        if (isHost) {
+            return bookingOrderVoMapper.listByHostId(loginEcUserId);
+        }
+        return bookingOrderVoMapper.listByCustomerId(loginEcUserId);
     }
 
     /**

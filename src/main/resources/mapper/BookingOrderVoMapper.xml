@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.BookingOrderVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.BookingOrderVo">
+        <id column="booking_order_id" jdbcType="BIGINT" property="bookingOrderId" />
+        <result column="checkin_date" jdbcType="DATE" property="checkinDate" />
+        <result column="checkout_date" jdbcType="DATE" property="checkoutDate" />
+        <result column="guest_name" jdbcType="VARCHAR" property="guestName" />
+        <result column="guest_email" jdbcType="VARCHAR" property="guestEmail" />
+        <result column="guest_phone" jdbcType="VARCHAR" property="guestPhone" />
+        <result column="arrival_time" jdbcType="VARCHAR" property="arrivalTime" />
+        <result column="guest_message" jdbcType="VARCHAR" property="guestMessage" />
+        <result column="order_total" jdbcType="NUMERIC" property="orderTotal" />
+        <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+        <result column="host_id" jdbcType="BIGINT" property="hostId" />
+        <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+        <result column="discount_id" jdbcType="BIGINT" property="discountId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        booking_order_id, checkin_date, checkout_date, guest_name, guest_email, guest_phone,
+    arrival_time, guest_message, order_total, property_id, host_id, customer_id, discount_id
+    </sql>
+    <select id="listByCustomerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from booking_order
+        where customer_id = #{customerId,jdbcType=BIGINT}
+    </select>
+
+    <select id="listByHostId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from booking_order
+        where host_id = #{hostId,jdbcType=BIGINT}
+    </select>
+</mapper>
