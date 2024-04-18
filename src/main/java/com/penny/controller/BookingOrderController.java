@@ -1,6 +1,5 @@
 package com.penny.controller;
 
-import com.amazonaws.Response;
 import com.penny.request.bookingOrder.BookingOrderCreateRequest;
 import com.penny.service.BookingOrderService;
 import lombok.RequiredArgsConstructor;

@@ -38,5 +38,7 @@
         <foreach collection="bookingAvailabilityIdList" item="bookingAvailabilityId" open="(" separator="," close=")">
             #{bookingAvailabilityId, jdbcType=BIGINT}
         </foreach>
+        and
+            booking_availability_status = 'available'
     </update>
 </mapper>
