@@ -241,5 +241,14 @@
             <generatedKey column="booking_order_id" sqlStatement="JDBC" identity="true"/>
         </table>
 
+        <table schema="" tableName="property_type"
+               domainObjectName="PropertyTypeBaseVo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--是否使用實際列名,默認為false-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <generatedKey column="property_type_id" sqlStatement="JDBC" identity="true"/>
+        </table>
+
     </context>
 </generatorConfiguration>
