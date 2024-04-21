@@ -30,7 +30,6 @@ public class DistrictService {
 
         return Optional.ofNullable(districtVoMapper.listByNameKeyword(replaced))
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("district with name [%s] not found", keyword)));
-
     }
 
 }
