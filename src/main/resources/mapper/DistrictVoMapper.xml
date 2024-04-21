@@ -31,4 +31,12 @@
         from district
         where district_name like #{pattern, jdbcType=VARCHAR}
     </select>
+
+    <select id="selectAdminAreaLevelByPrimaryKey" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+            a.administrative_area_level
+        from district as d
+        left join administrative_area as a on a.administrative_area_id = d.administrative_area_id
+        where district_id = #{districtId, jdbcType=BIGINT}
+    </select>
 </mapper>

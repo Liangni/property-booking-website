@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class AddressBaseVo {
     private Long addressId;
 
-    private String apartmentFloor;
-
     private String street;
 
     private Long adminAreaLevel3DistrictId;

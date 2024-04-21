@@ -25,4 +25,12 @@ public interface DistrictVoMapper {
      * @return 符合條件的行政區數量。
      */
     Integer countByNameKeyword(String districtName);
+
+    /**
+     * 根據行政區 ID 查詢行政劃分層級。
+     *
+     * @param districtId 行政區 ID
+     * @return 行政劃分層級
+     */
+    Long selectAdminAreaLevelByPrimaryKey(Long districtId);
 }

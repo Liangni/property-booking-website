@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.AddressVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.AddressVo">
+        <id column="address_id" jdbcType="BIGINT" property="addressId" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="admin_area_level_3_district_id" jdbcType="BIGINT" property="adminAreaLevel3DistrictId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        address_id, street, admin_area_level_3_district_id
+    </sql>
+    <select id="selectByDistrictIdAndStreet" parameterType="com.penny.request.address.AddressCreateRequest" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from address
+        where admin_area_level_3_district_id = #{districtId,jdbcType=BIGINT}
+        and street = #{street, jdbcType=VARCHAR}
+    </select>
+</mapper>
