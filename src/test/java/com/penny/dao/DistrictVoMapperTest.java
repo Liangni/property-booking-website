@@ -61,21 +61,9 @@ public class DistrictVoMapperTest {
     @Test
     @DisplayName("用 district_name 關鍵字搜尋地區")
     void listByNameKeywordTest(){
-        List<DistrictVo> districtVoList = districtVoMapper.listByNameKeyword(testKeyword, 0, 5);
+        List<DistrictVo> districtVoList = districtVoMapper.listByNameKeyword(testKeyword);
 
         Assertions.assertNotNull(districtVoList);
         Assertions.assertNotEquals(0, districtVoList.size());
-    }
-
-    /**
-     * 測試計算根據地區名稱關鍵字搜尋地區所找到的資料筆數的方法。
-     */
-    @Test
-    @DisplayName("計算用 district_name 關鍵字搜尋地區所找到的資料筆數")
-    void countByNameKeywordTest(){
-        Integer count = districtVoMapper.countByNameKeyword(testKeyword);
-
-        Assertions.assertNotNull(count);
-        Assertions.assertNotEquals(0, count);
     }
 }

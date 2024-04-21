@@ -41,6 +41,7 @@ public class SecurityConfig {
                                     "/error",
                                     "api/v1/properties/**",
                                     "api/v1/initial-page/**",
+                                    "api/v1/districts/**",
                                     "api/v1/property-groups/**",
                                     "api/v1/property-share-types/**"
                                 )

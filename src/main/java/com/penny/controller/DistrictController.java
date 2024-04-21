@@ -1,16 +1,12 @@
 package com.penny.controller;
 
-import com.amazonaws.Response;
-import com.penny.request.district.DistrictSearchRequest;
 import com.penny.service.DistrictService;
 import com.penny.vo.DistrictVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/districts")
@@ -19,15 +15,15 @@ public class DistrictController {
     private final DistrictService districtService;
 
     /**
-     * 通過關鍵字搜尋行政區的端點。
+     * 根據關鍵字獲取行政區列表。
      *
-     * @param districtSearchRequest 行政區搜尋請求物件。
-     * @return 包含符合條件的行政區資訊的 Map 的 ResponseEntity。
+     * @param keyword 關鍵字
+     * @return ResponseEntity<List<DistrictVo>> 符合關鍵字的行政區列表
      */
-    @PostMapping("search")
-    public ResponseEntity<Map<String, Object>> getDistrictsByKeyword(
-            @RequestBody DistrictSearchRequest districtSearchRequest
+    @GetMapping
+    public ResponseEntity<List<DistrictVo>> getDistrictsByKeyword(
+            @RequestParam String keyword
     ) {
-        return ResponseEntity.ok(districtService.getDistrictsByKeyword(districtSearchRequest));
+        return ResponseEntity.ok(districtService.getDistrictsByKeyword(keyword));
     }
 }
