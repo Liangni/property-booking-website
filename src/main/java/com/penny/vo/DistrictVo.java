@@ -11,7 +11,5 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class DistrictVo extends DistrictBaseVo {
 
-//    public DistrictVo(Long districtId, String districtName, Long administrativeAreaId, Long parentDistrictId) {
-//        super(districtId, districtName, administrativeAreaId, parentDistrictId);
-//    }
+    private String parentDistrictName;
 }

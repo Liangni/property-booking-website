@@ -20,7 +20,7 @@ public class DistrictController {
      * @param keyword 關鍵字
      * @return ResponseEntity<List<DistrictVo>> 符合關鍵字的行政區列表
      */
-    @GetMapping
+    @GetMapping("search")
     public ResponseEntity<List<DistrictVo>> getDistrictsByKeyword(
             @RequestParam String keyword
     ) {
