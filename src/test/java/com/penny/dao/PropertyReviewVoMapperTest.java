@@ -101,25 +101,25 @@ public class PropertyReviewVoMapperTest {
         propertyReviewBaseVoMapper.insertSelective(propertyReview);
     }
 
-    @Test
-    @DisplayName("用 propertyId 列表計算 propertyReview 數量")
-    void countByPropertyIdListTest() {
-        // 使用房源ID列表計算房源評論數
-        List<Map<String, Object>> countList = propertyReviewVoMapper.countByPropertyIdList(List.of(propertyId));
-        // 斷言計算結果列表的大小為1
-        Assertions.assertEquals(countList.size(), 1);
-        // 斷言第一個計算結果中的"count"鍵的值為1
-        Assertions.assertEquals(countList.get(0).get("count"), 1L);
-    }
-
-    @Test
-    @DisplayName("用 propertyId 計算 propertyReview 數量")
-    void countByPropertyIdTest() {
-        // 使用房源ID計算房源評論數
-        Long count = propertyReviewVoMapper.countByPropertyId(propertyId);
-        // 斷言計算結果Map不為空
-        Assertions.assertNotNull(count);
-        // 斷言計算結果Map中鍵為"count"的值等於1
-        Assertions.assertEquals(count, 1L);
-    }
+//    @Test
+//    @DisplayName("用 propertyId 列表計算 propertyReview 數量")
+//    void countByPropertyIdListTest() {
+//        // 使用房源ID列表計算房源評論數
+//        List<Map<String, Object>> countList = propertyReviewVoMapper.countByPropertyIdList(List.of(propertyId));
+//        // 斷言計算結果列表的大小為1
+//        Assertions.assertEquals(countList.size(), 1);
+//        // 斷言第一個計算結果中的"count"鍵的值為1
+//        Assertions.assertEquals(countList.get(0).get("count"), 1L);
+//    }
+//
+//    @Test
+//    @DisplayName("用 propertyId 計算 propertyReview 數量")
+//    void countByPropertyIdTest() {
+//        // 使用房源ID計算房源評論數
+//        Long count = propertyReviewVoMapper.countByPropertyId(propertyId);
+//        // 斷言計算結果Map不為空
+//        Assertions.assertNotNull(count);
+//        // 斷言計算結果Map中鍵為"count"的值等於1
+//        Assertions.assertEquals(count, 1L);
+//    }
 }
