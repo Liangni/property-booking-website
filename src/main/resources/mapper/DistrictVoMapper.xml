@@ -13,6 +13,25 @@
         district_id, district_name, administrative_area_id, parent_district_id
     </sql>
 
+    <select id="listParentDistricts"  resultMap="BaseResultMap">
+        select
+           <include refid="Base_Column_List"/>
+        from district
+        where parent_district_id is null
+    </select>
+
+    <select id="listByParentDistrictId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+            d1.district_id,
+            d1.district_name,
+            d1.administrative_area_id,
+            d1.parent_district_id,
+            d2.district_name as parent_district_name
+        from district as d1
+                 left join district as d2 on d1.parent_district_id = d2.district_id
+        where d1.parent_district_id = #{parentDistrictId, jdbcType=BIGINT}
+    </select>
+
     <select id="listByNameKeyword"  parameterType="java.lang.String" resultMap="BaseResultMap">
         <bind name="pattern" value="'%' + districtName + '%'" />
         select
