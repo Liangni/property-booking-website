@@ -24,6 +24,7 @@ import com.penny.vo.base.PropertyPictureBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -55,6 +56,7 @@ public class PictureService {
      * @return 返回一個包含不同尺寸圖像上傳 URL 的 map，鍵是尺寸標識，值是對應的預簽名 URL。
      * @throws FieldConflictException 如果房源ID或圖片附檔名為空，則拋出 FieldConflictException 異常。
      */
+    @Transactional
     public Map<String, Object> getPropertyImageUploadUrlMap(PropertyImageUploadRequest uploadImageRequest) {
         // 檢驗參數
         Long propertyId = uploadImageRequest.getPropertyId();
