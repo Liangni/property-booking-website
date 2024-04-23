@@ -32,6 +32,6 @@
         <include refid="Base_Column_List"/>
         from property_picture
         where property_id = #{propertyId}
-        and property_picture_order = #{PictureOrder}
+        and property_picture_order = #{pictureOrder}
     </select>
 </mapper>
