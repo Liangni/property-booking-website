@@ -10,23 +10,22 @@ import com.penny.dao.base.PropertyPictureBaseVoMapper;
 import com.penny.enums.PictureDtSize;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
-import com.penny.request.property.PropertyUploadImageRequest;
+import com.penny.exception.UnauthorizedException;
+import com.penny.request.picture.PropertyImageUploadRequest;
 import com.penny.s3.S3Buckets;
 import com.penny.s3.S3Service;
+import com.penny.vo.EcUserVo;
 import com.penny.vo.PictureDtVo;
 import com.penny.vo.PropertyPictureVo;
-import com.penny.vo.PropertyVo;
 import com.penny.vo.base.PictureBaseVo;
 import com.penny.vo.base.PictureDtBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.PropertyPictureBaseVo;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +42,8 @@ public class PictureService {
 
     private final PictureDtVoMapper pictureDtVoMapper;
 
+    private final EcUserService ecUserService;
+
     private final S3Service s3Service;
 
     private final S3Buckets s3Buckets;
@@ -54,63 +55,77 @@ public class PictureService {
      * @return 返回一個包含不同尺寸圖像上傳 URL 的 map，鍵是尺寸標識，值是對應的預簽名 URL。
      * @throws FieldConflictException 如果房源ID或圖片附檔名為空，則拋出 FieldConflictException 異常。
      */
-    public Map<String, String> getPropertyImageUploadUrlMap(PropertyUploadImageRequest uploadImageRequest) {
+    public Map<String, Object> getPropertyImageUploadUrlMap(PropertyImageUploadRequest uploadImageRequest) {
         // 檢驗參數
         Long propertyId = uploadImageRequest.getPropertyId();
         String fileExtension = uploadImageRequest.getFileExtension();
+        Integer pictureOrder = uploadImageRequest.getPictureOrder();
+
         if (propertyId == null) { throw new FieldConflictException("propertyId is required");}
         if (fileExtension == null) { throw new FieldConflictException("fileExtension is required");}
+        if (pictureOrder == null) { throw new FieldConflictException("pictureOrder is required"); }
 
         // 檢驗權限
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        EcUserVo loginUser = ecUserService.getLoginUser();
+        PropertyBaseVo property = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
 
-        String pictureBucketPath;
-        PictureBaseVo pictureBaseVo;
+        if (!loginUser.getEcUserId().equals(property.getHostId())) {
+            throw new UnauthorizedException("login user is not authorized for the operation");
+        }
 
         // 創建圖片
-        pictureBucketPath = generateBucketPath(propertyId, "original", fileExtension);
-        pictureBaseVo = new PictureBaseVo(null, pictureBucketPath);
-        pictureBaseVoMapper.insertSelective(pictureBaseVo);
-
-        // 更新房源圖片關係表
-        List<PropertyPictureVo> propertyPicList = propertyPictureVoMapper.listByPropertyId(propertyId);
-
-        // 依 propertyPictureOrder 排序房源圖片，找出最大的 propertyPictureOrder 數字
-        Collections.sort(propertyPicList, Comparator.comparingLong(PropertyPictureVo::getPropertyPictureOrder));
-        // 獲取房源圖片列表中最後一張圖片的排序值，並將其增加1，以生成新的圖片排序值
-        Long newPictureOrder = propertyPicList.get(propertyPicList.size() - 1).getPropertyPictureOrder() + 1L;
-
-
-        // 新增房源圖片
-        propertyPictureBaseVoMapper.insertSelective(PropertyPictureBaseVo
+        String pictureBucketPath = generateBucketPath(propertyId, "original", fileExtension);
+        PictureBaseVo pictureBaseVo = PictureBaseVo
                 .builder()
-                .propertyId(propertyId)
-                .pictureId(pictureBaseVo.getPictureId()) // 插入剛創建的圖片 id
-                .propertyPictureOrder(newPictureOrder) // 插入新的圖片排序值
-                .build()
-        );
+                .pictureStoragePath(pictureBucketPath)
+                .pictureIsUploaded(false)
+                .build();
 
-        // 初始化結果
-        Map<String, String> resultMap = new HashMap<>();
-        // 將上傳原始尺寸圖像的預簽名URL 加進 result map
+        // 將圖片資料存入資料庫
+        pictureBaseVoMapper.insertSelective(pictureBaseVo);
+        Long pictureId = pictureBaseVo.getPictureId();
+
+        // 檢查房源與圖片關係是否存在資料庫
+        PropertyPictureVo propertyPictureVo = propertyPictureVoMapper.selectByPropertyIdAndPictureOrder(propertyId, pictureOrder);
+
+        if (propertyPictureVo != null) {
+            // 若存在，在資料庫更新房源圖片關係的圖片 id
+            propertyPictureVo.setPictureId(pictureId);
+            propertyPictureBaseVoMapper.updateByPrimaryKeySelective(propertyPictureVo);
+        } else {
+            // 若不存在，在資料庫新增房源圖片關係
+            PropertyPictureBaseVo newPropertyPictureBaseVo = PropertyPictureBaseVo
+                    .builder()
+                    .propertyId(propertyId)
+                    .pictureId(pictureId) // 插入剛創建的圖片 id
+                    .propertyPictureOrder(pictureOrder) // 插入新的圖片排序值
+                    .build();
+            propertyPictureBaseVoMapper.insertSelective(newPropertyPictureBaseVo);
+        }
+
+        // 初始化回傳結果 map
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("pictureId", pictureId);
+
+        // 將上傳原始尺寸圖像的預簽名URL 加進回傳結果
         resultMap.put(
                 "sizeOriginal",
                 s3Service.generatePreSignedUrl(s3Buckets.getCustomer(), pictureBucketPath, HttpMethod.PUT)
         );
 
-        // 創建圖片DT及其對應的預簽名URL
+        // 創建不同尺寸的圖片DT及其對應的預簽名URL
         PictureDtSize.stream()
                 .forEach(size -> {
                     int pictureSizeNum = size.getNum();
                     String picDtBucketPath = generateBucketPath(propertyId, String.valueOf(pictureSizeNum), fileExtension);
-
-                    pictureDtBaseVoMapper.insertSelective(PictureDtBaseVo
+                    PictureDtBaseVo pictureDtBaseVo = PictureDtBaseVo
                             .builder()
-                            .pictureDtUrl(picDtBucketPath)
+                            .pictureDtStoragePath(picDtBucketPath)
                             .pictureDtSize(pictureSizeNum)
-                            .pictureId(pictureBaseVo.getPictureId())
-                            .build()
-                    );
+                            .pictureId(pictureId)
+                            .pictureDtIsUploaded(false)
+                            .build();
+                    pictureDtBaseVoMapper.insertSelective(pictureDtBaseVo);
 
                     // 將上傳指定尺寸圖像的預簽名URL 加進 result map
                     resultMap.put(
@@ -131,7 +146,7 @@ public class PictureService {
      * @throws FieldConflictException 如果 propertyId 或 sizeNum 為 null，則拋出此異常
      * @throws ResourceNotFoundException 如果找不到指定的房源或房源未發佈，則拋出此異常
      */
-    public List<String> listPublishedPropertyImageDownloadUrls(Long propertyId, Integer sizeNum) {
+    public List<Map<String, Object>> listPublishedPropertyImageDownloadUrls(Long propertyId, Integer sizeNum) {
         // 檢驗 propertyId, sizeNum
         if (propertyId == null || sizeNum == null) {
             throw new FieldConflictException("propertyId and sizeNum are required");
@@ -147,7 +162,7 @@ public class PictureService {
         List<PropertyPictureVo> propertyPictureVoList = listPropertyPictureInOrder(propertyId);
 
         // 使用抽取的方法獲取圖片下載 URL 列表
-        return getImageDownloadUrls(propertyPictureVoList, sizeNum);
+        return getPropertyImageDownloadUrlMapList(propertyPictureVoList, sizeNum);
     }
 
     /**
@@ -158,7 +173,7 @@ public class PictureService {
      * @return 返回一個包含圖片下載 URL 的列表，如果找不到符合條件的圖片，則返回空列表。
      * @throws FieldConflictException 如果房源ID或圖片尺寸編號為空，則拋出 FieldConflictException 異常。
      */
-    public List<String> listPropertyImageDownloadUrls(Long propertyId, Integer sizeNum) {
+    public List<Map<String, Object>> listPropertyImageDownloadUrls(Long propertyId, Integer sizeNum) {
         // 檢驗 propertyId, sizeNum
         if (propertyId == null || sizeNum == null) {
             throw new FieldConflictException("propertyId and sizeNum are required");
@@ -168,7 +183,7 @@ public class PictureService {
         List<PropertyPictureVo> propertyPictureVoList = listPropertyPictureInOrder(propertyId);
 
         // 使用抽取的方法獲取圖片下載 URL 列表
-        return getImageDownloadUrls(propertyPictureVoList, sizeNum);
+        return getPropertyImageDownloadUrlMapList(propertyPictureVoList, sizeNum);
     }
 
     /**
@@ -188,22 +203,43 @@ public class PictureService {
     }
 
     /**
-     * 從房源圖片列表中獲取圖片下載 URL 列表。
+     * 取得房源圖片下載 URL 列表。
      *
-     * @param propertyPictureVoList 房源圖片列表
-     * @param sizeNum               圖片大小編號
-     * @return 圖片下載 URL 列表
+     * @param propertyPictureVoList 房屋圖片列表
+     * @param sizeNum 圖片大小編號
+     * @return 包含圖片下載 URL 的 Map 列表
      */
-    private List<String> getImageDownloadUrls(List<PropertyPictureVo> propertyPictureVoList, Integer sizeNum) {
-        return propertyPictureVoList.stream()
-                // 將每個房屋圖片 map 為對應的圖片儲存路徑
-                .map(propertyPictureVo -> getPictureDtStoragePath(propertyPictureVo.getPictureId(), sizeNum))
-                // 過濾掉空的圖片儲存路徑
-                .filter(Objects::nonNull)
-                // 將每個圖片儲存路徑轉換為預簽名 URL
-                .map(pictureDtStoragePath -> s3Service.generatePreSignedUrl(s3Buckets.getCustomer(), pictureDtStoragePath, HttpMethod.GET))
-                // 收集轉換後的預簽名 URL 為列表
-                .collect(Collectors.toList());
+    private List<Map<String, Object>> getPropertyImageDownloadUrlMapList(List<PropertyPictureVo> propertyPictureVoList, Integer sizeNum) {
+        return propertyPictureVoList
+                .stream()
+                // 將每個房屋圖片 map 為對應的圖片下載 URL Map
+                .map((propertyPictureVo) ->
+                        preparePictureDownloadUrlMap(propertyPictureVo.getPictureId(), sizeNum, propertyPictureVo.getPropertyPictureOrder()
+                    )
+                )
+                .toList();
+    }
+
+    /**
+     * 準備圖片下載 URL Map。
+     *
+     * @param pictureId 圖片 ID
+     * @param sizeNum 圖片大小編號
+     * @param pictureOrder 圖片順序
+     * @return 包含圖片下載 URL 的 Map
+     */
+    private Map<String, Object> preparePictureDownloadUrlMap(Long pictureId, Integer sizeNum, Integer pictureOrder) {
+        Map<String, Object> propertyPictureMap = new HashMap<>();
+        propertyPictureMap.put("pictureOrder", pictureOrder);
+        propertyPictureMap.put("sizeNum", sizeNum);
+        propertyPictureMap.put("downloadUrl",
+                s3Service.generatePreSignedUrl(
+                        s3Buckets.getCustomer(),
+                        getPictureDtStoragePath(pictureId, sizeNum),
+                        HttpMethod.GET
+                )
+        );
+        return propertyPictureMap;
     }
 
     /**
@@ -219,7 +255,7 @@ public class PictureService {
         if (pictureDtVo == null) return null;
 
         // 取得圖片DT物件的Url
-        return pictureDtVo.getPictureDtUrl();
+        return pictureDtVo.getPictureDtStoragePath();
     }
 
     /**

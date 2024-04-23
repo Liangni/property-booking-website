@@ -3,12 +3,14 @@
 <mapper namespace="com.penny.dao.base.PictureDtBaseVoMapper">
   <resultMap id="BaseResultMap" type="com.penny.vo.base.PictureDtBaseVo">
     <id column="picture_dt_id" jdbcType="BIGINT" property="pictureDtId" />
-    <result column="picture_dt_url" jdbcType="VARCHAR" property="pictureDtUrl" />
     <result column="picture_dt_size" jdbcType="INTEGER" property="pictureDtSize" />
+    <result column="picture_dt_storage_path" jdbcType="VARCHAR" property="pictureDtStoragePath" />
+    <result column="picture_dt_is_uploaded" jdbcType="BIT" property="pictureDtIsUploaded" />
     <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
   </resultMap>
   <sql id="Base_Column_List">
-    picture_dt_id, picture_dt_url, picture_dt_size, picture_id
+    picture_dt_id, picture_dt_size, picture_dt_storage_path, picture_dt_is_uploaded, 
+    picture_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -21,30 +23,36 @@
     where picture_dt_id = #{pictureDtId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="picture_dt_id" keyProperty="pictureDtId" parameterType="com.penny.vo.base.PictureDtBaseVo" useGeneratedKeys="true">
-    insert into picture_dt (picture_dt_url, picture_dt_size, picture_id
-      )
-    values (#{pictureDtUrl,jdbcType=VARCHAR}, #{pictureDtSize,jdbcType=INTEGER}, #{pictureId,jdbcType=BIGINT}
-      )
+    insert into picture_dt (picture_dt_size, picture_dt_storage_path, 
+      picture_dt_is_uploaded, picture_id)
+    values (#{pictureDtSize,jdbcType=INTEGER}, #{pictureDtStoragePath,jdbcType=VARCHAR}, 
+      #{pictureDtIsUploaded,jdbcType=BIT}, #{pictureId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" keyColumn="picture_dt_id" keyProperty="pictureDtId" parameterType="com.penny.vo.base.PictureDtBaseVo" useGeneratedKeys="true">
     insert into picture_dt
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="pictureDtUrl != null">
-        picture_dt_url,
-      </if>
       <if test="pictureDtSize != null">
         picture_dt_size,
+      </if>
+      <if test="pictureDtStoragePath != null">
+        picture_dt_storage_path,
+      </if>
+      <if test="pictureDtIsUploaded != null">
+        picture_dt_is_uploaded,
       </if>
       <if test="pictureId != null">
         picture_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="pictureDtUrl != null">
-        #{pictureDtUrl,jdbcType=VARCHAR},
-      </if>
       <if test="pictureDtSize != null">
         #{pictureDtSize,jdbcType=INTEGER},
+      </if>
+      <if test="pictureDtStoragePath != null">
+        #{pictureDtStoragePath,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureDtIsUploaded != null">
+        #{pictureDtIsUploaded,jdbcType=BIT},
       </if>
       <if test="pictureId != null">
         #{pictureId,jdbcType=BIGINT},
@@ -54,11 +62,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PictureDtBaseVo">
     update picture_dt
     <set>
-      <if test="pictureDtUrl != null">
-        picture_dt_url = #{pictureDtUrl,jdbcType=VARCHAR},
-      </if>
       <if test="pictureDtSize != null">
         picture_dt_size = #{pictureDtSize,jdbcType=INTEGER},
+      </if>
+      <if test="pictureDtStoragePath != null">
+        picture_dt_storage_path = #{pictureDtStoragePath,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureDtIsUploaded != null">
+        picture_dt_is_uploaded = #{pictureDtIsUploaded,jdbcType=BIT},
       </if>
       <if test="pictureId != null">
         picture_id = #{pictureId,jdbcType=BIGINT},
@@ -68,8 +79,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PictureDtBaseVo">
     update picture_dt
-    set picture_dt_url = #{pictureDtUrl,jdbcType=VARCHAR},
-      picture_dt_size = #{pictureDtSize,jdbcType=INTEGER},
+    set picture_dt_size = #{pictureDtSize,jdbcType=INTEGER},
+      picture_dt_storage_path = #{pictureDtStoragePath,jdbcType=VARCHAR},
+      picture_dt_is_uploaded = #{pictureDtIsUploaded,jdbcType=BIT},
       picture_id = #{pictureId,jdbcType=BIGINT}
     where picture_dt_id = #{pictureDtId,jdbcType=BIGINT}
   </update>

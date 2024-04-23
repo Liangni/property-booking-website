@@ -1,7 +1,7 @@
 package com.penny.service;
 
 import com.penny.dao.PropertyVoMapper;
-import com.penny.request.property.PropertySearchParam;
+import com.penny.request.property.PropertySearchRequest;
 import com.penny.vo.PropertyVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class InitialPageService {
      */
     public Map<String, Object> getInitialPageData(){
         // 準備房源查詢參數
-        PropertySearchParam request = PropertySearchParam
+        PropertySearchRequest request = PropertySearchRequest
                 .builder()
                 .numOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAYS)
                 .build();
@@ -40,7 +40,7 @@ public class InitialPageService {
             if (!propertyVo.getIsPublished()) continue;
 
             // 查詢房源的 DEFAULT_SIZE 的圖片DT列表，並取得下載圖片的預簽名 url
-            List<String> propertyImageUrlList= pictureService.listPropertyImageDownloadUrls(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
+            List<Map<String, Object>> propertyImageUrlList= pictureService.listPropertyImageDownloadUrls(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
 
             // 將房源資訊加入列表
             propertyMapList.add(preparePropertyMap(propertyVo, propertyImageUrlList));
@@ -60,7 +60,7 @@ public class InitialPageService {
      * @param propertyImageUrlList 房源圖片的 URL 列表
      * @return 房源資訊的 Map
      */
-    private Map<String, Object> preparePropertyMap(PropertyVo propertyVo, List<String> propertyImageUrlList) {
+    private Map<String, Object> preparePropertyMap(PropertyVo propertyVo, List<Map<String, Object>> propertyImageUrlList) {
         return Map.ofEntries(
                 Map.entry("imageUrls", propertyImageUrlList),
                 Map.entry("districtId", propertyVo.getDistrictId()),

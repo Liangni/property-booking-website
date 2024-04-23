@@ -1,7 +1,6 @@
 package com.penny.controller;
 
-import com.penny.request.property.PropertySearchParam;
-import com.penny.request.property.PropertyUploadImageRequest;
+import com.penny.request.property.PropertySearchRequest;
 import com.penny.service.*;
 import com.penny.vo.*;
 import com.penny.vo.base.PropertyBaseVo;
@@ -38,23 +37,11 @@ public class PropertyController {
      */
     @GetMapping
     public ResponseEntity<List<PropertyVo>> getProperties(
-            @ModelAttribute PropertySearchParam request
+            @ModelAttribute PropertySearchRequest request
     ) {
         return ResponseEntity.ok(propertyService.getPublishedProperties(request));
     }
 
-    /**
-     * 獲取房源圖片的上傳URL。
-     *
-     * @param request 上傳圖片請求
-     * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
-     */
-    @PostMapping("upload-image-url")
-    public ResponseEntity<Map<String, String>> getPropertyImageUploadUrlMap(
-            @RequestBody PropertyUploadImageRequest request
-            ) {
-        return ResponseEntity.ok(pictureService.getPropertyImageUploadUrlMap(request));
-    }
 
     /**
      * 獲取房源圖片的下載URL。
@@ -64,7 +51,7 @@ public class PropertyController {
      * @return 包含圖片下載 URL 列表的 ResponseEntity
      */
     @GetMapping("{propertyId}/download-image-url")
-    public ResponseEntity<List<String>> getPropertyImageDownloadUrls(
+    public ResponseEntity<List<Map<String, Object>>> getPropertyImageDownloadUrls(
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
     ) {

@@ -3,7 +3,8 @@
 
     <resultMap id="BaseResultMap" type="com.penny.vo.PictureVo">
         <id column="picture_id" jdbcType="BIGINT" property="pictureId" />
-        <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+        <result column="picture_storage_path" jdbcType="VARCHAR" property="pictureStoragePath" />
+        <result column="picture_is_uploaded" jdbcType="BIT" property="pictureIsUploaded" />
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -1,18 +1,10 @@
 package com.penny.service;
 
-import com.amazonaws.HttpMethod;
 import com.penny.dao.*;
-import com.penny.dao.base.PictureBaseVoMapper;
-import com.penny.dao.base.PictureDtBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
-import com.penny.dao.base.PropertyPictureBaseVoMapper;
-import com.penny.enums.PictureDtSize;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
-import com.penny.request.property.PropertySearchParam;
-import com.penny.request.property.PropertyUploadImageRequest;
-import com.penny.s3.S3Buckets;
-import com.penny.s3.S3Service;
+import com.penny.request.property.PropertySearchRequest;
 import com.penny.vo.*;
 import com.penny.vo.base.*;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +35,7 @@ public class PropertyService {
      * @throws FieldConflictException 如果 startAvailableDateString 存在而 endAvailableDateString 不存在
      * @throws FieldConflictException 如果 startAvailableDateString 或 endAvailableDateString 格式錯誤
      */
-    public List<PropertyVo> getPublishedProperties(PropertySearchParam request) {
+    public List<PropertyVo> getPublishedProperties(PropertySearchRequest request) {
         // 從查詢參數中獲取可預定天數、開始預定日期字串和結束預定日期字串
         Integer numOfAvailableDays = request.getNumOfAvailableDays();
         String startAvailableDateString = request.getStartAvailableDateString();

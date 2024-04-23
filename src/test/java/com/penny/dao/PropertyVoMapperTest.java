@@ -1,7 +1,7 @@
 package com.penny.dao;
 
 import com.penny.dao.base.*;
-import com.penny.request.property.PropertySearchParam;
+import com.penny.request.property.PropertySearchRequest;
 import com.penny.vo.PropertyVo;
 import com.penny.vo.base.*;
 import org.junit.jupiter.api.Assertions;
@@ -156,7 +156,7 @@ public class PropertyVoMapperTest {
     @Test
     @DisplayName("用連續可訂天數來搜尋房源")
     void listByNumOfAvailableDaysTest1(){
-        PropertySearchParam request = PropertySearchParam
+        PropertySearchRequest request = PropertySearchRequest
                 .builder()
                 .numOfAvailableDays(NUM_OF_AVAILABLE_DAYS)
                 .build();
@@ -197,7 +197,7 @@ public class PropertyVoMapperTest {
         LocalDate endAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS);
 
         // 準備要使用的參數物件
-        PropertySearchParam request = PropertySearchParam
+        PropertySearchRequest request = PropertySearchRequest
                 .builder()
                 .startAvailableDate(startAvailableDate)
                 .endAvailableDate(endAvailableDate)
@@ -255,7 +255,7 @@ public class PropertyVoMapperTest {
         }
 
 
-        PropertySearchParam request = PropertySearchParam
+        PropertySearchRequest request = PropertySearchRequest
                 .builder()
                 .numOfGuests(BASE_MAX_NUM_OF_GUESTS)
                 .maxPrice(BASE_PRICE)

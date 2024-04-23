@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class PropertySearchParam {
+public class PropertySearchRequest {
     private Integer numOfAvailableDays;
 
     private String startAvailableDateString;

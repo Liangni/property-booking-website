@@ -5,7 +5,7 @@
     <id column="property_picture_id" jdbcType="BIGINT" property="propertyPictureId" />
     <result column="property_id" jdbcType="BIGINT" property="propertyId" />
     <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
-    <result column="property_picture_order" jdbcType="BIGINT" property="propertyPictureOrder" />
+    <result column="property_picture_order" jdbcType="INTEGER" property="propertyPictureOrder" />
   </resultMap>
   <sql id="Base_Column_List">
     property_picture_id, property_id, picture_id, property_picture_order
@@ -23,7 +23,7 @@
   <insert id="insert" keyColumn="property_picture_id" keyProperty="propertyPictureId" parameterType="com.penny.vo.base.PropertyPictureBaseVo" useGeneratedKeys="true">
     insert into property_picture (property_id, picture_id, property_picture_order
       )
-    values (#{propertyId,jdbcType=BIGINT}, #{pictureId,jdbcType=BIGINT}, #{propertyPictureOrder,jdbcType=BIGINT}
+    values (#{propertyId,jdbcType=BIGINT}, #{pictureId,jdbcType=BIGINT}, #{propertyPictureOrder,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" keyColumn="property_picture_id" keyProperty="propertyPictureId" parameterType="com.penny.vo.base.PropertyPictureBaseVo" useGeneratedKeys="true">
@@ -47,7 +47,7 @@
         #{pictureId,jdbcType=BIGINT},
       </if>
       <if test="propertyPictureOrder != null">
-        #{propertyPictureOrder,jdbcType=BIGINT},
+        #{propertyPictureOrder,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -61,7 +61,7 @@
         picture_id = #{pictureId,jdbcType=BIGINT},
       </if>
       <if test="propertyPictureOrder != null">
-        property_picture_order = #{propertyPictureOrder,jdbcType=BIGINT},
+        property_picture_order = #{propertyPictureOrder,jdbcType=INTEGER},
       </if>
     </set>
     where property_picture_id = #{propertyPictureId,jdbcType=BIGINT}
@@ -70,7 +70,7 @@
     update property_picture
     set property_id = #{propertyId,jdbcType=BIGINT},
       picture_id = #{pictureId,jdbcType=BIGINT},
-      property_picture_order = #{propertyPictureOrder,jdbcType=BIGINT}
+      property_picture_order = #{propertyPictureOrder,jdbcType=INTEGER}
     where property_picture_id = #{propertyPictureId,jdbcType=BIGINT}
   </update>
 </mapper>

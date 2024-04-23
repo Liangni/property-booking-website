@@ -16,5 +16,5 @@ public class PropertyPictureBaseVo {
 
     private Long pictureId;
 
-    private Long propertyPictureOrder;
+    private Integer propertyPictureOrder;
 }

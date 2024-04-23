@@ -3,10 +3,11 @@
 <mapper namespace="com.penny.dao.base.PictureBaseVoMapper">
   <resultMap id="BaseResultMap" type="com.penny.vo.base.PictureBaseVo">
     <id column="picture_id" jdbcType="BIGINT" property="pictureId" />
-    <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+    <result column="picture_storage_path" jdbcType="VARCHAR" property="pictureStoragePath" />
+    <result column="picture_is_uploaded" jdbcType="BIT" property="pictureIsUploaded" />
   </resultMap>
   <sql id="Base_Column_List">
-    picture_id, picture_url
+    picture_id, picture_storage_path, picture_is_uploaded
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -19,34 +20,46 @@
     where picture_id = #{pictureId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="picture_id" keyProperty="pictureId" parameterType="com.penny.vo.base.PictureBaseVo" useGeneratedKeys="true">
-    insert into picture (picture_url)
-    values (#{pictureUrl,jdbcType=VARCHAR})
+    insert into picture (picture_storage_path, picture_is_uploaded
+      )
+    values (#{pictureStoragePath,jdbcType=VARCHAR}, #{pictureIsUploaded,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="picture_id" keyProperty="pictureId" parameterType="com.penny.vo.base.PictureBaseVo" useGeneratedKeys="true">
     insert into picture
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="pictureUrl != null">
-        picture_url,
+      <if test="pictureStoragePath != null">
+        picture_storage_path,
+      </if>
+      <if test="pictureIsUploaded != null">
+        picture_is_uploaded,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="pictureUrl != null">
-        #{pictureUrl,jdbcType=VARCHAR},
+      <if test="pictureStoragePath != null">
+        #{pictureStoragePath,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureIsUploaded != null">
+        #{pictureIsUploaded,jdbcType=BIT},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PictureBaseVo">
     update picture
     <set>
-      <if test="pictureUrl != null">
-        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      <if test="pictureStoragePath != null">
+        picture_storage_path = #{pictureStoragePath,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureIsUploaded != null">
+        picture_is_uploaded = #{pictureIsUploaded,jdbcType=BIT},
       </if>
     </set>
     where picture_id = #{pictureId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PictureBaseVo">
     update picture
-    set picture_url = #{pictureUrl,jdbcType=VARCHAR}
+    set picture_storage_path = #{pictureStoragePath,jdbcType=VARCHAR},
+      picture_is_uploaded = #{pictureIsUploaded,jdbcType=BIT}
     where picture_id = #{pictureId,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -23,4 +23,6 @@ public interface PropertyPictureVoMapper {
      * @return 返回一個列表，其中包含與給定房源ID相關的所有房源圖片。
      */
     List<PropertyPictureVo> listByPropertyId(Long propertyId);
+
+    PropertyPictureVo selectByPropertyIdAndPictureOrder(Long propertyId, Integer pictureOrder);
 }

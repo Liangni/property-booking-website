@@ -5,7 +5,7 @@
         <id column="property_picture_id" jdbcType="BIGINT" property="propertyPictureId" />
         <result column="property_id" jdbcType="BIGINT" property="propertyId" />
         <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
-        <result column="property_picture_order" jdbcType="BIGINT" property="propertyPictureOrder" />
+        <result column="property_picture_order" jdbcType="INTEGER" property="propertyPictureOrder" />
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -25,5 +25,13 @@
         <include refid="Base_Column_List"/>
         from property_picture
         where property_id = #{propertyId}
+    </select>
+
+    <select id="selectByPropertyIdAndPictureOrder" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from property_picture
+        where property_id = #{propertyId}
+        and property_picture_order = #{PictureOrder}
     </select>
 </mapper>

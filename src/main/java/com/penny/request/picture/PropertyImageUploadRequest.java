@@ -1,4 +1,4 @@
-package com.penny.request.property;
+package com.penny.request.picture;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertyUploadImageRequest {
+public class PropertyImageUploadRequest {
     private Long propertyId;
 
     private String fileExtension;
+
+    private Integer pictureOrder;
 }

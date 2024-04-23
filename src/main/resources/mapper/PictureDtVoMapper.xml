@@ -4,9 +4,10 @@
 
     <resultMap id="BaseResultMap" type="com.penny.vo.PictureDtVo">
         <id column="picture_dt_id" jdbcType="BIGINT" property="pictureDtId" />
-        <id column="picture_id" jdbcType="BIGINT" property="pictureId" />
-        <id column="picture_dt_url" jdbcType="VARCHAR" property="pictureDtUrl" />
-        <id column="picture_dt_size" jdbcType="INTEGER" property="pictureDtSize" />
+        <result column="picture_dt_size" jdbcType="INTEGER" property="pictureDtSize" />
+        <result column="picture_dt_storage_path" jdbcType="VARCHAR" property="pictureDtStoragePath" />
+        <result column="picture_dt_is_uploaded" jdbcType="BIT" property="pictureDtIsUploaded" />
+        <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
     </resultMap>
 
     <sql id="Base_Column_List">

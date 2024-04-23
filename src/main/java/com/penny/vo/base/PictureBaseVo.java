@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class PictureBaseVo {
     private Long pictureId;
 
-    private String pictureUrl;
+    private String pictureStoragePath;
+
+    private Boolean pictureIsUploaded;
 }
