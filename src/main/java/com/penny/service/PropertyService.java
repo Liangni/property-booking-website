@@ -51,8 +51,13 @@ public class PropertyService {
             throw new FieldConflictException("startAvailableDateString cannot exist without endAvailableDateString");
         }
 
+        // 如果存在結束預定日期但沒有開始預定日期，則拋出異常
+        if (startAvailableDateString == null && endAvailableDateString != null) {
+            throw new FieldConflictException("startAvailableDateString cannot exist without endAvailableDateString");
+        }
+
         // 檢查日期格式是否有效，若無效則拋出異常
-        if(!isValidDateString(startAvailableDateString) || !isValidDateString(endAvailableDateString)) {
+        if((startAvailableDateString != null && endAvailableDateString != null) && (!isValidDateString(startAvailableDateString) || !isValidDateString(endAvailableDateString))) {
             throw new FieldConflictException("invalid startAvailableDateString and endAvailableDateString format");
         }
 
@@ -111,7 +116,7 @@ public class PropertyService {
         // 創建 Pattern 物件
         Pattern  DATE_PATTERN = Pattern.compile(DATE_REGEX);
 
-        return !DATE_PATTERN.matcher(dateString).matches();
+        return DATE_PATTERN.matcher(dateString).matches();
     }
 
     /**
