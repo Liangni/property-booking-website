@@ -11,11 +11,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        picture_dt_id, picture_id, picture_dt_url, picture_dt_size
+        picture_dt_id, picture_id, picture_dt_storage_path, picture_dt_size
     </sql>
 
     <sql id="Join_Column_List">
-        pd.picture_dt_id, pd.picture_id, pd.picture_dt_url, pd.picture_dt_size, pp.property_id
+        pd.picture_dt_id, pd.picture_id, pd.picture_dt_storage_path, pd.picture_dt_size, pp.property_id
     </sql>
 
     <select id="listByPictureIdList" parameterType="java.util.List" resultMap="BaseResultMap">
