@@ -50,7 +50,7 @@ public class PropertyController {
      * @param sizeNum 圖片大小編號
      * @return 包含圖片下載 URL 列表的 ResponseEntity
      */
-    @GetMapping("{propertyId}/download-image-url")
+    @GetMapping("{propertyId}/download-image-urls")
     public ResponseEntity<List<Map<String, Object>>> getPropertyImageDownloadUrls(
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
