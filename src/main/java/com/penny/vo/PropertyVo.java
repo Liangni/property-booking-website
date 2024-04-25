@@ -13,7 +13,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PropertyVo extends PropertyBaseVo {
-    private String apartmentFloor;
 
     private String street;
 
@@ -32,6 +31,4 @@ public class PropertyVo extends PropertyBaseVo {
     private LocalDate startAvailableDate;
 
     private LocalDate endAvailableDate;
-
-    private List<PictureDtVo> pictureDtVoList;
 }
