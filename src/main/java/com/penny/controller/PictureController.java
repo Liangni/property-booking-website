@@ -1,7 +1,7 @@
 package com.penny.controller;
 
-import com.penny.request.picture.PropertyImageUploadRequest;
-import com.penny.request.picture.PropertyImageUploadStatusUpdateRequest;
+import com.penny.request.picture.GetPropertyImageUploadUrlRequest;
+import com.penny.request.picture.UpdatePropertyPictureRequest;
 import com.penny.service.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +21,24 @@ public class PictureController {
      * @param request 上傳圖片請求
      * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
      */
-    @PostMapping("upload-property-image-urls")
+    @PostMapping("property-image-upload-urls")
     public ResponseEntity<Map<String, Object>> getPropertyImageUploadUrlMap(
-            @RequestBody PropertyImageUploadRequest request
+            @RequestBody GetPropertyImageUploadUrlRequest request
     ) {
         return ResponseEntity.ok(pictureService.getPropertyImageUploadUrlMap(request));
+    }
+
+    /**
+     * 更新房源圖片信息。
+     *
+     * @param updateRequest 更新圖片請求。
+     * @return ResponseEntity，表示請求已成功處理。
+     */
+    @PutMapping("property-pictures")
+    public ResponseEntity<String> updatePropertyPicture(
+            @RequestBody UpdatePropertyPictureRequest updateRequest
+            ) {
+        pictureService.updatePropertyPicture(updateRequest);
+        return ResponseEntity.ok("ok");
     }
 }

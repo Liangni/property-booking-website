@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertyImageUploadRequest {
-    private Long propertyId;
+public class UpdatePropertyPictureRequest {
+    private Long pictureId;
 
-    private String fileExtension;
+    private Long propertyId;
 
     private Integer pictureOrder;
 }
