@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -14,6 +15,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PictureController {
     private final PictureService pictureService;
+
+    /**
+     * 取得物業圖片下載 URL 地圖列表。
+     *
+     * @param propertyId 房源 ID
+     * @param sizeNum 圖片尺寸數量
+     * @return ResponseEntity 包含房源圖片下載 URL map 列表 的 ResponseEntity
+     */
+    @GetMapping("property-image-download-urls")
+    public ResponseEntity<List<Map<String, Object>>> getPropertyImageDownloadUrlMap(
+            @RequestParam Long propertyId,
+            @RequestParam Integer sizeNum
+    ) {
+        return ResponseEntity.ok(pictureService.listPropertyImageDownloadUrls(propertyId, sizeNum));
+    }
 
     /**
      * 獲取房源圖片的上傳URL。

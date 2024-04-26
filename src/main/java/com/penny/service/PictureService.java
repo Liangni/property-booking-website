@@ -66,13 +66,8 @@ public class PictureService {
         if (propertyId == null) { throw new FieldConflictException("propertyId is required");}
         if (fileExtension == null) { throw new FieldConflictException("fileExtension is required");}
 
-        // 檢驗權限
-        EcUserVo loginUser = ecUserService.getLoginUser();
-        PropertyBaseVo property = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
-
-        if (!loginUser.getEcUserId().equals(property.getHostId())) {
-            throw new UnauthorizedException("login user is not authorized for the operation");
-        }
+        // 檢驗登入使用者是否為房源出租人
+        validatePropertyOwnership(propertyId);
 
         // 創建圖片
         String pictureBucketPath = generateBucketPath(propertyId, "original", fileExtension);
@@ -139,14 +134,8 @@ public class PictureService {
         if (pictureId == null) { throw new FieldConflictException("pictureId is required");}
         if (pictureOrder == null) { throw new FieldConflictException("pictureOrder is required"); }
 
-
-        // 檢驗權限
-        EcUserVo loginUser = ecUserService.getLoginUser();
-        PropertyBaseVo property = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
-
-        if (!loginUser.getEcUserId().equals(property.getHostId())) {
-            throw new UnauthorizedException("login user is not authorized for the operation");
-        }
+        // 檢驗登入使用者是否為房源出租人
+        validatePropertyOwnership(propertyId);
 
         // 更新圖片上傳狀態
         PictureBaseVo updatePictureVo = PictureBaseVo
@@ -210,7 +199,7 @@ public class PictureService {
         List<PropertyPictureVo> propertyPictureVoList = listPropertyPictureInOrder(propertyId);
 
         // 使用抽取的方法獲取圖片下載 URL 列表
-        return getPropertyImageDownloadUrlMapList(propertyPictureVoList, sizeNum);
+        return listPropertyPictureDtDownloadUrlMap(propertyPictureVoList, sizeNum);
     }
 
     /**
@@ -227,11 +216,33 @@ public class PictureService {
             throw new FieldConflictException("propertyId and sizeNum are required");
         }
 
+        // 檢驗登入使用者是否為房源出租人
+        validatePropertyOwnership(propertyId);
+
         // 找尋房源圖片並排序
         List<PropertyPictureVo> propertyPictureVoList = listPropertyPictureInOrder(propertyId);
 
         // 使用抽取的方法獲取圖片下載 URL 列表
-        return getPropertyImageDownloadUrlMapList(propertyPictureVoList, sizeNum);
+        return listPropertyPictureDtDownloadUrlMap(propertyPictureVoList, sizeNum);
+    }
+
+    /**
+     * 驗證房源擁有權。
+     *
+     * @param propertyId 房源 ID
+     * @throws UnauthorizedException 如果當前登入使用者沒有操作權限
+     */
+    private void validatePropertyOwnership(Long propertyId) {
+        // 取得當前登入使用者
+        EcUserVo loginUser = ecUserService.getLoginUser();
+
+        // 取得房源資訊
+        PropertyBaseVo property = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
+
+        // 檢查當前登入使用者是否為房源擁有者
+        if (!loginUser.getEcUserId().equals(property.getHostId())) {
+            throw new UnauthorizedException("login user is not authorized for the operation");
+        }
     }
 
     /**
@@ -257,14 +268,15 @@ public class PictureService {
      * @param sizeNum 圖片大小編號
      * @return 包含圖片下載 URL 的 Map 列表
      */
-    private List<Map<String, Object>> getPropertyImageDownloadUrlMapList(List<PropertyPictureVo> propertyPictureVoList, Integer sizeNum) {
+    private List<Map<String, Object>> listPropertyPictureDtDownloadUrlMap(List<PropertyPictureVo> propertyPictureVoList, Integer sizeNum) {
         return propertyPictureVoList
                 .stream()
                 // 將每個房屋圖片 map 為對應的圖片下載 URL Map
-                .map((propertyPictureVo) ->
-                        preparePictureDownloadUrlMap(propertyPictureVo.getPictureId(), sizeNum, propertyPictureVo.getPropertyPictureOrder()
-                    )
-                )
+                .map((propertyPictureVo) -> {
+                    Long pictureId = propertyPictureVo.getPictureId();
+                    Integer pictureOrder = propertyPictureVo.getPropertyPictureOrder();
+                    return preparePictureDtDownloadUrlMap(pictureId, sizeNum, pictureOrder);
+                })
                 .toList();
     }
 
@@ -276,7 +288,7 @@ public class PictureService {
      * @param pictureOrder 圖片順序
      * @return 包含圖片下載 URL 的 Map
      */
-    private Map<String, Object> preparePictureDownloadUrlMap(Long pictureId, Integer sizeNum, Integer pictureOrder) {
+    private Map<String, Object> preparePictureDtDownloadUrlMap(Long pictureId, Integer sizeNum, Integer pictureOrder) {
         Map<String, Object> propertyPictureMap = new HashMap<>();
         propertyPictureMap.put("pictureOrder", pictureOrder);
         propertyPictureMap.put("sizeNum", sizeNum);
