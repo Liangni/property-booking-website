@@ -173,7 +173,7 @@ public class BookingOrderService {
      * @param isHost 是否為房東
      * @return 符合條件的預訂訂單列表
      */
-    public List<BookingOrderVo> getUserBookingOrders(Long ecUserId, Boolean isHost) {
+    public List<BookingOrderVo> getBookingOrders(Long ecUserId, Boolean isHost) {
         Long loginEcUserId = ecUserService.getLoginUser().getEcUserId();
 
         if (!ecUserId.equals(loginEcUserId)) {
