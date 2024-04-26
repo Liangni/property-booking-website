@@ -1,6 +1,5 @@
 package com.penny.controller;
 
-import com.penny.request.picture.GetPropertyImageUploadUrlRequest;
 import com.penny.request.picture.UpdatePropertyPictureRequest;
 import com.penny.service.PictureService;
 import lombok.RequiredArgsConstructor;
@@ -34,14 +33,16 @@ public class PictureController {
     /**
      * 獲取房源圖片的上傳URL。
      *
-     * @param request 上傳圖片請求
+     * @param propertyId 房源 ID
+     * @param fileExtension 檔案副檔名
      * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
      */
-    @PostMapping("property-image-upload-urls")
+    @GetMapping("property-image-upload-urls")
     public ResponseEntity<Map<String, Object>> getPropertyImageUploadUrlMap(
-            @RequestBody GetPropertyImageUploadUrlRequest request
+            @RequestParam Long propertyId,
+            @RequestParam String fileExtension
     ) {
-        return ResponseEntity.ok(pictureService.getPropertyImageUploadUrlMap(request));
+        return ResponseEntity.ok(pictureService.getPropertyImageUploadUrlMap(propertyId, fileExtension));
     }
 
     /**

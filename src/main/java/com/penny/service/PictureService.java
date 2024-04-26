@@ -12,7 +12,6 @@ import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceExistException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.UnauthorizedException;
-import com.penny.request.picture.GetPropertyImageUploadUrlRequest;
 import com.penny.request.picture.UpdatePropertyPictureRequest;
 import com.penny.s3.S3Buckets;
 import com.penny.s3.S3Service;
@@ -53,16 +52,14 @@ public class PictureService {
     /**
      * 根據上傳圖像請求獲取圖像上傳 URL。
      *
-     * @param getUploadImageUrlRequest 包含房源ID和圖片附檔名的上傳圖像請求。
+     * @param propertyId 房源 ID
+     * @param fileExtension 檔案副檔名
      * @return 返回一個包含不同尺寸圖像上傳 URL 的 map，鍵是尺寸標識，值是對應的預簽名 URL。
      * @throws FieldConflictException 如果房源ID或圖片附檔名為空，則拋出 FieldConflictException 異常。
      */
     @Transactional
-    public Map<String, Object> getPropertyImageUploadUrlMap(GetPropertyImageUploadUrlRequest getUploadImageUrlRequest) {
+    public Map<String, Object> getPropertyImageUploadUrlMap(Long propertyId, String fileExtension) {
         // 檢驗參數
-        Long propertyId = getUploadImageUrlRequest.getPropertyId();
-        String fileExtension = getUploadImageUrlRequest.getFileExtension();
-
         if (propertyId == null) { throw new FieldConflictException("propertyId is required");}
         if (fileExtension == null) { throw new FieldConflictException("fileExtension is required");}
 
