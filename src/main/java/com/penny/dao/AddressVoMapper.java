@@ -1,7 +1,9 @@
 package com.penny.dao;
 
 import com.penny.vo.AddressVo;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface AddressVoMapper {
     /**
      * 根據地區 ID 和街道名稱選擇地址。
