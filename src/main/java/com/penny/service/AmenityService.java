@@ -29,6 +29,12 @@ public class AmenityService {
      private final PropertyBaseVoMapper propertyBaseVoMapper;
 
 
+    /**
+     * 取得設施列表。
+     *
+     * @param amenityTypeId 設施類型 ID
+     * @return 設施列表
+     */
      public List<AmenityVo> getAmenities(Long amenityTypeId) {
 
          return amenityVoMapper.listByAmenityTypeId(amenityTypeId);
