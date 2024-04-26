@@ -9,6 +9,14 @@
     <sql id="Base_Column_List">
         amenity_id, amenity_name, amenity_type_id
     </sql>
+
+    <select id="listByAmenityTypeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+           <include refid="Base_Column_List"/>
+        from amenity
+        where amenity_type_id = #{amenityTypeId,jdbcType=BIGINT}
+    </select>
+
     <select id="listByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
          a.amenity_id, a.amenity_name, a.amenity_type_id

@@ -1,6 +1,7 @@
 package com.penny.service;
 
 import com.penny.dao.AmenityVoMapper;
+import com.penny.dao.base.AmenityBaseVoMapper;
 import com.penny.dao.base.AmenityTypeBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
@@ -21,12 +22,17 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class AmenityService {
-
      private final AmenityVoMapper amenityVoMapper;
 
      private final AmenityTypeBaseVoMapper amenityTypeBaseVoMapper;
 
      private final PropertyBaseVoMapper propertyBaseVoMapper;
+
+
+     public List<AmenityVo> getAmenities(Long amenityTypeId) {
+
+         return amenityVoMapper.listByAmenityTypeId(amenityTypeId);
+     }
 
     /**
      * 根據房源ID獲取房源設施信息。
