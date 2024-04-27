@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/amenities")
@@ -26,5 +27,20 @@ public class AmenityController {
     ) {
         return ResponseEntity.ok(amenityService.getAmenities(amenityTypeId));
     }
+
+    /**
+     * 獲取房源的設施列表。
+     *
+     * @param propertyId 房源的 ID
+     * @return 包含設施分類詳細資訊的 map 列表的 ResponseEntity
+     */
+    @GetMapping("property-amenities")
+    public ResponseEntity<List<Map<String, Object>>> getPropertyAmenities(
+            @RequestParam Long propertyId
+    ) {
+        return ResponseEntity.ok(amenityService.listPropertyAmenityMap(propertyId));
+    }
+
+
 
 }

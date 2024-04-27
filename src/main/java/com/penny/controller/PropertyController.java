@@ -91,10 +91,10 @@ public class PropertyController {
      * @return 包含設施列表的 Map 的 ResponseEntity
      */
     @GetMapping("{propertyId}/amenities")
-    public ResponseEntity<Map<String, List<AmenityVo>>> getPropertyAmenityMap(
+    public ResponseEntity<List<Map<String, Object>> > listPropertyAmenity(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(amenityService.getPublishedPropertyAmenityMap(propertyId));
+        return ResponseEntity.ok(amenityService.listPublishedPropertyAmenityMap(propertyId));
     }
 
     /**

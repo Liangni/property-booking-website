@@ -23,6 +23,7 @@ import com.penny.vo.base.PictureDtBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.PropertyPictureBaseVo;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,8 +64,14 @@ public class PictureService {
         if (propertyId == null) { throw new FieldConflictException("propertyId is required");}
         if (fileExtension == null) { throw new FieldConflictException("fileExtension is required");}
 
+        // 檢查房源是否存在
+        PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
+        if(propertyBaseVo == null) {
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
+        }
+
         // 檢驗登入使用者是否為房源出租人
-        validatePropertyOwnership(propertyId);
+        ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
 
         // 創建圖片
         String pictureBucketPath = generateBucketPath(propertyId, "original", fileExtension);
@@ -131,8 +138,14 @@ public class PictureService {
         if (pictureId == null) { throw new FieldConflictException("pictureId is required");}
         if (pictureOrder == null) { throw new FieldConflictException("pictureOrder is required"); }
 
+        // 檢查房源是否存在
+        PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
+        if(propertyBaseVo == null) {
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
+        }
+
         // 檢驗登入使用者是否為房源出租人
-        validatePropertyOwnership(propertyId);
+        ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
 
         // 更新圖片上傳狀態
         PictureBaseVo updatePictureVo = PictureBaseVo
@@ -213,8 +226,14 @@ public class PictureService {
             throw new FieldConflictException("propertyId and sizeNum are required");
         }
 
+        // 檢查房源是否存在
+        PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
+        if(propertyBaseVo == null) {
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
+        }
+
         // 檢驗登入使用者是否為房源出租人
-        validatePropertyOwnership(propertyId);
+        ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
 
         // 找尋房源圖片並排序
         List<PropertyPictureVo> propertyPictureVoList = listPropertyPictureInOrder(propertyId);
@@ -223,24 +242,6 @@ public class PictureService {
         return listPropertyPictureDtDownloadUrlMap(propertyPictureVoList, sizeNum);
     }
 
-    /**
-     * 驗證房源擁有權。
-     *
-     * @param propertyId 房源 ID
-     * @throws UnauthorizedException 如果當前登入使用者沒有操作權限
-     */
-    private void validatePropertyOwnership(Long propertyId) {
-        // 取得當前登入使用者
-        EcUserVo loginUser = ecUserService.getLoginUser();
-
-        // 取得房源資訊
-        PropertyBaseVo property = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
-
-        // 檢查當前登入使用者是否為房源擁有者
-        if (!loginUser.getEcUserId().equals(property.getHostId())) {
-            throw new UnauthorizedException("login user is not authorized for the operation");
-        }
-    }
 
     /**
      * 從資料庫中依據 propertyId 找尋房源圖片並按照順序排序。

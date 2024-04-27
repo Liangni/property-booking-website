@@ -1,11 +1,13 @@
 package com.penny.service;
 
+import com.penny.dao.AmenityTypeVoMapper;
 import com.penny.dao.AmenityVoMapper;
 import com.penny.dao.base.AmenityBaseVoMapper;
 import com.penny.dao.base.AmenityTypeBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
+import com.penny.vo.AmenityTypeVo;
 import com.penny.vo.AmenityVo;
 import com.penny.vo.base.AmenityBaseVo;
 import com.penny.vo.base.AmenityTypeBaseVo;
@@ -13,10 +15,8 @@ import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -24,10 +24,11 @@ import java.util.stream.Stream;
 public class AmenityService {
      private final AmenityVoMapper amenityVoMapper;
 
-     private final AmenityTypeBaseVoMapper amenityTypeBaseVoMapper;
-
      private final PropertyBaseVoMapper propertyBaseVoMapper;
 
+     private final AmenityTypeVoMapper amenityTypeVoMapper;
+
+    private final EcUserService ecUserService;
 
     /**
      * 取得設施列表。
@@ -43,12 +44,12 @@ public class AmenityService {
     /**
      * 根據房源ID獲取房源設施信息。
      *
-     * @param propertyId 要查詢的房源ID。
-     * @return 返回一個 map，其中包含根據設施類型分類的設施列表。
-     * @throws FieldConflictException 如果房源ID為空，則拋出 FieldConflictException 異常。
+     * @param propertyId 要查詢的房源ID
+     * @return 包含設施分類詳細資訊的 map 列表
+     * @throws FieldConflictException 如果房源ID為空，則拋出 FieldConflictException 異常
      * @throws ResourceNotFoundException 如果找不到指定的房源或房源未發布，則拋出此異常
      */
-    public Map<String, List<AmenityVo>> getPublishedPropertyAmenityMap(Long propertyId) {
+    public List<Map<String, Object>>  listPublishedPropertyAmenityMap(Long propertyId) {
         // 檢查參數，如果房源ID為空，拋出異常
         if(propertyId == null) {
             throw new FieldConflictException("propertyId is required");
@@ -64,42 +65,74 @@ public class AmenityService {
         List<AmenityVo> propertyAmenityList = amenityVoMapper.listByPropertyId(propertyId);
 
         // 將設施列表按類型分類並返回
-        return groupByAmenityType(propertyAmenityList);
+        return classifyAmenitiesByType(propertyAmenityList);
     }
 
     /**
-     * 根據設施類型將設施列表進行分類。
+     * 返回指定房源的設施列表，並按類型分類。
      *
-     * @param amenityList 要分類的設施列表。
-     * @return 返回一個 map，其中包含根據設施類型分類的設施列表。
+     * @param propertyId 房源的 ID
+     * @return 包含設施分類詳細資訊的地圖列表
+     * @throws FieldConflictException 如果房源 ID 為空時拋出
+     * @throws ResourceNotFoundException 如果找不到指定房源時拋出
      */
-    private Map<String, List<AmenityVo>> groupByAmenityType(List<AmenityVo> amenityList) {
-        Map<String, List<AmenityVo>> amenityTypeNameMap = new HashMap<>();
-        Map<Long, String> amenityIdNameMap = new HashMap<>();
+    public List<Map<String, Object>>  listPropertyAmenityMap(Long propertyId) {
+        // 檢查參數，如果房源ID為空，拋出異常
+        if(propertyId == null) {
+            throw new FieldConflictException("propertyId is required");
+        }
 
-        // 遍歷設施列表，將設施按類型進行分類
-       amenityList
-                .forEach(amenity -> {
-                    Long amenityTypeId = amenity.getAmenityTypeId();
-                    String amenityTypeName = amenityIdNameMap.get(amenityTypeId);
+        // 檢查房源是否存在
+        PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
+        if(propertyBaseVo == null) {
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
+        }
 
-                    // 如果設施類型已存在於結果 map 中，將設施添加到相應的類型列表中
-                    if(amenityTypeName != null) {
-                        amenityTypeNameMap.get(amenityTypeName).add(amenity);
-                    } else {
-                        // 否則從資料庫中獲取設施類型名稱，並將設施添加到新的類型列表中
-                        AmenityTypeBaseVo amenityTypeBaseVo = amenityTypeBaseVoMapper.selectByPrimaryKey(amenityTypeId);
-                        amenityTypeName = amenityTypeBaseVo.getAmenityTypeName();
+        // 檢驗登入使用者是否為房源出租人
+        ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
 
-                        // 初始化新的類型列表並添加設施
-                        amenityTypeNameMap.put(amenityTypeName, new ArrayList<>());
-                        amenityTypeNameMap.get(amenityTypeName).add(amenity);
+        // 根據房源ID查詢房源設施列表
+        List<AmenityVo> propertyAmenityList = amenityVoMapper.listByPropertyId(propertyId);
 
-                        // 將設施類型ID與類型名稱 map 存起來，避免重複查詢數據庫
-                        amenityIdNameMap.put(amenityTypeId, amenityTypeName);
-                    }
-                });
+        // 將設施列表按類型分類並返回
+        return classifyAmenitiesByType(propertyAmenityList);
+    }
 
-       return amenityTypeNameMap;
+    /**
+     * 將設施分類至其對應的設施類型中。
+     *
+     * @param amenityList 要分類的設施列表
+     * @return 包含設施類型詳細資訊的列表
+     */
+    private List<Map<String, Object>> classifyAmenitiesByType(List<AmenityVo> amenityList) {
+        // 取得所有設施類型
+        List<AmenityTypeVo> allAmenityTypes = amenityTypeVoMapper.listAll();
+
+        // 儲存設施類型詳細資訊的 map
+        Map<Long, Map<String, Object>> amenityTypeMap = new HashMap<>();
+        allAmenityTypes.forEach(amenityType -> {
+            // 設施類型的詳細資訊
+            Map<String, Object> amenityTypeDetails = new HashMap<>();
+            amenityTypeDetails.put("amenityTypeId", amenityType.getAmenityTypeId());
+            amenityTypeDetails.put("amenityTypeName", amenityType.getAmenityTypeName());
+            amenityTypeDetails.put("amenities", new ArrayList<AmenityVo>());
+            amenityTypeMap.put(amenityType.getAmenityTypeId(), amenityTypeDetails);
+        });
+
+        // 遍歷所有設施，將每個設施添加到其所屬的設施類型中
+        amenityList.forEach(amenity -> {
+            Long amenityTypeId = amenity.getAmenityTypeId();
+            if (amenityTypeMap.containsKey(amenityTypeId)) {
+                // 從設施類型 map 中取得相應的設施類型的設施列表
+                List<AmenityVo> amenitiesOfType = (List<AmenityVo>) amenityTypeMap.get(amenityTypeId).get("amenities");
+                // 將當前設施添加到設施類型的設施列表中
+                amenitiesOfType.add(amenity);
+            }
+        });
+
+        // 設施類型詳細資訊的列表
+        List<Map<String, Object>> amenityTypeDetailsList = new ArrayList<>(amenityTypeMap.values());
+
+        return amenityTypeDetailsList;
     }
 }
