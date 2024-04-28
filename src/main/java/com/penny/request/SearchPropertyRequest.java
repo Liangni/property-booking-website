@@ -1,4 +1,4 @@
-package com.penny.request.property;
+package com.penny.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class PropertySearchRequest {
+public class SearchPropertyRequest {
     private Integer numOfAvailableDays;
 
     private String startAvailableDateString;

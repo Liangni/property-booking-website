@@ -1,7 +1,7 @@
 package com.penny.service;
 
 import com.penny.dao.PropertyVoMapper;
-import com.penny.request.property.PropertySearchRequest;
+import com.penny.request.SearchPropertyRequest;
 import com.penny.vo.PropertyVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class InitialPageService {
      */
     public Map<String, Object> getInitialPageData(){
         // 準備房源查詢參數
-        PropertySearchRequest request = PropertySearchRequest
+        SearchPropertyRequest request = SearchPropertyRequest
                 .builder()
                 .numOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAYS)
                 .build();

@@ -1,6 +1,6 @@
 package com.penny.controller;
 
-import com.penny.request.picture.UpdatePropertyPictureRequest;
+import com.penny.request.UpdatePropertyPictureRequest;
 import com.penny.service.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

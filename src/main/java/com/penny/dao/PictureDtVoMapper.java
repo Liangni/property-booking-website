@@ -1,9 +1,11 @@
 package com.penny.dao;
 
 import com.penny.vo.PictureDtVo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface PictureDtVoMapper {
     /**
      * 根據提供的圖片ID列表，檢索圖片詳細資訊的列表

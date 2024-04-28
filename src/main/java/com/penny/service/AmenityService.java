@@ -2,15 +2,20 @@ package com.penny.service;
 
 import com.penny.dao.AmenityTypeVoMapper;
 import com.penny.dao.AmenityVoMapper;
+import com.penny.dao.PropertyAmenityVoMapper;
 import com.penny.dao.base.AmenityBaseVoMapper;
 import com.penny.dao.base.AmenityTypeBaseVoMapper;
+import com.penny.dao.base.PropertyAmenityBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
+import com.penny.request.CreatePropertyAmenityRequest;
 import com.penny.vo.AmenityTypeVo;
 import com.penny.vo.AmenityVo;
+import com.penny.vo.PropertyAmenityVo;
 import com.penny.vo.base.AmenityBaseVo;
 import com.penny.vo.base.AmenityTypeBaseVo;
+import com.penny.vo.base.PropertyAmenityBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +31,10 @@ public class AmenityService {
 
      private final PropertyBaseVoMapper propertyBaseVoMapper;
 
+     private final PropertyAmenityBaseVoMapper propertyAmenityBaseVoMapper;
+
+     private final PropertyAmenityVoMapper propertyAmenityVoMapper;
+
      private final AmenityTypeVoMapper amenityTypeVoMapper;
 
     private final EcUserService ecUserService;
@@ -39,6 +48,41 @@ public class AmenityService {
      public List<AmenityVo> getAmenities(Long amenityTypeId) {
 
          return amenityVoMapper.listByAmenityTypeId(amenityTypeId);
+     }
+
+    /**
+     * 創建房源設施。
+     *
+     * @param createRequest 創建房源設施的請求參數。
+     * @throws ResourceNotFoundException 如果指定的房源不存在，則拋出此異常。
+     */
+     public void createPropertyAmenities(CreatePropertyAmenityRequest createRequest) {
+         Long propertyId = createRequest.getPropertyId();
+         Long amenityId = createRequest.getAmenityId();
+
+         // 檢查參數
+         if (propertyId == null) {
+             throw new FieldConflictException("propertyId is required");
+         }
+
+         if (amenityId == null) {
+             throw new FieldConflictException("propertyId is required");
+         }
+
+         // 檢查房源是否存在
+         PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
+         if(propertyBaseVo == null) {
+             throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
+         }
+
+         // 檢驗登入使用者是否為房源出租人
+         ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
+
+         PropertyAmenityVo existingPropertyAmenityVo = propertyAmenityVoMapper.selectByPropertyIdAndAmenityId(propertyId, amenityId);
+
+         if (existingPropertyAmenityVo != null) return;
+
+         propertyAmenityBaseVoMapper.insertSelective(new PropertyAmenityBaseVo(null, propertyId, amenityId));
      }
 
     /**

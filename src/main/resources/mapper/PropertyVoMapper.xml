@@ -90,7 +90,7 @@
             district d2 on d1.district_id = d2.parent_district_id
     </sql>
 
-    <select id="listByNumOfAvailableDays" parameterType="com.penny.request.property.PropertySearchRequest" resultMap="BaseResultMap">
+    <select id="listByNumOfAvailableDays" parameterType="com.penny.request.SearchPropertyRequest" resultMap="BaseResultMap">
         with available_periods as (
         -- 對 booking_availability 表進行查詢，選擇房源ID、可預訂日期以及計算其所在的連續可預定天數（consecutive_available_days）
         select
@@ -195,7 +195,7 @@
         min(ap.booking_availability_date) &lt; (current_date + interval '2 years');
     </select>
 
-    <select id="listByStartAndEndAvailableDate" parameterType="com.penny.request.property.PropertySearchRequest" resultMap="BaseResultMap">
+    <select id="listByStartAndEndAvailableDate" parameterType="com.penny.request.SearchPropertyRequest" resultMap="BaseResultMap">
         with property_availability as (
         select
             property_id
@@ -279,7 +279,7 @@
         </where>
     </select>
 
-    <select id="listByPropertyAttributes" parameterType="com.penny.request.property.PropertySearchRequest" resultMap="BaseResultMap">
+    <select id="listByPropertyAttributes" parameterType="com.penny.request.SearchPropertyRequest" resultMap="BaseResultMap">
         with join_district as (
         <include refid="join_district_table"/>
         )
@@ -349,7 +349,7 @@
         </trim>
     </select>
 
-    <select id="listByFilter" parameterType="com.penny.request.property.PropertySearchRequest" resultMap="BaseResultMap">
+    <select id="listByFilter" parameterType="com.penny.request.SearchPropertyRequest" resultMap="BaseResultMap">
         <trim prefix="with" suffixOverrides=",">
             <choose>
                 <when test="filterMap.numOfAvailableDays != null">

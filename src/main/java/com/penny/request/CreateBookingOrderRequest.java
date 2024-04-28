@@ -1,11 +1,11 @@
-package com.penny.request.bookingOrder;
+package com.penny.request;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class BookingOrderCreateRequest {
+public class CreateBookingOrderRequest {
     private String checkinDate;
 
     private String checkoutDate;

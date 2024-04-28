@@ -1,6 +1,6 @@
 package com.penny.controller;
 
-import com.penny.request.address.AddressCreateRequest;
+import com.penny.request.CreateAddressRequest;
 import com.penny.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class AddressController {
      */
     @PostMapping
     public ResponseEntity<String> createAddresses(
-            @RequestBody AddressCreateRequest request
+            @RequestBody CreateAddressRequest request
             ) {
         addressService.createAddress(request);
         return ResponseEntity.ok("ok");

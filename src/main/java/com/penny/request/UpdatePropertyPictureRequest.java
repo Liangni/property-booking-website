@@ -1,4 +1,4 @@
-package com.penny.request.picture;
+package com.penny.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -9,7 +9,7 @@
     <sql id="Base_Column_List">
         address_id, street, admin_area_level_3_district_id
     </sql>
-    <select id="selectByDistrictIdAndStreet" parameterType="com.penny.request.address.AddressCreateRequest" resultMap="BaseResultMap">
+    <select id="selectByDistrictIdAndStreet" parameterType="com.penny.request.CreateAddressRequest" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from address

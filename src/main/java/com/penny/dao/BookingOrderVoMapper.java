@@ -1,9 +1,11 @@
 package com.penny.dao;
 
 import com.penny.vo.BookingOrderVo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface BookingOrderVoMapper {
     /**
      * 根據顧客ID列出相應的預訂訂單。

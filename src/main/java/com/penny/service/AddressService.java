@@ -5,7 +5,7 @@ import com.penny.dao.DistrictVoMapper;
 import com.penny.dao.base.AddressBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceExistException;
-import com.penny.request.address.AddressCreateRequest;
+import com.penny.request.CreateAddressRequest;
 import com.penny.vo.AddressVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class AddressService {
      * @throws FieldConflictException 如果 districtId 或 street 為 null，或者 district 不是行政劃分層級 3 的行政區
      * @throws ResourceExistException 如果該地址已存在
      */
-    public void createAddress(AddressCreateRequest request) {
+    public void createAddress(CreateAddressRequest request) {
         Long districtId = request.getDistrictId();
         String street = request.getStreet();
         System.out.println("districtId");

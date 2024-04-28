@@ -1,5 +1,6 @@
 package com.penny.controller;
 
+import com.penny.request.CreatePropertyAmenityRequest;
 import com.penny.service.AmenityService;
 import com.penny.vo.AmenityVo;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,18 @@ public class AmenityController {
         return ResponseEntity.ok(amenityService.listPropertyAmenityMap(propertyId));
     }
 
-
+    /**
+     * 創建房源設施。
+     *
+     * @param createRequest 創建房源設施的請求參數。
+     * @return ResponseEntity 包含 "ok" 字串的 ResponseEntity。
+     */
+    @PostMapping("property-amenities")
+    public ResponseEntity<String> createPropertyAmenities(
+            @RequestBody CreatePropertyAmenityRequest createRequest
+    ) {
+        amenityService.createPropertyAmenities(createRequest);
+        return ResponseEntity.ok("ok");
+    }
 
 }

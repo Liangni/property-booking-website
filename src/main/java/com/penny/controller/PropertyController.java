@@ -1,6 +1,6 @@
 package com.penny.controller;
 
-import com.penny.request.property.PropertySearchRequest;
+import com.penny.request.SearchPropertyRequest;
 import com.penny.service.*;
 import com.penny.vo.*;
 import com.penny.vo.base.PropertyBaseVo;
@@ -37,7 +37,7 @@ public class PropertyController {
      */
     @GetMapping
     public ResponseEntity<List<PropertyVo>> getProperties(
-            @ModelAttribute PropertySearchRequest request
+            @ModelAttribute SearchPropertyRequest request
     ) {
         return ResponseEntity.ok(propertyService.getPublishedProperties(request));
     }

@@ -8,7 +8,7 @@ import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.UnauthorizedException;
-import com.penny.request.bookingOrder.BookingOrderCreateRequest;
+import com.penny.request.CreateBookingOrderRequest;
 import com.penny.util.DateHelper;
 import com.penny.vo.BookingAvailabilityVo;
 import com.penny.vo.BookingOrderVo;
@@ -50,7 +50,7 @@ public class BookingOrderService {
      * @throws ResourceNotFoundException 如果指定的資源未找到
      */
     @Transactional
-    public void createBookingOrder(BookingOrderCreateRequest request) {
+    public void createBookingOrder(CreateBookingOrderRequest request) {
         Long propertyId = request.getPropertyId();
 
         // 檢查必要欄位
@@ -285,7 +285,7 @@ public class BookingOrderService {
      * @param request 預訂訂單創建請求
      * @return 預訂訂單基本資訊
      */
-    private BookingOrderBaseVo bookingOrderMapper(BookingOrderCreateRequest request) {
+    private BookingOrderBaseVo bookingOrderMapper(CreateBookingOrderRequest request) {
         return BookingOrderBaseVo
                 .builder()
                 .checkinDate(dateHelper.parseDateString(request.getCheckinDate()))
