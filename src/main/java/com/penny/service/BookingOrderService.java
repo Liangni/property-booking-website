@@ -251,8 +251,7 @@ public class BookingOrderService {
     private DiscountVo findApplicableDiscount(Long propertyId, int numOfBookingDates) {
         List<DiscountVo> discountVoList = discountVoMapper.listByPropertyId(propertyId)
                 .stream()
-                .filter(discount ->  discount.getDiscountIsActive()
-                        && discount.getLeastNumOfBookingDays() <= numOfBookingDates)
+                .filter(discount ->  discount.getLeastNumOfBookingDays() <= numOfBookingDates)
                 .sorted(Comparator.comparing(DiscountVo::getLeastNumOfBookingDays))
                 .toList();
 
@@ -270,13 +269,7 @@ public class BookingOrderService {
      */
     private double calculateDiscountValue(DiscountVo discountVo, int totalBeforeDiscount) {
         Double discountValue = discountVo.getDiscountValue();
-        String discountUnit = discountVo.getDiscountUnit();
-
-        return switch (discountUnit) {
-            case "percentage" -> totalBeforeDiscount * discountValue / 100;
-            case "dollar" -> discountValue;
-            default -> 0;
-        };
+        return totalBeforeDiscount * discountValue / 100;
     }
 
     /**

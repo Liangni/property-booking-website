@@ -3,17 +3,11 @@
 <mapper namespace="com.penny.dao.base.DiscountBaseVoMapper">
   <resultMap id="BaseResultMap" type="com.penny.vo.base.DiscountBaseVo">
     <id column="discount_id" jdbcType="BIGINT" property="discountId" />
-    <result column="discount_name" jdbcType="VARCHAR" property="discountName" />
     <result column="least_num_of_booking_days" jdbcType="INTEGER" property="leastNumOfBookingDays" />
     <result column="discount_value" jdbcType="DOUBLE" property="discountValue" />
-    <result column="discount_unit" jdbcType="VARCHAR" property="discountUnit" />
-    <result column="discount_is_active" jdbcType="BIT" property="discountIsActive" />
-    <result column="discount_created_at" jdbcType="TIMESTAMP" property="discountCreatedAt" />
-    <result column="property_id" jdbcType="BIGINT" property="propertyId" />
   </resultMap>
   <sql id="Base_Column_List">
-    discount_id, discount_name, least_num_of_booking_days, discount_value, discount_unit, 
-    discount_is_active, discount_created_at, property_id
+    discount_id, least_num_of_booking_days, discount_value
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,98 +20,46 @@
     where discount_id = #{discountId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="discount_id" keyProperty="discountId" parameterType="com.penny.vo.base.DiscountBaseVo" useGeneratedKeys="true">
-    insert into discount (discount_name, least_num_of_booking_days, 
-      discount_value, discount_unit, discount_is_active, 
-      discount_created_at, property_id)
-    values (#{discountName,jdbcType=VARCHAR}, #{leastNumOfBookingDays,jdbcType=INTEGER}, 
-      #{discountValue,jdbcType=DOUBLE}, #{discountUnit,jdbcType=VARCHAR}, #{discountIsActive,jdbcType=BIT}, 
-      #{discountCreatedAt,jdbcType=TIMESTAMP}, #{propertyId,jdbcType=BIGINT})
+    insert into discount (least_num_of_booking_days, discount_value
+      )
+    values (#{leastNumOfBookingDays,jdbcType=INTEGER}, #{discountValue,jdbcType=DOUBLE}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="discount_id" keyProperty="discountId" parameterType="com.penny.vo.base.DiscountBaseVo" useGeneratedKeys="true">
     insert into discount
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="discountName != null">
-        discount_name,
-      </if>
       <if test="leastNumOfBookingDays != null">
         least_num_of_booking_days,
       </if>
       <if test="discountValue != null">
         discount_value,
       </if>
-      <if test="discountUnit != null">
-        discount_unit,
-      </if>
-      <if test="discountIsActive != null">
-        discount_is_active,
-      </if>
-      <if test="discountCreatedAt != null">
-        discount_created_at,
-      </if>
-      <if test="propertyId != null">
-        property_id,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="discountName != null">
-        #{discountName,jdbcType=VARCHAR},
-      </if>
       <if test="leastNumOfBookingDays != null">
         #{leastNumOfBookingDays,jdbcType=INTEGER},
       </if>
       <if test="discountValue != null">
         #{discountValue,jdbcType=DOUBLE},
       </if>
-      <if test="discountUnit != null">
-        #{discountUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="discountIsActive != null">
-        #{discountIsActive,jdbcType=BIT},
-      </if>
-      <if test="discountCreatedAt != null">
-        #{discountCreatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="propertyId != null">
-        #{propertyId,jdbcType=BIGINT},
-      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.DiscountBaseVo">
     update discount
     <set>
-      <if test="discountName != null">
-        discount_name = #{discountName,jdbcType=VARCHAR},
-      </if>
       <if test="leastNumOfBookingDays != null">
         least_num_of_booking_days = #{leastNumOfBookingDays,jdbcType=INTEGER},
       </if>
       <if test="discountValue != null">
         discount_value = #{discountValue,jdbcType=DOUBLE},
       </if>
-      <if test="discountUnit != null">
-        discount_unit = #{discountUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="discountIsActive != null">
-        discount_is_active = #{discountIsActive,jdbcType=BIT},
-      </if>
-      <if test="discountCreatedAt != null">
-        discount_created_at = #{discountCreatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="propertyId != null">
-        property_id = #{propertyId,jdbcType=BIGINT},
-      </if>
     </set>
     where discount_id = #{discountId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.DiscountBaseVo">
     update discount
-    set discount_name = #{discountName,jdbcType=VARCHAR},
-      least_num_of_booking_days = #{leastNumOfBookingDays,jdbcType=INTEGER},
-      discount_value = #{discountValue,jdbcType=DOUBLE},
-      discount_unit = #{discountUnit,jdbcType=VARCHAR},
-      discount_is_active = #{discountIsActive,jdbcType=BIT},
-      discount_created_at = #{discountCreatedAt,jdbcType=TIMESTAMP},
-      property_id = #{propertyId,jdbcType=BIGINT}
+    set least_num_of_booking_days = #{leastNumOfBookingDays,jdbcType=INTEGER},
+      discount_value = #{discountValue,jdbcType=DOUBLE}
     where discount_id = #{discountId,jdbcType=BIGINT}
   </update>
 </mapper>

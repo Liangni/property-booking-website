@@ -3,22 +3,18 @@
 <mapper namespace="com.penny.dao.DiscountVoMapper">
     <resultMap id="BaseResultMap" type="com.penny.vo.DiscountVo">
         <id column="discount_id" jdbcType="BIGINT" property="discountId" />
-        <result column="discount_name" jdbcType="VARCHAR" property="discountName" />
         <result column="least_num_of_booking_days" jdbcType="INTEGER" property="leastNumOfBookingDays" />
         <result column="discount_value" jdbcType="DOUBLE" property="discountValue" />
-        <result column="discount_unit" jdbcType="VARCHAR" property="discountUnit" />
-        <result column="discount_is_active" jdbcType="BIT" property="discountIsActive" />
-        <result column="discount_created_at" jdbcType="TIMESTAMP" property="discountCreatedAt" />
-        <result column="property_id" jdbcType="BIGINT" property="propertyId" />
     </resultMap>
     <sql id="Base_Column_List">
-        discount_id, discount_name, least_num_of_booking_days, discount_value, discount_unit,
-    discount_is_active, discount_created_at, property_id
+        discount_id, least_num_of_booking_days, discount_value
     </sql>
+
     <select id="listByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        from discount
-        where property_id = #{propertyId,jdbcType=BIGINT}
+            d.discount_id, d.least_num_of_booking_days, d.discount_value
+        from discount as d
+        right join property_discount as pd on pd.discount_id = d.discount_id
+        where pd.property_id = #{propertyId,jdbcType=BIGINT}
     </select>
 </mapper>

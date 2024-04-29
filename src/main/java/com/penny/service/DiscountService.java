@@ -40,11 +40,7 @@ public class DiscountService {
         }
 
         // 根據房源ID查詢相應的折扣列表，並過濾出已啟用的折扣後返回
-        return discountVoMapper
-                .listByPropertyId(propertyId)
-                .stream()
-                .filter(DiscountVo::getDiscountIsActive)
-                .collect(Collectors.toList());
+        return discountVoMapper.listByPropertyId(propertyId);
     }
 
     public List<DiscountVo> getPropertyDiscount(Long propertyId) {
@@ -61,10 +57,6 @@ public class DiscountService {
         ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
 
         // 根據房源ID查詢相應的折扣列表，並過濾出已啟用的折扣後返回
-        return discountVoMapper
-                .listByPropertyId(propertyId)
-                .stream()
-                .filter(DiscountVo::getDiscountIsActive)
-                .collect(Collectors.toList());
+        return discountVoMapper.listByPropertyId(propertyId);
     }
 }
