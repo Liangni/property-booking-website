@@ -23,9 +23,10 @@ public class DiscountService {
     private final EcUserService ecUserService;
 
     /**
-     * 獲取特定房源的折扣列表。
+     * 獲取特定已公開房源的折扣列表。
      *
      * @param propertyId 房源ID
+     * @throws FieldConflictException 如果 propertyId 為 null，則拋出此異常
      * @throws ResourceNotFoundException 如果找不到指定的已發佈房源，則拋出此異常
      * @return 房源折扣列表
      */
@@ -43,6 +44,14 @@ public class DiscountService {
         return discountVoMapper.listByPropertyId(propertyId);
     }
 
+    /**
+     * 獲取特定房源的折扣列表。
+     *
+     * @param propertyId 房源ID
+     * @throws FieldConflictException 如果 propertyId 為 null，則拋出此異常
+     * @throws ResourceNotFoundException 如果找不到指定的已發佈房源，則拋出此異常
+     * @return 房源折扣列表
+     */
     public List<DiscountVo> getPropertyDiscount(Long propertyId) {
         // 檢查參數
         if (propertyId == null) throw new FieldConflictException("propertyId is required");
