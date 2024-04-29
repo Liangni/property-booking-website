@@ -10,6 +10,7 @@ import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.CreatePropertyAmenityRequest;
+import com.penny.request.DeletePropertyAmenityRequest;
 import com.penny.vo.AmenityTypeVo;
 import com.penny.vo.AmenityVo;
 import com.penny.vo.PropertyAmenityVo;
@@ -19,6 +20,7 @@ import com.penny.vo.base.PropertyAmenityBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -56,7 +58,8 @@ public class AmenityService {
      * @param createRequest 創建房源設施的請求參數。
      * @throws ResourceNotFoundException 如果指定的房源不存在，則拋出此異常。
      */
-     public void createPropertyAmenities(CreatePropertyAmenityRequest createRequest) {
+    @Transactional
+     public void createPropertyAmenity(CreatePropertyAmenityRequest createRequest) {
          Long propertyId = createRequest.getPropertyId();
          Long amenityId = createRequest.getAmenityId();
 
@@ -140,6 +143,33 @@ public class AmenityService {
 
         // 將設施列表按類型分類並返回
         return classifyAmenitiesByType(propertyAmenityList);
+    }
+
+    /**
+     * 根據刪除請求來刪除房源設施。
+     *
+     * @param deleteRequest 刪除房源設施的請求物件
+     * @throws FieldConflictException 如果未提供必要的 propertyId 或 amenityId 時拋出
+     * @throws ResourceNotFoundException 如果找不到目標房源設施時拋出
+     */
+    @Transactional
+    public void deletePropertyAmenity(DeletePropertyAmenityRequest deleteRequest) {
+        Long propertyId = deleteRequest.getPropertyId();
+        Long amenityId = deleteRequest.getAmenityId();
+
+        // 檢查參數
+        if (propertyId == null) {
+            throw new FieldConflictException("propertyId is required");
+        }
+
+        if (amenityId == null) {
+            throw new FieldConflictException("amenityId is required");
+        }
+
+        int deleteCount = propertyAmenityVoMapper.deleteByPropertyIdAndAmenityId(propertyId, amenityId);
+        if (deleteCount == 0) {
+            throw new ResourceNotFoundException("the target property amenity is not found");
+        }
     }
 
     /**

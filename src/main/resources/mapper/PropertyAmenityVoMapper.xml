@@ -17,4 +17,10 @@
         where property_id = #{propertyId,jdbcType=BIGINT}
         and amenity_id = #{amenityId,jdbcType=BIGINT}
     </select>
+
+    <delete id="deleteByPropertyIdAndAmenityId">
+        delete from property_amenity
+        where property_id = #{propertyId,jdbcType=BIGINT}
+        and amenity_id = #{amenityId,jdbcType=BIGINT}
+    </delete>
 </mapper>

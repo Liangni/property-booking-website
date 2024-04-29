@@ -1,6 +1,7 @@
 package com.penny.controller;
 
 import com.penny.request.CreatePropertyAmenityRequest;
+import com.penny.request.DeletePropertyAmenityRequest;
 import com.penny.service.AmenityService;
 import com.penny.vo.AmenityVo;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,21 @@ public class AmenityController {
     public ResponseEntity<String> createPropertyAmenities(
             @RequestBody CreatePropertyAmenityRequest createRequest
     ) {
-        amenityService.createPropertyAmenities(createRequest);
+        amenityService.createPropertyAmenity(createRequest);
+        return ResponseEntity.ok("ok");
+    }
+
+    /**
+     * 刪除房源設施。
+     *
+     * @param deleteRequest 請求刪除房源設施的請求物件
+     * @return 包含 "ok" 字串的 ResponseEntity
+     */
+    @DeleteMapping("property-amenities")
+    public ResponseEntity<String> deletePropertyAmenities(
+            @RequestBody DeletePropertyAmenityRequest deleteRequest
+    ) {
+        amenityService.deletePropertyAmenity(deleteRequest);
         return ResponseEntity.ok("ok");
     }
 
