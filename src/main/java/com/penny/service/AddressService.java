@@ -3,6 +3,7 @@ package com.penny.service;
 import com.penny.dao.AddressVoMapper;
 import com.penny.dao.DistrictVoMapper;
 import com.penny.dao.base.AddressBaseVoMapper;
+import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceExistException;
 import com.penny.request.CreateAddressRequest;
@@ -14,8 +15,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AddressService {
     private final AddressBaseVoMapper addressBaseVoMapper;
+
     private final AddressVoMapper addressVoMapper;
+
     private final DistrictVoMapper districtVoMapper;
+
 
     /**
      * 創建新地址。
@@ -27,12 +31,11 @@ public class AddressService {
     public void createAddress(CreateAddressRequest request) {
         Long districtId = request.getDistrictId();
         String street = request.getStreet();
-        System.out.println("districtId");
-        System.out.println(districtId);
-        // 檢查 districtId 和 street 是否為 null
-        if(street == null) throw new FieldConflictException("street cannot be null");
 
-        if (districtId == null) throw new FieldConflictException("districtId cannot be null");
+        // 檢查 districtId 和 street 是否為 null
+        if(street == null) throw new FieldConflictException("street is required");
+
+        if (districtId == null) throw new FieldConflictException("districtId is required");
 
         // 限制 district 只能是行政劃分層級 3 的行政區
         if (districtVoMapper.selectAdminAreaLevelByPrimaryKey(districtId) != 3L) {
@@ -42,7 +45,7 @@ public class AddressService {
         // 檢查該地址是否已存在
         AddressVo existingAddress = addressVoMapper.selectByDistrictIdAndStreet(districtId, street);
         if(existingAddress != null) {
-            throw new ResourceExistException("address already exist");
+            throw new ResourceExistException("address already exists");
         }
 
         // 插入新地址
