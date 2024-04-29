@@ -16,7 +16,7 @@ import java.util.List;
 public class DiscountController {
 
     private final DiscountService discountService;
-    @GetMapping
+    @GetMapping("property-discounts")
     List<DiscountVo> getPropertyDiscount(
             @RequestParam Long propertyId
     ){
