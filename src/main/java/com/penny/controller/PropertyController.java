@@ -55,7 +55,7 @@ public class PropertyController {
      * @return 包含 "ok" 字串的 ResponseEntity
      */
     @DeleteMapping("{propertyId}/amenities/{amenityId}")
-    public ResponseEntity<String> deletePropertyAmenities(
+    public ResponseEntity<String> deletePropertyAmenity(
             @PathVariable Long propertyId,
             @PathVariable Long amenityId
     ) {
@@ -89,6 +89,22 @@ public class PropertyController {
             @PathVariable Long discountId
     ){
         discountService.createPropertyDiscount(propertyId, discountId);
+        return ResponseEntity.ok("ok");
+    }
+
+    /**
+     * 刪除房源折扣。
+     *
+     * @param propertyId 房源 ID
+     * @param discountId 折扣 ID
+     * @return 包含 "ok" 字串的 ResponseEntity
+     */
+    @DeleteMapping("{propertyId}/discounts/{discountId}")
+    public ResponseEntity<String> deletePropertyDiscount(
+            @PathVariable Long propertyId,
+            @PathVariable Long discountId
+    ) {
+        discountService.deletePropertyDiscount(propertyId, discountId);
         return ResponseEntity.ok("ok");
     }
 }

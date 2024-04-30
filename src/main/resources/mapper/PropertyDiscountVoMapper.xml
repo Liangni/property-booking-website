@@ -9,6 +9,7 @@
     <sql id="Base_Column_List">
         property_discount_id, property_id, discount_id
     </sql>
+
     <select id="selectByPropertyIdAndDiscountId" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
@@ -16,5 +17,11 @@
         where discount_id = #{discountId,jdbcType=BIGINT}
         and property_id = #{propertyId,jdbcType=BIGINT}
     </select>
+
+    <delete id="deleteByPropertyIdAndDiscountId" parameterType="java.util.Map">
+        delete from property_discount
+        where discount_id = #{discountId,jdbcType=BIGINT}
+        and property_id = #{propertyId,jdbcType=BIGINT}
+    </delete>
 
 </mapper>

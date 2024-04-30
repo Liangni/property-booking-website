@@ -14,4 +14,13 @@ public interface PropertyDiscountVoMapper {
      * @return 返回包含房源折扣資訊的 PropertyDiscountVo 物件，如果未找到則返回 null
      */
     PropertyDiscountVo selectByPropertyIdAndDiscountId(Long propertyId, Long discountId);
+
+    /**
+     * 根據房源 ID 和折扣 ID 刪除記錄的方法。
+     *
+     * @param propertyId 房源 ID，用於指定要刪除的房源
+     * @param discountId 折扣 ID，用於指定要查詢的折扣
+     * @return 返回一個整數，表示刪除的記錄數量
+     */
+    Integer deleteByPropertyIdAndDiscountId(Long propertyId, Long discountId);
 }

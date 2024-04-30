@@ -12,6 +12,7 @@ import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.PropertyDiscountBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -55,14 +56,10 @@ public class DiscountService {
      * 獲取特定房源的折扣列表。
      *
      * @param propertyId 房源ID
-     * @throws FieldConflictException 如果 propertyId 為 null，則拋出此異常
      * @throws ResourceNotFoundException 如果找不到指定的已發佈房源，則拋出此異常
      * @return 房源折扣列表
      */
     public List<DiscountVo> getPropertyDiscount(Long propertyId) {
-        // 檢查參數
-        if (propertyId == null) throw new FieldConflictException("propertyId is required");
-
         // 檢查房源是否存在
         PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
         if(propertyBaseVo == null) {
@@ -81,7 +78,6 @@ public class DiscountService {
      *
      * @param propertyId 房源 ID
      * @param discountId 折扣 ID
-     * @throws FieldConflictException 如果未提供必要的 propertyId 或 discountId 時拋出
      */
     public void createPropertyDiscount(Long propertyId, Long discountId){
         // 查詢是否已存在相同的房源折扣
@@ -99,5 +95,20 @@ public class DiscountService {
 
         // 儲存新的房源折扣資料
         propertyDiscountBaseVoMapper.insertSelective(newPropertyDiscountBaseVo);
+    }
+
+    /**
+     * 根據刪除請求來刪除房源設施。
+     *
+     * @param propertyId 房源 ID
+     * @param discountId 折扣 ID
+     * @throws ResourceNotFoundException 如果找不到目標房源折扣時拋出
+     */
+    @Transactional
+    public void deletePropertyDiscount(Long propertyId, Long discountId) {
+        int deleteCount = propertyDiscountVoMapper.deleteByPropertyIdAndDiscountId(propertyId, discountId);
+        if (deleteCount == 0) {
+            throw new ResourceNotFoundException("the target property discount is not found");
+        }
     }
 }
