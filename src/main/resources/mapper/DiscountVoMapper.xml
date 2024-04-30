@@ -17,4 +17,12 @@
         right join property_discount as pd on pd.discount_id = d.discount_id
         where pd.property_id = #{propertyId,jdbcType=BIGINT}
     </select>
+
+    <select id="selectByDiscountValueAndLeastNumOfBookingDays" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from discount
+        where discount_value = #{discountValue,jdbcType=DOUBLE}
+        and least_num_of_booking_days = #{leastNumOfBookingDays, jdbcType=INTEGER}
+    </select>
 </mapper>

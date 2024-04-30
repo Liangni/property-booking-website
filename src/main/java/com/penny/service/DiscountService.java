@@ -2,12 +2,15 @@ package com.penny.service;
 
 import com.penny.dao.DiscountVoMapper;
 import com.penny.dao.PropertyDiscountVoMapper;
+import com.penny.dao.base.DiscountBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.PropertyDiscountBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
+import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.vo.DiscountVo;
 import com.penny.vo.PropertyDiscountVo;
+import com.penny.vo.base.DiscountBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.PropertyDiscountBaseVo;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DiscountService {
+    private final DiscountBaseVoMapper discountBaseVoMapper;
 
     private final DiscountVoMapper discountVoMapper;
 
@@ -77,9 +81,32 @@ public class DiscountService {
      * 根據建立房源折扣請求來新增房源折扣。
      *
      * @param propertyId 房源 ID
-     * @param discountId 折扣 ID
+     * @param createRequest 創建房源折扣請求
      */
-    public void createPropertyDiscount(Long propertyId, Long discountId){
+    public void createPropertyDiscount(Long propertyId, CreatePropertyDiscountRequest createRequest){
+        // 取得建立房源折扣請求中的折扣值和最少預訂天數
+        Double discountValue = createRequest.getDiscountValue();
+        Integer leastNumOfBookingDays = createRequest.getLeastNumOfBookingDays();
+        Long discountId;
+
+        // 根據折扣值和最少預訂天數查詢是否已存在相同折扣
+        DiscountVo existingDiscountVo = discountVoMapper.selectByDiscountValueAndLeastNumOfBookingDays(discountValue, leastNumOfBookingDays);
+
+        // 如果已存在相同折扣，則取得該折扣的折扣 ID
+        if (existingDiscountVo != null) {
+            discountId = existingDiscountVo.getDiscountId();
+        } else {
+            // 否則新增一個新的折扣
+            DiscountBaseVo newDiscountBaseVo = DiscountBaseVo
+                    .builder()
+                    .discountValue(discountValue)
+                    .leastNumOfBookingDays(leastNumOfBookingDays)
+                    .build();
+
+            discountBaseVoMapper.insertSelective(newDiscountBaseVo);
+            discountId = newDiscountBaseVo.getDiscountId();
+        }
+
         // 查詢是否已存在相同的房源折扣
         PropertyDiscountVo existingPropertyDiscountVo = propertyDiscountVoMapper.selectByPropertyIdAndDiscountId(propertyId, discountId);
 

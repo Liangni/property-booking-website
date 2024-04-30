@@ -1,5 +1,6 @@
 package com.penny.controller;
 
+import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.service.AmenityService;
 import com.penny.service.DiscountService;
 import com.penny.vo.DiscountVo;
@@ -64,7 +65,7 @@ public class PropertyController {
     }
 
     /**
-     * 根據房源 ID 取得物業折扣列表的方法。
+     * 根據房源 ID 取得房源折扣列表的方法。
      *
      * @param propertyId 房源 ID，用於指定要查詢折扣的房源
      * @return 返回包含房源折扣列表的 ResponseEntity
@@ -80,15 +81,15 @@ public class PropertyController {
      * 新增房源折扣的方法。
      *
      * @param propertyId 房源 ID
-     * @param discountId 折扣 ID
+     * @param createRequest 房源折扣創建請求
      * @return 返回表示成功的 ResponseEntity
      */
-    @PostMapping("{propertyId}/discounts/{discountId}")
+    @PostMapping("{propertyId}/discounts")
     ResponseEntity<String> getPropertyDiscount(
             @PathVariable Long propertyId,
-            @PathVariable Long discountId
-    ){
-        discountService.createPropertyDiscount(propertyId, discountId);
+            @RequestBody CreatePropertyDiscountRequest createRequest
+            ){
+        discountService.createPropertyDiscount(propertyId, createRequest);
         return ResponseEntity.ok("ok");
     }
 
