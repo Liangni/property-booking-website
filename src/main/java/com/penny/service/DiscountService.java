@@ -6,7 +6,6 @@ import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.PropertyDiscountBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
-import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.vo.DiscountVo;
 import com.penny.vo.PropertyDiscountVo;
 import com.penny.vo.base.PropertyBaseVo;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,18 +79,11 @@ public class DiscountService {
     /**
      * 根據建立房源折扣請求來新增房源折扣。
      *
-     * @param createRequest 建立房源折扣的請求物件
+     * @param propertyId 房源 ID
+     * @param discountId 折扣 ID
      * @throws FieldConflictException 如果未提供必要的 propertyId 或 discountId 時拋出
      */
-    public void createPropertyDiscount(CreatePropertyDiscountRequest createRequest){
-        Long propertyId = createRequest.getPropertyId();
-        Long discountId = createRequest.getDiscountId();
-
-        // 檢查參數
-        if (propertyId == null) throw new FieldConflictException("propertyId is required");
-
-        if (discountId == null) throw new FieldConflictException("discountId is required");
-
+    public void createPropertyDiscount(Long propertyId, Long discountId){
         // 查詢是否已存在相同的房源折扣
         PropertyDiscountVo existingPropertyDiscountVo = propertyDiscountVoMapper.selectByPropertyIdAndDiscountId(propertyId, discountId);
 

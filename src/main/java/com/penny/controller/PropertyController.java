@@ -1,6 +1,8 @@
 package com.penny.controller;
 
 import com.penny.service.AmenityService;
+import com.penny.service.DiscountService;
+import com.penny.vo.DiscountVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PropertyController {
     private final AmenityService amenityService;
+
+    private final DiscountService discountService;
 
     /**
      * 創建房源設施。
@@ -56,6 +60,35 @@ public class PropertyController {
             @PathVariable Long amenityId
     ) {
         amenityService.deletePropertyAmenity(propertyId, amenityId);
+        return ResponseEntity.ok("ok");
+    }
+
+    /**
+     * 根據房源 ID 取得物業折扣列表的方法。
+     *
+     * @param propertyId 房源 ID，用於指定要查詢折扣的房源
+     * @return 返回包含房源折扣列表的 ResponseEntity
+     */
+    @GetMapping("{propertyId}/discounts")
+    ResponseEntity<List<DiscountVo>> getPropertyDiscount(
+            @PathVariable Long propertyId
+    ){
+        return ResponseEntity.ok(discountService.getPropertyDiscount(propertyId));
+    }
+
+    /**
+     * 新增房源折扣的方法。
+     *
+     * @param propertyId 房源 ID
+     * @param discountId 折扣 ID
+     * @return 返回表示成功的 ResponseEntity
+     */
+    @PostMapping("{propertyId}/discounts/{discountId}")
+    ResponseEntity<String> getPropertyDiscount(
+            @PathVariable Long propertyId,
+            @PathVariable Long discountId
+    ){
+        discountService.createPropertyDiscount(propertyId, discountId);
         return ResponseEntity.ok("ok");
     }
 }
