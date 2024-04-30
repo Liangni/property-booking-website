@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.PropertyDiscountVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.PropertyDiscountVo">
+        <id column="property_discount_id" jdbcType="BIGINT" property="propertyDiscountId" />
+        <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+        <result column="discount_id" jdbcType="BIGINT" property="discountId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        property_discount_id, property_id, discount_id
+    </sql>
+    <select id="selectByPropertyIdAndDiscountId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from property_discount
+        where discount_id = #{discountId,jdbcType=BIGINT}
+        and property_id = #{propertyId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

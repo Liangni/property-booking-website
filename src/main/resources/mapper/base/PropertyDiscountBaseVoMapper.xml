@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.PropertyDiscountBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.PropertyDiscountBaseVo">
+    <id column="property_discount_id" jdbcType="BIGINT" property="propertyDiscountId" />
+    <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+    <result column="discount_id" jdbcType="BIGINT" property="discountId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    property_discount_id, property_id, discount_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from property_discount
+    where property_discount_id = #{propertyDiscountId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from property_discount
+    where property_discount_id = #{propertyDiscountId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="property_discount_id" keyProperty="propertyDiscountId" parameterType="com.penny.vo.base.PropertyDiscountBaseVo" useGeneratedKeys="true">
+    insert into property_discount (property_id, discount_id)
+    values (#{propertyId,jdbcType=BIGINT}, #{discountId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="property_discount_id" keyProperty="propertyDiscountId" parameterType="com.penny.vo.base.PropertyDiscountBaseVo" useGeneratedKeys="true">
+    insert into property_discount
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="propertyId != null">
+        property_id,
+      </if>
+      <if test="discountId != null">
+        discount_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="propertyId != null">
+        #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="discountId != null">
+        #{discountId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PropertyDiscountBaseVo">
+    update property_discount
+    <set>
+      <if test="propertyId != null">
+        property_id = #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="discountId != null">
+        discount_id = #{discountId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where property_discount_id = #{propertyDiscountId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PropertyDiscountBaseVo">
+    update property_discount
+    set property_id = #{propertyId,jdbcType=BIGINT},
+      discount_id = #{discountId,jdbcType=BIGINT}
+    where property_discount_id = #{propertyDiscountId,jdbcType=BIGINT}
+  </update>
+</mapper>

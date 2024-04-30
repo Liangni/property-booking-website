@@ -1,13 +1,11 @@
 package com.penny.controller;
 
+import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.service.DiscountService;
 import com.penny.vo.DiscountVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,19 @@ public class DiscountController {
             @RequestParam Long propertyId
     ){
         return ResponseEntity.ok(discountService.getPropertyDiscount(propertyId));
+    }
+
+    /**
+     * 新增房源折扣的方法。
+     *
+     * @param createRequest 建立房源折扣的請求物件
+     * @return 返回表示成功的 ResponseEntity
+     */
+    @PostMapping("property-discounts")
+    ResponseEntity<String> getPropertyDiscount(
+            @RequestBody CreatePropertyDiscountRequest createRequest
+    ){
+        discountService.createPropertyDiscount(createRequest);
+        return ResponseEntity.ok("ok");
     }
 }
