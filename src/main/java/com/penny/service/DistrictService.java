@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +46,6 @@ public class DistrictService {
      * @throws ResourceNotFoundException 若未找到符合關鍵字的行政區，拋出此異常
      */
     public List<DistrictVo> getDistrictsByKeyword(String keyword){
-
         String replaced = keyword.replace("台", "臺");
 
         return Optional.ofNullable(districtVoMapper.listByNameKeyword(replaced))

@@ -33,6 +33,10 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class PictureService {
+    private final Set<String> PICTURE_EXTENSIONS = new HashSet<>(Set.of(
+            "jpg", "jpeg", "png"
+    ));
+
     private final PropertyBaseVoMapper propertyBaseVoMapper;
 
     private final PictureBaseVoMapper pictureBaseVoMapper;
@@ -63,7 +67,8 @@ public class PictureService {
     public Map<String, Object> getPropertyImageUploadUrlMap(Long propertyId, String fileExtension) {
         // 檢驗參數
         if (propertyId == null) { throw new FieldConflictException("propertyId is required");}
-        if (fileExtension == null) { throw new FieldConflictException("fileExtension is required");}
+        if (fileExtension.isBlank()) { throw new FieldConflictException("fileExtension is required");}
+        if (!isPictureFileExtension(fileExtension)) throw new FieldConflictException("fileExtension can only be %s".formatted(PICTURE_EXTENSIONS.toString()));
 
         // 檢查房源是否存在
         PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
@@ -240,6 +245,20 @@ public class PictureService {
 
         // 使用抽取的方法獲取圖片下載 URL 列表
         return listPropertyPictureDtDownloadUrlMap(propertyPictureVoList, sizeNum);
+    }
+
+    /**
+     * 檢查給定的檔案副檔名是否代表常見的圖片檔案副檔名。
+     *
+     * @param fileExtension 要檢查的檔案副檔名（例如 "jpg", "png", "jpeg" 等）
+     * @return 如果檔案副檔名是常見的圖片檔案副檔名則返回 true，否則返回 false
+     */
+    private boolean isPictureFileExtension(String fileExtension) {
+        // 將檔案副檔名轉換為小寫（進行大小寫不敏感的比較）
+        String normalizedExtension = fileExtension.toLowerCase();
+
+        // 檢查正規化後的副檔名是否在圖片檔案副檔名集合中
+        return PICTURE_EXTENSIONS.contains(normalizedExtension);
     }
 
 
