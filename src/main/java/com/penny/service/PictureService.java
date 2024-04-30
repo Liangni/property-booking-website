@@ -191,7 +191,7 @@ public class PictureService {
      * @throws FieldConflictException 如果 propertyId 或 sizeNum 為 null，則拋出此異常
      * @throws ResourceNotFoundException 如果找不到指定的房源或房源未發佈，則拋出此異常
      */
-    public List<Map<String, Object>> listPublishedPropertyImageDownloadUrls(Long propertyId, Integer sizeNum) {
+    public List<Map<String, Object>> listPublishedPropertyImageDownloadUrl(Long propertyId, Integer sizeNum) {
         // 檢驗 propertyId, sizeNum
         if (propertyId == null || sizeNum == null) {
             throw new FieldConflictException("propertyId and sizeNum are required");
@@ -218,7 +218,7 @@ public class PictureService {
      * @return 返回一個包含圖片下載 URL 的列表，如果找不到符合條件的圖片，則返回空列表。
      * @throws FieldConflictException 如果房源ID或圖片尺寸編號為空，則拋出 FieldConflictException 異常。
      */
-    public List<Map<String, Object>> listPropertyImageDownloadUrls(Long propertyId, Integer sizeNum) {
+    public List<Map<String, Object>> listPropertyImageDownloadUrl(Long propertyId, Integer sizeNum) {
         // 檢驗 propertyId, sizeNum
         if (propertyId == null || sizeNum == null) {
             throw new FieldConflictException("propertyId and sizeNum are required");

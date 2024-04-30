@@ -39,7 +39,7 @@ public class SecurityConfig {
                                     "/api/v1/auth/login",
                                     "/api/v1/auth/register",
                                     "/error",
-                                    "api/v1/properties/**",
+                                    "api/v1/public-properties/**",
                                     "api/v1/initial-page/**",
                                     "api/v1/districts/**",
                                     "api/v1/property-groups/**",

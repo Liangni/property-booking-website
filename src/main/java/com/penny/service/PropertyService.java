@@ -35,7 +35,7 @@ public class PropertyService {
      * @throws FieldConflictException 如果 startAvailableDateString 存在而 endAvailableDateString 不存在
      * @throws FieldConflictException 如果 startAvailableDateString 或 endAvailableDateString 格式錯誤
      */
-    public List<PropertyVo> getPublishedProperties(SearchPropertyRequest request) {
+    public List<PropertyVo> listPublishedProperty(SearchPropertyRequest request) {
         // 從查詢參數中獲取可預定天數、開始預定日期字串和結束預定日期字串
         Integer numOfAvailableDays = request.getNumOfAvailableDays();
         String startAvailableDateString = request.getStartAvailableDateString();

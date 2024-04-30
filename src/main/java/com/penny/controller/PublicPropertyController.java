@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/properties")
+@RequestMapping("api/v1/public-properties")
 @RequiredArgsConstructor
-public class PropertyController {
+public class PublicPropertyController {
         private final PropertyService propertyService;
 
         private final BedroomService bedroomService;
@@ -39,7 +39,7 @@ public class PropertyController {
     public ResponseEntity<List<PropertyVo>> getProperties(
             @ModelAttribute SearchPropertyRequest request
     ) {
-        return ResponseEntity.ok(propertyService.getPublishedProperties(request));
+        return ResponseEntity.ok(propertyService.listPublishedProperty(request));
     }
 
 
@@ -55,7 +55,7 @@ public class PropertyController {
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
     ) {
-        return ResponseEntity.ok(pictureService.listPublishedPropertyImageDownloadUrls(propertyId, sizeNum));
+        return ResponseEntity.ok(pictureService.listPublishedPropertyImageDownloadUrl(propertyId, sizeNum));
     }
 
     /**

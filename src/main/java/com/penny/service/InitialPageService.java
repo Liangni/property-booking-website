@@ -40,7 +40,7 @@ public class InitialPageService {
             if (!propertyVo.getIsPublished()) continue;
 
             // 查詢房源的 DEFAULT_SIZE 的圖片DT列表，並取得下載圖片的預簽名 url
-            List<Map<String, Object>> propertyImageUrlList= pictureService.listPropertyImageDownloadUrls(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
+            List<Map<String, Object>> propertyImageUrlList= pictureService.listPropertyImageDownloadUrl(propertyVo.getPropertyId(), DEFAULT_PICTURE_DT_SIZE);
 
             // 將房源資訊加入列表
             propertyMapList.add(preparePropertyMap(propertyVo, propertyImageUrlList));

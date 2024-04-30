@@ -27,7 +27,7 @@ public class PictureController {
             @RequestParam Long propertyId,
             @RequestParam Integer sizeNum
     ) {
-        return ResponseEntity.ok(pictureService.listPropertyImageDownloadUrls(propertyId, sizeNum));
+        return ResponseEntity.ok(pictureService.listPropertyImageDownloadUrl(propertyId, sizeNum));
     }
 
     /**
