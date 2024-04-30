@@ -4,18 +4,14 @@ import com.penny.dao.AmenityTypeVoMapper;
 import com.penny.dao.AmenityVoMapper;
 import com.penny.dao.PropertyAmenityVoMapper;
 import com.penny.dao.base.AmenityBaseVoMapper;
-import com.penny.dao.base.AmenityTypeBaseVoMapper;
 import com.penny.dao.base.PropertyAmenityBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
-import com.penny.request.CreatePropertyAmenityRequest;
-import com.penny.request.DeletePropertyAmenityRequest;
 import com.penny.vo.AmenityTypeVo;
 import com.penny.vo.AmenityVo;
 import com.penny.vo.PropertyAmenityVo;
 import com.penny.vo.base.AmenityBaseVo;
-import com.penny.vo.base.AmenityTypeBaseVo;
 import com.penny.vo.base.PropertyAmenityBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class AmenityService {
+    private final AmenityBaseVoMapper amenityBaseVoMapper;
+
      private final AmenityVoMapper amenityVoMapper;
 
      private final PropertyBaseVoMapper propertyBaseVoMapper;
@@ -55,28 +51,23 @@ public class AmenityService {
     /**
      * 創建房源設施。
      *
-     * @param createRequest 創建房源設施的請求參數。
-     * @throws ResourceNotFoundException 如果指定的房源不存在，則拋出此異常。
+     * @param propertyId 房源 ID
+     * @param amenityId 設施 ID
+     * @throws ResourceNotFoundException 如果指定的房源或設施不存在，則拋出此異常。
      */
     @Transactional
-     public void createPropertyAmenity(CreatePropertyAmenityRequest createRequest) {
-         Long propertyId = createRequest.getPropertyId();
-         Long amenityId = createRequest.getAmenityId();
-
-         // 檢查參數
-         if (propertyId == null) {
-             throw new FieldConflictException("propertyId is required");
-         }
-
-         if (amenityId == null) {
-             throw new FieldConflictException("propertyId is required");
-         }
-
+     public void createPropertyAmenity(Long propertyId, Long amenityId) {
          // 檢查房源是否存在
          PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
          if(propertyBaseVo == null) {
              throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
          }
+
+         // 檢查設施是否存在
+        AmenityBaseVo  amenityBaseVo = amenityBaseVoMapper.selectByPrimaryKey(amenityId);
+        if( amenityBaseVo == null) {
+            throw new ResourceNotFoundException(" amenity with id %s not found".formatted(amenityId));
+        }
 
          // 檢驗登入使用者是否為房源出租人
          ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
@@ -148,24 +139,13 @@ public class AmenityService {
     /**
      * 根據刪除請求來刪除房源設施。
      *
-     * @param deleteRequest 刪除房源設施的請求物件
+     * @param propertyId 房源 ID
+     * @param amenityId 設施 ID
      * @throws FieldConflictException 如果未提供必要的 propertyId 或 amenityId 時拋出
      * @throws ResourceNotFoundException 如果找不到目標房源設施時拋出
      */
     @Transactional
-    public void deletePropertyAmenity(DeletePropertyAmenityRequest deleteRequest) {
-        Long propertyId = deleteRequest.getPropertyId();
-        Long amenityId = deleteRequest.getAmenityId();
-
-        // 檢查參數
-        if (propertyId == null) {
-            throw new FieldConflictException("propertyId is required");
-        }
-
-        if (amenityId == null) {
-            throw new FieldConflictException("amenityId is required");
-        }
-
+    public void deletePropertyAmenity(Long propertyId, Long amenityId) {
         int deleteCount = propertyAmenityVoMapper.deleteByPropertyIdAndAmenityId(propertyId, amenityId);
         if (deleteCount == 0) {
             throw new ResourceNotFoundException("the target property amenity is not found");
