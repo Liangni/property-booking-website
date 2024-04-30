@@ -12,7 +12,5 @@ import lombok.NoArgsConstructor;
 public class UpdatePropertyPictureRequest {
     private Long pictureId;
 
-    private Long propertyId;
-
     private Integer pictureOrder;
 }

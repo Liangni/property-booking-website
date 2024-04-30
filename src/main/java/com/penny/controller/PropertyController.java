@@ -1,8 +1,10 @@
 package com.penny.controller;
 
 import com.penny.request.CreatePropertyDiscountRequest;
+import com.penny.request.UpdatePropertyPictureRequest;
 import com.penny.service.AmenityService;
 import com.penny.service.DiscountService;
+import com.penny.service.PictureService;
 import com.penny.vo.DiscountVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ public class PropertyController {
     private final AmenityService amenityService;
 
     private final DiscountService discountService;
+
+    private final PictureService pictureService;
 
     /**
      * 創建房源設施。
@@ -106,6 +110,52 @@ public class PropertyController {
             @PathVariable Long discountId
     ) {
         discountService.deletePropertyDiscount(propertyId, discountId);
+        return ResponseEntity.ok("ok");
+    }
+
+    /**
+     * 取得物業圖片下載 URL 地圖列表。
+     *
+     * @param propertyId 房源 ID
+     * @param sizeNum 圖片尺寸數量
+     * @return ResponseEntity 包含房源圖片下載 URL map 列表 的 ResponseEntity
+     */
+    @GetMapping("{propertyId}/image-download-urls")
+    public ResponseEntity<List<Map<String, Object>>> getPropertyImageDownloadUrlMap(
+            @PathVariable Long propertyId,
+            @RequestParam Integer sizeNum
+    ) {
+        return ResponseEntity.ok(pictureService.listPropertyImageDownloadUrl(propertyId, sizeNum));
+    }
+
+    /**
+     * 獲取房源圖片的上傳URL。
+     *
+     * @param propertyId 房源 ID
+     * @param fileExtension 檔案副檔名
+     * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
+     */
+    @GetMapping("{propertyId}/image-upload-urls")
+    public ResponseEntity<Map<String, Object>> getPropertyImageUploadUrlMap(
+            @PathVariable Long propertyId,
+            @RequestParam String fileExtension
+    ) {
+        return ResponseEntity.ok(pictureService.getPropertyImageUploadUrlMap(propertyId, fileExtension));
+    }
+
+    /**
+     * 更新房源圖片信息。
+     *
+     * @param propertyId 房源 ID
+     * @param updateRequest 更新圖片請求。
+     * @return ResponseEntity，表示請求已成功處理。
+     */
+    @PostMapping("{propertyId}/pictures")
+    public ResponseEntity<String> updatePropertyPicture(
+            @PathVariable Long propertyId,
+            @RequestBody UpdatePropertyPictureRequest updateRequest
+    ) {
+        pictureService.updatePropertyPicture(propertyId, updateRequest);
         return ResponseEntity.ok("ok");
     }
 }
