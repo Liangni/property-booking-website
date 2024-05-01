@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PropertyGroupBaseVo {
-    private Long propertyGroupId;
+public class PropertyMainTypeBaseVo {
+    private Long propertyMainTypeId;
 
-    private String propertyGroupName;
+    private String propertyMainTypeName;
 }

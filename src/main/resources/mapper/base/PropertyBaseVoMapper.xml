@@ -14,7 +14,7 @@
     <result column="is_published" jdbcType="BIT" property="isPublished" />
     <result column="average_rating" jdbcType="DOUBLE" property="averageRating" />
     <result column="review_count" jdbcType="INTEGER" property="reviewCount" />
-    <result column="property_group_type_id" jdbcType="BIGINT" property="propertyGroupTypeId" />
+    <result column="property_main_sub_type_id" jdbcType="BIGINT" property="propertyMainSubTypeId" />
     <result column="property_share_type_id" jdbcType="BIGINT" property="propertyShareTypeId" />
     <result column="address_id" jdbcType="BIGINT" property="addressId" />
     <result column="host_id" jdbcType="BIGINT" property="hostId" />
@@ -22,8 +22,8 @@
   <sql id="Base_Column_List">
     property_id, property_title, property_description, max_num_of_guests, num_of_bedrooms, 
     num_of_beds, num_of_bathrooms, price_on_weekdays, price_on_weekends, is_published, 
-    average_rating, review_count, property_group_type_id, property_share_type_id, address_id, 
-    host_id
+    average_rating, review_count, property_main_sub_type_id, property_share_type_id, 
+    address_id, host_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -40,13 +40,13 @@
       max_num_of_guests, num_of_bedrooms, num_of_beds, 
       num_of_bathrooms, price_on_weekdays, price_on_weekends, 
       is_published, average_rating, review_count, 
-      property_group_type_id, property_share_type_id, 
+      property_main_sub_type_id, property_share_type_id, 
       address_id, host_id)
     values (#{propertyTitle,jdbcType=VARCHAR}, #{propertyDescription,jdbcType=VARCHAR}, 
       #{maxNumOfGuests,jdbcType=INTEGER}, #{numOfBedrooms,jdbcType=INTEGER}, #{numOfBeds,jdbcType=INTEGER}, 
       #{numOfBathrooms,jdbcType=INTEGER}, #{priceOnWeekdays,jdbcType=INTEGER}, #{priceOnWeekends,jdbcType=INTEGER}, 
       #{isPublished,jdbcType=BIT}, #{averageRating,jdbcType=DOUBLE}, #{reviewCount,jdbcType=INTEGER}, 
-      #{propertyGroupTypeId,jdbcType=BIGINT}, #{propertyShareTypeId,jdbcType=BIGINT}, 
+      #{propertyMainSubTypeId,jdbcType=BIGINT}, #{propertyShareTypeId,jdbcType=BIGINT}, 
       #{addressId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" keyColumn="property_id" keyProperty="propertyId" parameterType="com.penny.vo.base.PropertyBaseVo" useGeneratedKeys="true">
@@ -85,8 +85,8 @@
       <if test="reviewCount != null">
         review_count,
       </if>
-      <if test="propertyGroupTypeId != null">
-        property_group_type_id,
+      <if test="propertyMainSubTypeId != null">
+        property_main_sub_type_id,
       </if>
       <if test="propertyShareTypeId != null">
         property_share_type_id,
@@ -132,8 +132,8 @@
       <if test="reviewCount != null">
         #{reviewCount,jdbcType=INTEGER},
       </if>
-      <if test="propertyGroupTypeId != null">
-        #{propertyGroupTypeId,jdbcType=BIGINT},
+      <if test="propertyMainSubTypeId != null">
+        #{propertyMainSubTypeId,jdbcType=BIGINT},
       </if>
       <if test="propertyShareTypeId != null">
         #{propertyShareTypeId,jdbcType=BIGINT},
@@ -182,8 +182,8 @@
       <if test="reviewCount != null">
         review_count = #{reviewCount,jdbcType=INTEGER},
       </if>
-      <if test="propertyGroupTypeId != null">
-        property_group_type_id = #{propertyGroupTypeId,jdbcType=BIGINT},
+      <if test="propertyMainSubTypeId != null">
+        property_main_sub_type_id = #{propertyMainSubTypeId,jdbcType=BIGINT},
       </if>
       <if test="propertyShareTypeId != null">
         property_share_type_id = #{propertyShareTypeId,jdbcType=BIGINT},
@@ -210,7 +210,7 @@
       is_published = #{isPublished,jdbcType=BIT},
       average_rating = #{averageRating,jdbcType=DOUBLE},
       review_count = #{reviewCount,jdbcType=INTEGER},
-      property_group_type_id = #{propertyGroupTypeId,jdbcType=BIGINT},
+      property_main_sub_type_id = #{propertyMainSubTypeId,jdbcType=BIGINT},
       property_share_type_id = #{propertyShareTypeId,jdbcType=BIGINT},
       address_id = #{addressId,jdbcType=BIGINT},
       host_id = #{hostId,jdbcType=BIGINT}

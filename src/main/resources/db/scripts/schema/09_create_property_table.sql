@@ -12,11 +12,11 @@ CREATE TABLE IF NOT EXISTS property
     is_published BOOLEAN NOT NULL DEFAULT false,
     average_rating DOUBLE PRECISION,
     review_count INT DEFAULT 0,
-    property_group_type_id BIGINT,
+    property_main_sub_type_id BIGINT,
     property_share_type_id BIGINT,
     address_id BIGINT,
     host_id BIGINT NOT NULL,
-    FOREIGN KEY (property_group_type_id) REFERENCES property_group_type(property_group_type_id),
+    FOREIGN KEY (property_main_sub_type_id) REFERENCES property_main_type(property_main_type_id),
     FOREIGN KEY (property_share_type_id) REFERENCES property_share_type(property_share_type_id),
     FOREIGN KEY (address_id) REFERENCES address(address_id),
     FOREIGN KEY (host_id) REFERENCES ec_user(ec_user_id)

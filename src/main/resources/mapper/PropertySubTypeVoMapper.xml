@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.PropertySubTypeVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.PropertySubTypeVo">
+        <id column="property_sub_type_id" jdbcType="BIGINT" property="propertySubTypeId" />
+        <result column="property_sub_type_name" jdbcType="VARCHAR" property="propertySubTypeName" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        property_sub_type_id, property_sub_type_name
+    </sql>
+    <select id="listByPropertyMainTypeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+            pst.property_sub_type_id, property_sub_type_name
+        from property_sub_type as pst
+        left join property_main_sub_type as pmst on pmst.property_main_type_id = pst.property_sub_type_id
+        where pmst.property_main_type_id = #{propertyMainTypeId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

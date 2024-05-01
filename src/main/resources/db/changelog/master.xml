@@ -8,9 +8,9 @@
 
     <!-- schema -->
     <include file="/db/scripts/schema/01_create_ec_user_table.sql"/>
-    <include file="/db/scripts/schema/02_create_property_group_table.sql"/>
+    <include file="/db/scripts/schema/02_create_property_main_type_table.sql"/>
     <include file="/db/scripts/schema/03_create_property_type_table.sql"/>
-    <include file="/db/scripts/schema/04_create_property_group_type_table.sql"/>
+    <include file="/db/scripts/schema/04_create_property_main_sub_type_table.sql"/>
     <include file="/db/scripts/schema/05_create_property_share_type_table.sql"/>
     <include file="/db/scripts/schema/06_create_administrative_area_table.sql"/>
     <include file="/db/scripts/schema/07_create_district_table.sql"/>
@@ -30,9 +30,9 @@
     <include file="/db/scripts/schema/21_create_property_discount_table.sql"/>
 
     <!--  initial data-->
-    <include file="/db/scripts/initial_data/01_insert_data_property_group.sql"/>
-    <include file="/db/scripts/initial_data/02_insert_data_property_type.sql"/>
-    <include file="/db/scripts/initial_data/03_insert_data_property_group_type.sql"/>
+    <include file="/db/scripts/initial_data/01_insert_data_property_main_type.sql"/>
+    <include file="/db/scripts/initial_data/02_insert_data_property_sub_type.sql"/>
+    <include file="/db/scripts/initial_data/03_insert_data_property_main_sub_type.sql"/>
     <include file="/db/scripts/initial_data/04_insert_data_property_share_type.sql"/>
     <include file="/db/scripts/initial_data/05_insert_data_administrative_area.sql"/>
     <include file="/db/scripts/initial_data/06_insert_data_district_1.sql"/>

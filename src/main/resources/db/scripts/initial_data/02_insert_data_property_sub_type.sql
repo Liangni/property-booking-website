@@ -1,4 +1,4 @@
-INSERT INTO property_type (property_type_name) VALUES
+INSERT INTO property_sub_type (property_sub_type_name) VALUES
 -- 公寓
 ('出租房源'),
 ('私有公寓'),

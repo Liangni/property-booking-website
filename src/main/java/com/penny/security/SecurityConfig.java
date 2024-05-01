@@ -42,7 +42,7 @@ public class SecurityConfig {
                                     "api/v1/public-properties/**",
                                     "api/v1/initial-page/**",
                                     "api/v1/districts/**",
-                                    "api/v1/property-groups/**",
+                                    "api/v1/property-main-types/**",
                                     "api/v1/property-share-types/**"
                                 )
                                 .permitAll()

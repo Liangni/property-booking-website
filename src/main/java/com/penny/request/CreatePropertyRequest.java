@@ -1,17 +1,6 @@
-package com.penny.vo.base;
+package com.penny.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class PropertyBaseVo {
-    private Long propertyId;
-
+public class CreatePropertyRequest {
     private String propertyTitle;
 
     private String propertyDescription;
@@ -34,7 +23,7 @@ public class PropertyBaseVo {
 
     private Integer reviewCount;
 
-    private Long propertyMainSubTypeId;
+    private Long propertyGroupTypeId;
 
     private Long propertyShareTypeId;
 

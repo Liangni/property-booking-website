@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.PropertyMainTypeBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.PropertyMainTypeBaseVo">
+    <id column="property_main_type_id" jdbcType="BIGINT" property="propertyMainTypeId" />
+    <result column="property_main_type_name" jdbcType="VARCHAR" property="propertyMainTypeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    property_main_type_id, property_main_type_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from property_main_type
+    where property_main_type_id = #{propertyMainTypeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from property_main_type
+    where property_main_type_id = #{propertyMainTypeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="property_main_type_id" keyProperty="propertyMainTypeId" parameterType="com.penny.vo.base.PropertyMainTypeBaseVo" useGeneratedKeys="true">
+    insert into property_main_type (property_main_type_name)
+    values (#{propertyMainTypeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="property_main_type_id" keyProperty="propertyMainTypeId" parameterType="com.penny.vo.base.PropertyMainTypeBaseVo" useGeneratedKeys="true">
+    insert into property_main_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="propertyMainTypeName != null">
+        property_main_type_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="propertyMainTypeName != null">
+        #{propertyMainTypeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.PropertyMainTypeBaseVo">
+    update property_main_type
+    <set>
+      <if test="propertyMainTypeName != null">
+        property_main_type_name = #{propertyMainTypeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where property_main_type_id = #{propertyMainTypeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.PropertyMainTypeBaseVo">
+    update property_main_type
+    set property_main_type_name = #{propertyMainTypeName,jdbcType=VARCHAR}
+    where property_main_type_id = #{propertyMainTypeId,jdbcType=BIGINT}
+  </update>
+</mapper>

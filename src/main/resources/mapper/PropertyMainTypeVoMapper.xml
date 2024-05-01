@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.PropertyMainTypeVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.PropertyMainTypeVo">
+        <id column="property_main_type_id" jdbcType="BIGINT" property="propertyMainTypeId" />
+        <result column="property_main_type_name" jdbcType="VARCHAR" property="propertyMainTypeName" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        property_main_type_id, property_main_type_name
+    </sql>
+
+    <select id="listAll"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from property_main_type
+    </select>
+</mapper>
