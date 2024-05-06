@@ -4,12 +4,14 @@ import com.penny.dao.*;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
+import com.penny.request.CreatePropertyRequest;
 import com.penny.request.SearchPropertyRequest;
 import com.penny.vo.*;
 import com.penny.vo.base.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PropertyService {
+    private final String DEFAULT_PROPERTY_TITLE = "無標題";
 
     private final PropertyVoMapper propertyVoMapper;
 
@@ -101,6 +104,34 @@ public class PropertyService {
         }
 
         return property;
+    }
+
+    /**
+     * 創建房源。
+     *
+     * @param createRequest 要用於創建房源的創建請求
+     *
+     */
+    public void createProperty(CreatePropertyRequest createRequest){
+        if (createRequest.getPropertyTitle() == null || createRequest.getPropertyTitle().isBlank()) {
+            createRequest.setPropertyTitle(DEFAULT_PROPERTY_TITLE);
+        }
+
+        PropertyBaseVo propertyBaseVo = PropertyBaseVo
+                .builder()
+                .propertyDescription(createRequest.getPropertyDescription())
+                .maxNumOfGuests(createRequest.getMaxNumOfGuests())
+                .numOfBathrooms(createRequest.getNumOfBathrooms())
+                .numOfBeds(createRequest.getNumOfBeds())
+                .numOfBedrooms(createRequest.getNumOfBedrooms())
+                .priceOnWeekdays(createRequest.getPriceOnWeekdays())
+                .priceOnWeekends(createRequest.getPriceOnWeekends())
+                .isPublished(createRequest.getIsPublished())
+                .propertyMainSubTypeId(createRequest.getPropertyMainSubTypeId())
+                .addressId(createRequest.getAddressId())
+                .build();
+
+        propertyBaseVoMapper.insertSelective(propertyBaseVo);
     }
 
     /**

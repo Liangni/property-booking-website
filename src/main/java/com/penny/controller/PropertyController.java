@@ -1,11 +1,14 @@
 package com.penny.controller;
 
 import com.penny.request.CreatePropertyDiscountRequest;
+import com.penny.request.CreatePropertyRequest;
 import com.penny.request.UpdatePropertyPictureRequest;
 import com.penny.service.AmenityService;
 import com.penny.service.DiscountService;
 import com.penny.service.PictureService;
+import com.penny.service.PropertyService;
 import com.penny.vo.DiscountVo;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +26,28 @@ public class PropertyController {
 
     private final PictureService pictureService;
 
+    private final PropertyService propertyService;
+
+    /**
+     * 創建新的房源。
+     *
+     * @param createRequest 要用於創建房源的創建請求
+     * @return ResponseEntity 包含 "ok" 字串的 ResponseEntity
+     */
+    @PostMapping
+    public ResponseEntity<String> createProperty(
+            @RequestBody @Valid CreatePropertyRequest createRequest
+    ){
+        propertyService.createProperty(createRequest);
+        return ResponseEntity.ok("ok");
+    }
+
     /**
      * 創建房源設施。
      *
      * @param propertyId 房源 ID
      * @param amenityId 設施 ID
-     * @return ResponseEntity 包含 "ok" 字串的 ResponseEntity。
+     * @return ResponseEntity 包含 "ok" 字串的 ResponseEntity
      */
     @PostMapping("{propertyId}/amenities/{amenityId}")
     public ResponseEntity<String> createPropertyAmenities(

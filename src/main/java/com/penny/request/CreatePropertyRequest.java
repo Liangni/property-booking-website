@@ -1,33 +1,45 @@
 package com.penny.request;
 
+import com.penny.annotation.PublishPropertyCheck;
+import jakarta.validation.constraints.Positive;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+@PublishPropertyCheck
 public class CreatePropertyRequest {
+
     private String propertyTitle;
 
     private String propertyDescription;
 
+    @Positive(message = "Value must be a positive integer")
     private Integer maxNumOfGuests;
 
+    @Positive(message = "Value must be a positive integer")
     private Integer numOfBedrooms;
 
+    @Positive(message = "Value must be a positive integer")
     private Integer numOfBeds;
 
+    @Positive(message = "Value must be a positive integer")
     private Integer numOfBathrooms;
 
+    @Positive(message = "Value must be a positive integer")
     private Integer priceOnWeekdays;
 
+    @Positive(message = "Value must be a positive integer")
     private Integer priceOnWeekends;
 
     private Boolean isPublished;
 
-    private Double averageRating;
+    @Positive(message = "Value must be a positive integer")
+    private Long propertyMainSubTypeId;
 
-    private Integer reviewCount;
-
-    private Long propertyGroupTypeId;
-
+    @Positive(message = "Value must be a positive integer")
     private Long propertyShareTypeId;
 
+    @Positive(message = "Value must be a positive integer")
     private Long addressId;
-
-    private Long hostId;
 }
