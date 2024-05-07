@@ -29,7 +29,7 @@ public class DateHelper {
             return LocalDate.parse(dateString, formatter);
         } catch (DateTimeParseException e) {
             // 如果日期字串無法解析，則拋出 DateTimeParseException 異常
-            throw new DateTimeParseException("日期字串無法解析為 LocalDate：" + dateString, dateString, 0);
+            throw new DateTimeParseException("Unable to parse String to LocalDate：" + dateString, dateString, 0);
         }
     }
 
