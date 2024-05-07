@@ -2,6 +2,8 @@ package com.penny.service;
 
 import com.penny.dao.PropertyVoMapper;
 import com.penny.request.SearchPropertyRequest;
+import com.penny.request.SearchPropertyRequestDTO;
+import com.penny.request.SearchPropertyRequestDTOMapper;
 import com.penny.vo.PropertyVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,10 @@ public class InitialPageService {
     private static final Integer DEFAULT_PICTURE_DT_SIZE = 1;
 
     private final PropertyVoMapper propertyVoMapper;
-    private final PropertyService propertyService;
+
     private final PictureService pictureService;
+
+    private final SearchPropertyRequestDTOMapper searchPropertyRequestDTOMapper;
 
     /**
      * 獲取初始頁面資料，包括房源圖片和相關屬性。
@@ -25,13 +29,14 @@ public class InitialPageService {
      */
     public Map<String, Object> getInitialPageData(){
         // 準備房源查詢參數
-        SearchPropertyRequest request = SearchPropertyRequest
+        SearchPropertyRequest searchPropertyRequest = SearchPropertyRequest
                 .builder()
                 .numOfAvailableDays(DEFAULT_NUM_OF_AVAILABLE_DAYS)
                 .build();
 
         // 根據房源查詢參數查詢房源列表
-        List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(request);
+        SearchPropertyRequestDTO searchPropertyRequestDTO =  searchPropertyRequestDTOMapper.apply(searchPropertyRequest);
+        List<PropertyVo> propertyVoList = propertyVoMapper.listByNumOfAvailableDays(searchPropertyRequestDTO);
 
         // 準備用於存儲房源資訊的列表
         List<Map<String, Object>> propertyMapList = new ArrayList<>();

@@ -2,6 +2,8 @@ package com.penny.dao;
 
 import com.penny.dao.base.*;
 import com.penny.request.SearchPropertyRequest;
+import com.penny.request.SearchPropertyRequestDTO;
+import com.penny.request.SearchPropertyRequestDTOMapper;
 import com.penny.vo.PropertyVo;
 import com.penny.vo.base.*;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +20,7 @@ import java.util.*;
 @SpringBootTest
 @Transactional
 @DisplayName("Property資料表測試")
-public class PropertyVoMapperTest {
+public class SearchPropertyRequestDTOMapperTest {
 
     @Autowired
     private PropertyBaseVoMapper propertyBaseVoMapper;
@@ -40,6 +42,8 @@ public class PropertyVoMapperTest {
     private AmenityBaseVoMapper amenityBaseVoMapper;
     @Autowired
     private PropertyAmenityBaseVoMapper propertyAmenityBaseVoMapper;
+    @Autowired
+    private SearchPropertyRequestDTOMapper searchPropertyRequestDTOMapper;
 
     private static final int NUM_OF_BOOKING_DAY = 10;
 
@@ -156,13 +160,14 @@ public class PropertyVoMapperTest {
     @Test
     @DisplayName("用連續可訂天數來搜尋房源")
     void listByNumOfAvailableDaysTest1(){
-        SearchPropertyRequest request = SearchPropertyRequest
+        SearchPropertyRequest searchPropertyRequest = SearchPropertyRequest
                 .builder()
                 .numOfAvailableDays(NUM_OF_AVAILABLE_DAYS)
                 .build();
 
         // 使用指定的參數調用 PropertyVoMapper 的 listByNumOfAvailableDays 方法
-        List<PropertyVo> propertyList = propertyVoMapper.listByNumOfAvailableDays(request);
+        SearchPropertyRequestDTO searchPropertyRequestDTO = searchPropertyRequestDTOMapper.apply(searchPropertyRequest);
+        List<PropertyVo> propertyList = propertyVoMapper.listByNumOfAvailableDays(searchPropertyRequestDTO);
 
         // 確認返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());
@@ -197,13 +202,12 @@ public class PropertyVoMapperTest {
         LocalDate endAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW + NUM_OF_AVAILABLE_DAYS);
 
         // 準備要使用的參數物件
-        SearchPropertyRequest request = SearchPropertyRequest
+        SearchPropertyRequestDTO searchRequestDTO = SearchPropertyRequestDTO
                 .builder()
                 .startAvailableDate(startAvailableDate)
                 .endAvailableDate(endAvailableDate)
                 .build();
-
-        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDate(request);
+        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDate(searchRequestDTO);
 
         // 確認返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());
@@ -254,8 +258,7 @@ public class PropertyVoMapperTest {
             propertyBaseVoMapper.updateByPrimaryKey(propertyBaseVo);
         }
 
-
-        SearchPropertyRequest request = SearchPropertyRequest
+        SearchPropertyRequestDTO searchRequestDTO = SearchPropertyRequestDTO
                 .builder()
                 .numOfGuests(BASE_MAX_NUM_OF_GUESTS)
                 .maxPrice(BASE_PRICE)
@@ -263,7 +266,7 @@ public class PropertyVoMapperTest {
                 .build();
 
         // 根據篩選參數查詢房源列表
-        List<PropertyVo> propertyList = propertyVoMapper.listByPropertyAttributes(request);
+        List<PropertyVo> propertyList = propertyVoMapper.listByPropertyAttributes(searchRequestDTO);
 
         // 斷言返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());

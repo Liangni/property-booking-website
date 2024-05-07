@@ -2,27 +2,20 @@ package com.penny.service;
 
 import com.penny.dao.*;
 import com.penny.dao.base.PropertyBaseVoMapper;
-import com.penny.exception.FieldConflictException;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.UnauthorizedException;
 import com.penny.request.CreatePropertyRequest;
 import com.penny.request.SearchPropertyRequest;
+import com.penny.request.SearchPropertyRequestDTO;
 import com.penny.request.UpdatePropertyRequest;
+import com.penny.request.SearchPropertyRequestDTOMapper;
 import com.penny.vo.*;
 import com.penny.vo.base.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import javax.swing.text.html.Option;
-import javax.xml.bind.annotation.XmlType;
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,15 +28,17 @@ public class PropertyService {
 
     private final EcUserService ecUserService;
 
+    private final SearchPropertyRequestDTOMapper searchPropertyRequestDTOMapper;
+
 
     /**
      * 根據給定的搜尋參數，獲取房源資訊。
      *
      * @param request 房源搜尋參數
      * @return 符合搜尋條件的房源列表
-     * @throws FieldConflictException 如果 numOfAvailableDays 和 startAvailableDateString 同時存在
-     * @throws FieldConflictException 如果 startAvailableDateString 存在而 endAvailableDateString 不存在
-     * @throws FieldConflictException 如果 startAvailableDateString 或 endAvailableDateString 格式錯誤
+     * @throws RequestValidationException 如果 numOfAvailableDays 和 startAvailableDateString 同時存在
+     * @throws RequestValidationException 如果 startAvailableDateString 存在而 endAvailableDateString 不存在
+     * @throws RequestValidationException 如果 startAvailableDateString 或 endAvailableDateString 格式錯誤
      */
     public List<PropertyVo> listPublishedProperty(SearchPropertyRequest request) {
         // 從查詢參數中獲取可預定天數、開始預定日期字串和結束預定日期字串
@@ -53,37 +48,30 @@ public class PropertyService {
 
         // 檢查參數中是否存在衝突情況
         if (numOfAvailableDays != null && startAvailableDateString != null) {
-            throw new FieldConflictException("numOfAvailableDays and startAvailableDateString cannot coexist");
+            throw new RequestValidationException("numOfAvailableDays and startAvailableDateString cannot coexist");
         }
 
         // 如果存在開始預定日期但沒有結束預定日期，則拋出異常
         if (startAvailableDateString != null && endAvailableDateString == null) {
-            throw new FieldConflictException("startAvailableDateString cannot exist without endAvailableDateString");
+            throw new RequestValidationException("startAvailableDateString cannot exist without endAvailableDateString");
         }
 
         // 如果存在結束預定日期但沒有開始預定日期，則拋出異常
         if (startAvailableDateString == null && endAvailableDateString != null) {
-            throw new FieldConflictException("startAvailableDateString cannot exist without endAvailableDateString");
-        }
-
-        // 檢查日期格式是否有效，若無效則拋出異常
-        if((startAvailableDateString != null && endAvailableDateString != null) && (!isValidDateString(startAvailableDateString) || !isValidDateString(endAvailableDateString))) {
-            throw new FieldConflictException("invalid startAvailableDateString and endAvailableDateString format");
+            throw new RequestValidationException("startAvailableDateString cannot exist without endAvailableDateString");
         }
 
         // 初始化結果列表
         List<PropertyVo> resultList;
 
         // 根據情況執行不同的查詢操作並賦值給結果列表
+        SearchPropertyRequestDTO searchRequestDTO = searchPropertyRequestDTOMapper.apply(request);
         if (numOfAvailableDays != null) {
-            resultList =  propertyVoMapper.listByNumOfAvailableDays(request);
+            resultList =  propertyVoMapper.listByNumOfAvailableDays(searchRequestDTO);
         } else if (startAvailableDateString != null) {
-            request.setStartAvailableDate(parseDateString(startAvailableDateString));
-            request.setEndAvailableDate(parseDateString(endAvailableDateString));
-
-            resultList =  propertyVoMapper.listByStartAndEndAvailableDate(request);
+            resultList =  propertyVoMapper.listByStartAndEndAvailableDate(searchRequestDTO);
         } else  {
-            resultList = propertyVoMapper.listByPropertyAttributes(request);
+            resultList = propertyVoMapper.listByPropertyAttributes(searchRequestDTO);
         }
 
         // 將結果列表中已發佈的房源過濾出來並返回
@@ -103,11 +91,11 @@ public class PropertyService {
     public PropertyBaseVo getPublishedProperty(Long propertyId) {
         // 根據房源 ID 查詢房源基本資訊
         PropertyBaseVo property = Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
-                .orElseThrow(() -> new ResourceNotFoundException("property %s is not found".formatted(propertyId)));
+                .orElseThrow(() -> new ResourceNotFoundException("property with id %s not found".formatted(propertyId)));
 
         // 如果房源未發佈，則拋出異常
         if (!property.getIsPublished()) {
-            throw new ResourceNotFoundException("property %s is not found".formatted(propertyId));
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
         }
 
         return property;
@@ -168,7 +156,7 @@ public class PropertyService {
         // 根據房源 ID 取得對應的 PropertyBaseVo 物件，如果不存在則拋出 ResourceNotFoundException 異常
         PropertyBaseVo propertyBaseVo = Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "property with id [%s] not found".formatted(propertyId)
+                        "property with id %s not found".formatted(propertyId)
                 ));
 
         // 檢查當前登入使用者是否具有執行操作的權限，如果不是則拋出 UnauthorizedException 異常
@@ -262,40 +250,5 @@ public class PropertyService {
         propertyBaseVoMapper.updateByPrimaryKey(propertyBaseVo);
     }
 
-    /**
-     * 檢查日期字串是否符合指定的格式（yyyy-MM-dd）。
-     *
-     * @param dateString 要檢查的日期字串
-     * @return 如果日期字串符合指定的格式，則返回 true；否則返回 false
-     */
-    private boolean isValidDateString(String dateString) {
-        // 定義日期格式的正規表達式
-        String DATE_REGEX = "\\d{4}-\\d{2}-\\d{2}";
-
-        // 創建 Pattern 物件
-        Pattern  DATE_PATTERN = Pattern.compile(DATE_REGEX);
-
-        return DATE_PATTERN.matcher(dateString).matches();
-    }
-
-    /**
-     * 將日期字串解析為 LocalDate 物件。
-     *
-     * @param dateString 日期字串，格式為 "yyyy-MM-dd"
-     * @return 解析後的 LocalDate 物件
-     * @throws DateTimeParseException 如果日期字串無法解析為 LocalDate，則拋出此異常
-     */
-    private LocalDate parseDateString(String dateString) {
-        // 定義日期格式模式
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        try {
-            // 將日期字串解析為 LocalDate
-            return LocalDate.parse(dateString, formatter);
-        } catch (DateTimeParseException e) {
-            // 如果日期字串無法解析，則拋出 DateTimeParseException 異常
-            throw new DateTimeParseException("日期字串無法解析為 LocalDate：" + dateString, dateString, 0);
-        }
-    }
 
 }

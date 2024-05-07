@@ -35,6 +35,8 @@ public class DateHelper {
      * @throws DateTimeParseException 如果日期字串無法解析為 LocalDate，則拋出此異常
      */
     public LocalDate parseDateString(String dateString) {
+        if (dateString == null) return null;
+
         // 定義日期格式模式
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
