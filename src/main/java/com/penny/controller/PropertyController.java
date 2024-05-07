@@ -127,7 +127,7 @@ public class PropertyController {
     @PostMapping("{propertyId}/discounts")
     ResponseEntity<String> getPropertyDiscount(
             @PathVariable Long propertyId,
-            @RequestBody CreatePropertyDiscountRequest createRequest
+            @RequestBody @Valid CreatePropertyDiscountRequest createRequest
             ){
         discountService.createPropertyDiscount(propertyId, createRequest);
         return ResponseEntity.ok("ok");

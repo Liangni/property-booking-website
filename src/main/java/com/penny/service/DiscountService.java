@@ -5,7 +5,6 @@ import com.penny.dao.PropertyDiscountVoMapper;
 import com.penny.dao.base.DiscountBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.PropertyDiscountBaseVoMapper;
-import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.vo.DiscountVo;
@@ -38,18 +37,15 @@ public class DiscountService {
      * 獲取特定已公開房源的折扣列表。
      *
      * @param propertyId 房源ID
-     * @throws FieldConflictException 如果 propertyId 為 null，則拋出此異常
      * @throws ResourceNotFoundException 如果找不到指定的已發佈房源，則拋出此異常
      * @return 房源折扣列表
      */
     public List<DiscountVo> getPublishedPropertyDiscount(Long propertyId) {
-        // 檢查參數
-        if (propertyId == null) throw new FieldConflictException("propertyId is required");
 
         // 檢查房源是否存在及已發佈
         PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
         if(propertyBaseVo == null || !propertyBaseVo.getIsPublished()) {
-            throw new ResourceNotFoundException("property with propertyId %s is not found".formatted(propertyId));
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
         }
 
         // 根據房源ID查詢相應的折扣列表，並過濾出已啟用的折扣後返回
@@ -135,7 +131,7 @@ public class DiscountService {
     public void deletePropertyDiscount(Long propertyId, Long discountId) {
         int deleteCount = propertyDiscountVoMapper.deleteByPropertyIdAndDiscountId(propertyId, discountId);
         if (deleteCount == 0) {
-            throw new ResourceNotFoundException("the target property discount is not found");
+            throw new ResourceNotFoundException("property discount with property id %s discount id %s not found".formatted(propertyId, discountId));
         }
     }
 }
