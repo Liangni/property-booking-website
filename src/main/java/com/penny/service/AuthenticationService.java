@@ -2,7 +2,7 @@ package com.penny.service;
 
 import com.penny.dao.EcUserVoMapper;
 import com.penny.dao.base.EcUserBaseVoMapper;
-import com.penny.exception.FieldConflictException;
+import com.penny.exception.ResourceDuplicateException;
 import com.penny.response.AuthenticationResponse;
 import com.penny.security.JwtUtil;
 import com.penny.vo.EcUserVo;
@@ -48,7 +48,7 @@ public class AuthenticationService {
         String requestEmail = request.getEcUserEmail();
         if(existUser == null) existUser =ecUserVoMapper.selectByEmail(requestEmail);
 
-        if(existUser != null) throw new FieldConflictException("username, password, or email already exists");
+        if(existUser != null) throw new ResourceDuplicateException("username, password, or email already exists");
 
         // 創建新的 EcUserBaseVo 物件，將請求中的使用者詳細資訊設定為新使用者的屬性
         EcUserBaseVo ecUserBaseVo= EcUserBaseVo
