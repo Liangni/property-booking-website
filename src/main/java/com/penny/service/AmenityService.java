@@ -6,7 +6,6 @@ import com.penny.dao.PropertyAmenityVoMapper;
 import com.penny.dao.base.AmenityBaseVoMapper;
 import com.penny.dao.base.PropertyAmenityBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
-import com.penny.exception.FieldConflictException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.vo.AmenityTypeVo;
 import com.penny.vo.AmenityVo;
@@ -66,7 +65,7 @@ public class AmenityService {
          // 檢查設施是否存在
         AmenityBaseVo  amenityBaseVo = amenityBaseVoMapper.selectByPrimaryKey(amenityId);
         if( amenityBaseVo == null) {
-            throw new ResourceNotFoundException(" amenity with id %s not found".formatted(amenityId));
+            throw new ResourceNotFoundException("amenity with id %s not found".formatted(amenityId));
         }
 
          // 檢驗登入使用者是否為房源出租人
@@ -84,19 +83,13 @@ public class AmenityService {
      *
      * @param propertyId 要查詢的房源ID
      * @return 包含設施分類詳細資訊的 map 列表
-     * @throws FieldConflictException 如果房源ID為空，則拋出 FieldConflictException 異常
      * @throws ResourceNotFoundException 如果找不到指定的房源或房源未發布，則拋出此異常
      */
     public List<Map<String, Object>>  listPublishedPropertyAmenityMap(Long propertyId) {
-        // 檢查參數，如果房源ID為空，拋出異常
-        if(propertyId == null) {
-            throw new FieldConflictException("propertyId is required");
-        }
-
         // 檢查房源是否存在及已發佈
         PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
         if(propertyBaseVo == null || !propertyBaseVo.getIsPublished()) {
-            throw new ResourceNotFoundException("property with propertyId %s is not found".formatted(propertyId));
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
         }
 
         // 根據房源ID查詢房源設施列表
@@ -111,20 +104,12 @@ public class AmenityService {
      *
      * @param propertyId 房源的 ID
      * @return 包含設施分類詳細資訊的地圖列表
-     * @throws FieldConflictException 如果房源 ID 為空時拋出
      * @throws ResourceNotFoundException 如果找不到指定房源時拋出
      */
     public List<Map<String, Object>>  listPropertyAmenityMap(Long propertyId) {
-        // 檢查參數，如果房源ID為空，拋出異常
-        if(propertyId == null) {
-            throw new FieldConflictException("propertyId is required");
-        }
-
         // 檢查房源是否存在
-        PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
-        if(propertyBaseVo == null) {
-            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
-        }
+        PropertyBaseVo propertyBaseVo = Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
+                .orElseThrow(() -> new ResourceNotFoundException("property with id %s not found".formatted(propertyId)));
 
         // 檢驗登入使用者是否為房源出租人
         ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
@@ -141,14 +126,13 @@ public class AmenityService {
      *
      * @param propertyId 房源 ID
      * @param amenityId 設施 ID
-     * @throws FieldConflictException 如果未提供必要的 propertyId 或 amenityId 時拋出
      * @throws ResourceNotFoundException 如果找不到目標房源設施時拋出
      */
     @Transactional
     public void deletePropertyAmenity(Long propertyId, Long amenityId) {
         int deleteCount = propertyAmenityVoMapper.deleteByPropertyIdAndAmenityId(propertyId, amenityId);
         if (deleteCount == 0) {
-            throw new ResourceNotFoundException("the target property amenity is not found");
+            throw new ResourceNotFoundException("property amenity with property id %s and amenity id %s not found".formatted(propertyId, amenityId));
         }
     }
 
