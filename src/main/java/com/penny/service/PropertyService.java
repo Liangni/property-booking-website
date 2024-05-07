@@ -117,7 +117,7 @@ public class PropertyService {
      * 創建房源。
      *
      * @param createRequest 要用於創建房源的創建請求
-     *
+     * @throws RequestValidationException 如果某些欄位為空且房源已發佈，則拋出驗證異常
      */
     public void createProperty(CreatePropertyRequest createRequest){
 
@@ -136,6 +136,20 @@ public class PropertyService {
                 .addressId(createRequest.getAddressId())
                 .hostId(ecUserService.getLoginUser().getEcUserId())
                 .build();
+
+        // 檢查必填欄位是否為空，如果有空欄位且房源已發佈，則拋出 RequestValidationException 異常
+        List<String> listOfFieldWithNullValue = new ArrayList<>();
+        if (propertyBaseVo.getPropertyTitle() == null) listOfFieldWithNullValue.add("propertyTitle");
+        if (propertyBaseVo.getMaxNumOfGuests() == null) listOfFieldWithNullValue.add("maxNumOfGuests");
+        if (propertyBaseVo.getNumOfBedrooms() == null) listOfFieldWithNullValue.add("numOfBedrooms");
+        if (propertyBaseVo.getNumOfBeds() == null) listOfFieldWithNullValue.add("numOfBeds");
+        if (propertyBaseVo.getPriceOnWeekdays() == null) listOfFieldWithNullValue.add("priceOnWeekdays");
+        if (propertyBaseVo.getPriceOnWeekends() == null) listOfFieldWithNullValue.add("priceOnWeekends");
+        if (propertyBaseVo.getPropertyMainSubTypeId() == null) listOfFieldWithNullValue.add("propertyMainSubTypeId");
+        if (propertyBaseVo.getPropertyShareTypeId() == null) listOfFieldWithNullValue.add("propertyShareTypeId");
+        if (propertyBaseVo.getAddressId() == null) listOfFieldWithNullValue.add("addressId");
+
+        if (!listOfFieldWithNullValue.isEmpty()) throw new RequestValidationException("When isPublished is true, the following fields are required : %s".formatted(listOfFieldWithNullValue));
 
         propertyBaseVoMapper.insertSelective(propertyBaseVo);
     }

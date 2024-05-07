@@ -1,15 +1,15 @@
 package com.penny.request;
 
 import com.penny.annotation.PublishPropertyCheck;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-@PublishPropertyCheck
 public class CreatePropertyRequest {
-
+    @NotNull
     private String propertyTitle;
 
     private String propertyDescription;
