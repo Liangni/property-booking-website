@@ -29,7 +29,7 @@ public class BookingAvailabilityService {
         // 檢查房源是否存在及已發佈
         PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
         if(propertyBaseVo == null || !propertyBaseVo.getIsPublished()) {
-            throw new ResourceNotFoundException("property with propertyId %s is not found".formatted(propertyId));
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
         }
 
         // 根據房源ID查詢相應的訂房日期列表並返回
