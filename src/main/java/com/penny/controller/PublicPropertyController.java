@@ -4,6 +4,7 @@ import com.penny.request.SearchPropertyRequest;
 import com.penny.service.*;
 import com.penny.vo.*;
 import com.penny.vo.base.PropertyBaseVo;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class PublicPropertyController {
      */
     @GetMapping
     public ResponseEntity<List<PropertyVo>> getProperties(
-            @ModelAttribute SearchPropertyRequest request
+            @ModelAttribute @Valid SearchPropertyRequest request
     ) {
         return ResponseEntity.ok(propertyService.listPublishedProperty(request));
     }

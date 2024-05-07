@@ -4,7 +4,7 @@ import com.penny.dao.*;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
-import com.penny.exception.UnauthorizedException;
+import com.penny.exception.AuthorizationException;
 import com.penny.request.CreatePropertyRequest;
 import com.penny.request.SearchPropertyRequest;
 import com.penny.request.SearchPropertyRequestDTO;
@@ -149,7 +149,7 @@ public class PropertyService {
      * @param updateRequest 更新請求物件，包含新的房源資訊
      *
      * @throws ResourceNotFoundException 如果找不到指定 ID 的房源
-     * @throws UnauthorizedException 如果登錄使用者沒有執行操作的權限
+     * @throws AuthorizationException 如果登錄使用者沒有執行操作的權限
      * @throws RequestValidationException 如果未發現任何數據變更或某些欄位為空且房源已發佈，則拋出驗證異常
      */
     public void updateProperty(Long propertyId, UpdatePropertyRequest updateRequest) {
@@ -160,7 +160,7 @@ public class PropertyService {
                 ));
 
         // 檢查當前登入使用者是否具有執行操作的權限，如果不是則拋出 UnauthorizedException 異常
-        if(!propertyBaseVo.getHostId().equals(ecUserService.getLoginUser().getEcUserId())) throw new UnauthorizedException("login user is not authorized to do the operation");
+        if(!propertyBaseVo.getHostId().equals(ecUserService.getLoginUser().getEcUserId())) throw new AuthorizationException("login user is not authorized to do the operation");
 
         // 檢查房源是否有變更的標誌
         boolean changes = false;

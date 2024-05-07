@@ -9,9 +9,8 @@ import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.PropertyPictureBaseVoMapper;
 import com.penny.enums.PictureDtSize;
 import com.penny.exception.FieldConflictException;
-import com.penny.exception.ResourceExistException;
 import com.penny.exception.ResourceNotFoundException;
-import com.penny.exception.UnauthorizedException;
+import com.penny.exception.AuthorizationException;
 import com.penny.request.UpdatePropertyPictureRequest;
 import com.penny.s3.S3Buckets;
 import com.penny.s3.S3Service;
@@ -22,11 +21,8 @@ import com.penny.vo.base.PictureDtBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.PropertyPictureBaseVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -131,8 +127,8 @@ public class PictureService {
      * @param propertyId 房源 ID
      * @param updateRequest 更新房源圖片的請求物件，包含要更新的房源和圖片資訊。
      * @throws FieldConflictException 如果必要的屬性值為空，將拋出此異常。
-     * @throws UnauthorizedException 如果使用者未經授權執行操作，將拋出此異常。
-     * @throws ResourceExistException 如果找不到指定的圖片，將拋出此異常。
+     * @throws AuthorizationException 如果使用者未經授權執行操作，將拋出此異常。
+     * @throws ResourceNotFoundException 如果找不到指定的圖片，將拋出此異常。
      */
     @Transactional
     public void updatePropertyPicture(Long propertyId, UpdatePropertyPictureRequest updateRequest) {
@@ -161,13 +157,13 @@ public class PictureService {
 
         int updatePictureNum = pictureBaseVoMapper.updateByPrimaryKeySelective(updatePictureVo);
         if (updatePictureNum == 0) {
-            throw new ResourceExistException("cannot find picture with id %s".formatted(pictureId));
+            throw new ResourceNotFoundException("cannot find picture with id %s".formatted(pictureId));
         }
 
         // 更新圖片詳細資訊上傳狀態
         int updatePictureDtNum = pictureDtVoMapper.setIsUploadedTrueByPropertyId(pictureId);
         if (updatePictureDtNum == 0) {
-            throw new ResourceExistException("cannot find picture details with pictureId %s".formatted(pictureId));
+            throw new ResourceNotFoundException("cannot find picture details with pictureId %s".formatted(pictureId));
         }
 
         // 檢查房源與相同圖片順序是否已存在圖片

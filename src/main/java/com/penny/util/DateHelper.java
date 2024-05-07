@@ -12,22 +12,6 @@ import java.util.regex.Pattern;
 public class DateHelper {
 
     /**
-     * 檢查日期字串是否符合指定的格式（yyyy-MM-dd）。
-     *
-     * @param dateString 要檢查的日期字串
-     * @return 如果日期字串符合指定的格式，則返回 true；否則返回 false
-     */
-    public boolean isValidDateString(String dateString) {
-        // 定義日期格式的正規表達式
-        String DATE_REGEX = "\\d{4}-\\d{2}-\\d{2}";
-
-        // 創建 Pattern 物件
-        Pattern DATE_PATTERN = Pattern.compile(DATE_REGEX);
-
-        return DATE_PATTERN.matcher(dateString).matches();
-    }
-
-    /**
      * 將日期字串解析為 LocalDate 物件。
      *
      * @param dateString 日期字串，格式為 "yyyy-mm-dd"
