@@ -3,9 +3,8 @@ package com.penny.service;
 import com.penny.dao.AddressVoMapper;
 import com.penny.dao.DistrictVoMapper;
 import com.penny.dao.base.AddressBaseVoMapper;
-import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.RequestValidationException;
-import com.penny.exception.ResourceExistException;
+import com.penny.exception.ResourceDuplicateException;
 import com.penny.request.CreateAddressRequest;
 import com.penny.vo.AddressVo;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class AddressService {
      *
      * @param request 地址創建請求
      * @throws RequestValidationException 如果 districtId 或 street 為 null，或者 district 不是行政劃分層級 3 的行政區
-     * @throws ResourceExistException 如果該地址已存在
+     * @throws ResourceDuplicateException 如果該地址已存在
      */
     public void createAddress(CreateAddressRequest request) {
         Long districtId = request.getDistrictId();
@@ -45,7 +44,7 @@ public class AddressService {
         // 檢查該地址是否已存在
         AddressVo existingAddress = addressVoMapper.selectByDistrictIdAndStreet(districtId, street);
         if(existingAddress != null) {
-            throw new ResourceExistException("address already exists");
+            throw new ResourceDuplicateException("address already exists");
         }
 
         // 插入新地址
