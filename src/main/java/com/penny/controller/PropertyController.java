@@ -189,7 +189,7 @@ public class PropertyController {
     @PostMapping("{propertyId}/pictures")
     public ResponseEntity<String> updatePropertyPicture(
             @PathVariable Long propertyId,
-            @RequestBody UpdatePropertyPictureRequest updateRequest
+            @RequestBody @Valid UpdatePropertyPictureRequest updateRequest
     ) {
         pictureService.updatePropertyPicture(propertyId, updateRequest);
         return ResponseEntity.ok("ok");

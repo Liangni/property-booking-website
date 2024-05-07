@@ -8,7 +8,7 @@ import com.penny.dao.base.PictureDtBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.PropertyPictureBaseVoMapper;
 import com.penny.enums.PictureDtSize;
-import com.penny.exception.FieldConflictException;
+import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
 import com.penny.request.UpdatePropertyPictureRequest;
@@ -57,20 +57,16 @@ public class PictureService {
      * @param propertyId 房源 ID
      * @param fileExtension 檔案副檔名
      * @return 返回一個包含不同尺寸圖像上傳 URL 的 map，鍵是尺寸標識，值是對應的預簽名 URL。
-     * @throws FieldConflictException 如果房源ID或圖片附檔名為空，則拋出 FieldConflictException 異常。
+     * @throws RequestValidationException 如果房源ID或圖片附檔名為空，則拋出 RequestValidationException 異常。
      */
     @Transactional
     public Map<String, Object> getPropertyImageUploadUrlMap(Long propertyId, String fileExtension) {
         // 檢驗參數
-        if (propertyId == null) { throw new FieldConflictException("propertyId is required");}
-        if (fileExtension.isBlank()) { throw new FieldConflictException("fileExtension is required");}
-        if (!isPictureFileExtension(fileExtension)) throw new FieldConflictException("fileExtension can only be %s".formatted(PICTURE_EXTENSIONS.toString()));
+        if (!isPictureFileExtension(fileExtension)) throw new RequestValidationException("fileExtension can only be %s".formatted(PICTURE_EXTENSIONS.toString()));
 
         // 檢查房源是否存在
-        PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
-        if(propertyBaseVo == null) {
-            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
-        }
+        PropertyBaseVo propertyBaseVo = Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
+                .orElseThrow(() ->  new ResourceNotFoundException("property with id %s not found".formatted(propertyId)));
 
         // 檢驗登入使用者是否為房源出租人
         ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
@@ -126,24 +122,18 @@ public class PictureService {
      *
      * @param propertyId 房源 ID
      * @param updateRequest 更新房源圖片的請求物件，包含要更新的房源和圖片資訊。
-     * @throws FieldConflictException 如果必要的屬性值為空，將拋出此異常。
+     * @throws RequestValidationException 如果必要的屬性值為空，將拋出此異常。
      * @throws AuthorizationException 如果使用者未經授權執行操作，將拋出此異常。
      * @throws ResourceNotFoundException 如果找不到指定的圖片，將拋出此異常。
      */
     @Transactional
     public void updatePropertyPicture(Long propertyId, UpdatePropertyPictureRequest updateRequest) {
-        // 檢驗參數
         Long pictureId = updateRequest.getPictureId();
         Integer pictureOrder = updateRequest.getPictureOrder();
 
-        if (pictureId == null) { throw new FieldConflictException("pictureId is required");}
-        if (pictureOrder == null) { throw new FieldConflictException("pictureOrder is required"); }
-
         // 檢查房源是否存在
-        PropertyBaseVo propertyBaseVo = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
-        if(propertyBaseVo == null) {
-            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
-        }
+        PropertyBaseVo propertyBaseVo = Optional.ofNullable(propertyBaseVoMapper.selectByPrimaryKey(propertyId))
+                .orElseThrow(() ->  new ResourceNotFoundException("property with id %s not found".formatted(propertyId)));
 
         // 檢驗登入使用者是否為房源出租人
         ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
@@ -157,13 +147,13 @@ public class PictureService {
 
         int updatePictureNum = pictureBaseVoMapper.updateByPrimaryKeySelective(updatePictureVo);
         if (updatePictureNum == 0) {
-            throw new ResourceNotFoundException("cannot find picture with id %s".formatted(pictureId));
+            throw new ResourceNotFoundException("picture with id %s not found".formatted(pictureId));
         }
 
         // 更新圖片詳細資訊上傳狀態
         int updatePictureDtNum = pictureDtVoMapper.setIsUploadedTrueByPropertyId(pictureId);
         if (updatePictureDtNum == 0) {
-            throw new ResourceNotFoundException("cannot find picture details with pictureId %s".formatted(pictureId));
+            throw new ResourceNotFoundException("picture details with pictureId %s not found".formatted(pictureId));
         }
 
         // 檢查房源與相同圖片順序是否已存在圖片
@@ -191,14 +181,10 @@ public class PictureService {
      * @param propertyId 房源的唯一識別號
      * @param sizeNum    圖片大小編號
      * @return 圖片下載 URL 列表
-     * @throws FieldConflictException 如果 propertyId 或 sizeNum 為 null，則拋出此異常
+     * @throws RequestValidationException 如果 propertyId 或 sizeNum 為 null，則拋出此異常
      * @throws ResourceNotFoundException 如果找不到指定的房源或房源未發佈，則拋出此異常
      */
     public List<Map<String, Object>> listPublishedPropertyImageDownloadUrl(Long propertyId, Integer sizeNum) {
-        // 檢驗 propertyId, sizeNum
-        if (propertyId == null || sizeNum == null) {
-            throw new FieldConflictException("propertyId and sizeNum are required");
-        }
 
         // 檢查房源是否為 isPublished
         PropertyBaseVo property = propertyBaseVoMapper.selectByPrimaryKey(propertyId);
@@ -219,12 +205,12 @@ public class PictureService {
      * @param propertyId 要查詢的房源ID。
      * @param sizeNum 要查詢的圖片尺寸編號。
      * @return 返回一個包含圖片下載 URL 的列表，如果找不到符合條件的圖片，則返回空列表。
-     * @throws FieldConflictException 如果房源ID或圖片尺寸編號為空，則拋出 FieldConflictException 異常。
+     * @throws RequestValidationException 如果房源ID或圖片尺寸編號為空，則拋出 RequestValidationException 異常。
      */
     public List<Map<String, Object>> listPropertyImageDownloadUrl(Long propertyId, Integer sizeNum) {
         // 檢驗 propertyId, sizeNum
         if (propertyId == null || sizeNum == null) {
-            throw new FieldConflictException("propertyId and sizeNum are required");
+            throw new RequestValidationException("propertyId and sizeNum are required");
         }
 
         // 檢查房源是否存在
