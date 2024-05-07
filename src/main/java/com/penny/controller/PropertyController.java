@@ -3,6 +3,7 @@ package com.penny.controller;
 import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.request.CreatePropertyRequest;
 import com.penny.request.UpdatePropertyPictureRequest;
+import com.penny.request.UpdatePropertyRequest;
 import com.penny.service.AmenityService;
 import com.penny.service.DiscountService;
 import com.penny.service.PictureService;
@@ -39,6 +40,22 @@ public class PropertyController {
             @RequestBody @Valid CreatePropertyRequest createRequest
     ){
         propertyService.createProperty(createRequest);
+        return ResponseEntity.ok("ok");
+    }
+
+    /**
+     * 更新房源資訊。
+     *
+     * @param propertyId 要更新的房源 ID
+     * @param updatePropertyRequest 包含更新資訊的請求物件
+     * @return ResponseEntity 包含 "ok" 字串的 ResponseEntity
+     */
+    @PutMapping("{propertyId}")
+    public ResponseEntity<String> updateProperty(
+            @PathVariable Long propertyId,
+            @RequestBody @Valid UpdatePropertyRequest updatePropertyRequest
+            ) {
+        propertyService.updateProperty(propertyId, updatePropertyRequest);
         return ResponseEntity.ok("ok");
     }
 
