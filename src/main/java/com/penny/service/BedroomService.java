@@ -32,7 +32,7 @@ public class BedroomService {
 
         // 檢查房源是否存在及已發佈
         if(propertyBaseVo == null || !propertyBaseVo.getIsPublished()) {
-            throw new ResourceNotFoundException("propertyId %s not found".formatted(propertyId));
+            throw new ResourceNotFoundException("property with id %s not found".formatted(propertyId));
         }
 
         // 根據房源ID查詢相應的臥室列表並返回
