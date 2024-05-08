@@ -3,8 +3,10 @@ package com.penny.controller;
 import com.penny.exception.AuthorizationException;
 import com.penny.service.BookingOrderService;
 import com.penny.service.EcUserService;
+import com.penny.service.PropertyService;
 import com.penny.service.WishPropertyService;
 import com.penny.vo.BookingOrderVo;
+import com.penny.vo.PropertyVo;
 import com.penny.vo.WishPropertyVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ public class EcUserController {
     private final WishPropertyService wishPropertyService;
 
     private final BookingOrderService bookingOrderService;
+
+    private final PropertyService propertyService;
 
     /**
      * 根據使用者 ID 列出願望房源列表。
@@ -48,5 +52,18 @@ public class EcUserController {
             @RequestParam(defaultValue = "false") Boolean isHost
     ) {
         return ResponseEntity.ok(bookingOrderService.getBookingOrders(ecUserId, isHost));
+    }
+
+    /**
+     * 根據使用者 ID 列出房源列表。
+     *
+     * @param ecUserId 使用者 ID
+     * @return ResponseEntity 包含房源列表的 ResponseEntity
+     */
+    @GetMapping("{ecUserId}/properties")
+    public ResponseEntity<List<PropertyVo>> listEcUserProperties(
+            @PathVariable Long ecUserId
+    ) {
+        return ResponseEntity.ok(propertyService.listPropertyByEcUserId(ecUserId));
     }
 }

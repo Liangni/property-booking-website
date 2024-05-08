@@ -245,5 +245,18 @@ public class PropertyService {
         propertyBaseVoMapper.updateByPrimaryKey(propertyBaseVo);
     }
 
+    /**
+     * 根據使用者 ID 列出該用戶擁有的房源列表。
+     *
+     * @param ecUserId 使用者的 ID
+     * @return 返回房源列表
+     * @throws AuthorizationException 如果登錄使用者無權執行操作，則拋出授權異常
+     */
+    public List<PropertyVo> listPropertyByEcUserId(Long ecUserId) {
+         if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) {
+             throw new AuthorizationException("login user is not authorized to do the operation");
+         }
 
+         return propertyVoMapper.listByHostId(ecUserId);
+    }
 }

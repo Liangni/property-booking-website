@@ -33,4 +33,6 @@ public interface PropertyVoMapper {
      */
     List<PropertyVo> listByPropertyAttributes(SearchPropertyRequestDTO searchRequestDTO);
 
+
+    List<PropertyVo> listByHostId(Long ecUserId);
 }

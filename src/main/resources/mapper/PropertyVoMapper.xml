@@ -13,7 +13,7 @@
         <result column="price_on_weekends" jdbcType="BIGINT" property="priceOnWeekends"/>
         <result column="is_published" jdbcType="BIT" property="isPublished"/>
         <result column="average_rating" jdbcType="DOUBLE" property="averageRating"/>
-        <result column="property_main_type_id" jdbcType="BIGINT" property="propertyGroupTypeId"/>
+        <result column="property_main_sub_type_id" jdbcType="BIGINT" property="propertyMainSubTypeId"/>
         <result column="property_share_type_id" jdbcType="BIGINT" property="propertyShareTypeId"/>
         <result column="address_id" jdbcType="BIGINT" property="addressId"/>
         <result column="host_id" jdbcType="BIGINT" property="hostId"/>
@@ -32,7 +32,7 @@
     <sql id="Base_Column_List">
         property_id, property_title, property_description, max_num_of_guests, num_of_bedrooms,
     num_of_beds, num_of_bathrooms, price_on_weekdays, price_on_weekends, is_published,
-    average_rating, property_main_type_id, property_share_type_id, address_id, host_id
+    average_rating, property_main_sub_type_id, property_share_type_id, address_id, host_id
     </sql>
 
     <sql id="available_periods_table">
@@ -347,6 +347,13 @@
                 )
             </if>
         </trim>
+    </select>
+
+    <select id="listByHostId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from property
+        where host_id = #{ecUserId,jdbcType=BIGINT}
     </select>
 
 </mapper>
