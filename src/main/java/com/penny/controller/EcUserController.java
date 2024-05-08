@@ -23,12 +23,12 @@ public class EcUserController {
      * 根據使用者 ID 列出願望房源列表。
      *
      * @param ecUserId 使用者 ID
-     * @return 返回願望房源列表
+     * @return ResponseEntity 包含願望房源列表的 ResponseEntity
      */
     @GetMapping("{ecUserId}/wish-properties")
-    public List<WishPropertyVo> listEcUserWishProperty(
+    public ResponseEntity<List<WishPropertyVo>> listEcUserWishProperty(
             @PathVariable Long ecUserId
     ) {
-        return wishPropertyService.listWishPropertyByEcUserId(ecUserId);
+        return ResponseEntity.ok(wishPropertyService.listWishPropertyByEcUserId(ecUserId));
     }
 }
