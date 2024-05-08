@@ -28,6 +28,7 @@
     <include file="/db/scripts/schema/19_create_discount_table.sql"/>
     <include file="/db/scripts/schema/20_create_booking_order_table.sql"/>
     <include file="/db/scripts/schema/21_create_property_discount_table.sql"/>
+    <include file="/db/scripts/schema/22_create_wish_property_table.sql"/>
 
     <!--  initial data-->
     <include file="/db/scripts/initial_data/01_insert_data_property_main_type.sql"/>

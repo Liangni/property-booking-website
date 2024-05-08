@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.WishPropertyVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.WishPropertyVo">
+        <id column="wish_property_id" jdbcType="BIGINT" property="wishPropertyId" />
+        <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+        <result column="ec_user_id" jdbcType="BIGINT" property="ecUserId" />
+        <result column="checkin_date" jdbcType="DATE" property="checkinDate" />
+        <result column="checkout_date" jdbcType="DATE" property="checkoutDate" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        wish_property_id, property_id, ec_user_id, checkin_date, checkout_date
+    </sql>
+    <select id="selectByPropertyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from wish_property
+        where property_id = #{PropertyId,jdbcType=BIGINT}
+    </select>
+</mapper>

@@ -84,11 +84,11 @@ public class BookingOrderService {
 
         // 檢查資料庫中的預訂日期是否足夠覆蓋指定日期範圍
         List<BookingAvailabilityVo> bookingAvailabilityVoList = bookingAvailabilityVoMapper.listByStartAndEndDate(propertyId, checkinDate, checkoutDate);
-        if (bookingAvailabilityVoList.size() < countDayDifference(checkinDate, checkoutDate)) {
+        if (bookingAvailabilityVoList.size() < dateHelper.countDayDifference(checkinDate, checkoutDate)) {
             // 生成指定日期範圍內的連續日期列表
-            List<LocalDate> bookingLocalDateList = generateDateRange(checkinDate, checkoutDate);
+            List<LocalDate> bookingLocalDateList = dateHelper.generateDateRange(checkinDate, checkoutDate);
             // 找出資料庫缺少的預訂日期
-            List<LocalDate> dateMissingFromDb = listMissingBookingDate(bookingLocalDateList, bookingAvailabilityVoList);
+            List<LocalDate> dateMissingFromDb = dateHelper.listMissingBookingDate(bookingLocalDateList, bookingAvailabilityVoList);
             // 拋出異常，指示找不到足夠日期進行預訂
             throw new ResourceNotFoundException("%s are not available for booking".formatted(dateMissingFromDb));
         }
@@ -145,7 +145,7 @@ public class BookingOrderService {
     }
 
     /**
-     * 根據用戶類型取得使用者的預訂訂單列表。
+     * 根據使用者類型取得使用者的預訂訂單列表。
      *
      * @param ecUserId 使用者ID
      * @param isHost 是否為房東
@@ -162,61 +162,6 @@ public class BookingOrderService {
             return bookingOrderVoMapper.listByHostId(loginEcUserId);
         }
         return bookingOrderVoMapper.listByCustomerId(loginEcUserId);
-    }
-
-    /**
-     * 計算兩個日期之間的天數差異。
-     *
-     * @param startDate 開始日期
-     * @param endDate   結束日期
-     * @return 兩個日期之間的天數差異
-     */
-    private int countDayDifference(LocalDate startDate, LocalDate endDate) {
-        return (int) ChronoUnit.DAYS.between(startDate, endDate);
-    }
-
-    /**
-     * 生成一段連續日期的列表，從起始日期到結束日期（包括起始日期和結束日期）。
-     *
-     * @param startDate 起始日期
-     * @param endDate   結束日期
-     * @return 一段連續日期的列表
-     */
-    private List<LocalDate> generateDateRange(LocalDate startDate, LocalDate endDate) {
-        List<LocalDate> dateList = new ArrayList<>();
-        LocalDate currentDate = startDate;
-
-        while (!currentDate.isAfter(endDate)) {
-            dateList.add(currentDate);
-            currentDate = currentDate.plusDays(1);
-        }
-
-        return dateList;
-    }
-
-    /**
-     * 找出連續日期列表中缺少的預訂日期。
-     *
-     * @param consecutiveDateList      連續日期列表
-     * @param bookingAvailabilityVoList 已預訂日期列表
-     * @return 缺少的預訂日期列表
-     */
-    private List<LocalDate> listMissingBookingDate(List<LocalDate> consecutiveDateList, List<BookingAvailabilityVo> bookingAvailabilityVoList) {
-        Set<LocalDate> dateSet = new HashSet<>(
-                bookingAvailabilityVoList
-                        .stream()
-                        .map(BookingAvailabilityVo::getBookingAvailabilityDate)
-                        .toList()
-        );
-        List<LocalDate> missingBookingDateList = new ArrayList<>();
-
-        for (LocalDate date : consecutiveDateList) {
-            if (!dateSet.contains(date)) {
-                missingBookingDateList.add(date);
-            }
-        }
-
-        return missingBookingDateList;
     }
 
     /**

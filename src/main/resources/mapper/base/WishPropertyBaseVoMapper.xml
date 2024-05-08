@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.WishPropertyBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.WishPropertyBaseVo">
+    <id column="wish_property_id" jdbcType="BIGINT" property="wishPropertyId" />
+    <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+    <result column="ec_user_id" jdbcType="BIGINT" property="ecUserId" />
+    <result column="checkin_date" jdbcType="DATE" property="checkinDate" />
+    <result column="checkout_date" jdbcType="DATE" property="checkoutDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    wish_property_id, property_id, ec_user_id, checkin_date, checkout_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from wish_property
+    where wish_property_id = #{wishPropertyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wish_property
+    where wish_property_id = #{wishPropertyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="wish_property_id" keyProperty="wishPropertyId" parameterType="com.penny.vo.base.WishPropertyBaseVo" useGeneratedKeys="true">
+    insert into wish_property (property_id, ec_user_id, checkin_date, 
+      checkout_date)
+    values (#{propertyId,jdbcType=BIGINT}, #{ecUserId,jdbcType=BIGINT}, #{checkinDate,jdbcType=DATE}, 
+      #{checkoutDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" keyColumn="wish_property_id" keyProperty="wishPropertyId" parameterType="com.penny.vo.base.WishPropertyBaseVo" useGeneratedKeys="true">
+    insert into wish_property
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="propertyId != null">
+        property_id,
+      </if>
+      <if test="ecUserId != null">
+        ec_user_id,
+      </if>
+      <if test="checkinDate != null">
+        checkin_date,
+      </if>
+      <if test="checkoutDate != null">
+        checkout_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="propertyId != null">
+        #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="ecUserId != null">
+        #{ecUserId,jdbcType=BIGINT},
+      </if>
+      <if test="checkinDate != null">
+        #{checkinDate,jdbcType=DATE},
+      </if>
+      <if test="checkoutDate != null">
+        #{checkoutDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.WishPropertyBaseVo">
+    update wish_property
+    <set>
+      <if test="propertyId != null">
+        property_id = #{propertyId,jdbcType=BIGINT},
+      </if>
+      <if test="ecUserId != null">
+        ec_user_id = #{ecUserId,jdbcType=BIGINT},
+      </if>
+      <if test="checkinDate != null">
+        checkin_date = #{checkinDate,jdbcType=DATE},
+      </if>
+      <if test="checkoutDate != null">
+        checkout_date = #{checkoutDate,jdbcType=DATE},
+      </if>
+    </set>
+    where wish_property_id = #{wishPropertyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.WishPropertyBaseVo">
+    update wish_property
+    set property_id = #{propertyId,jdbcType=BIGINT},
+      ec_user_id = #{ecUserId,jdbcType=BIGINT},
+      checkin_date = #{checkinDate,jdbcType=DATE},
+      checkout_date = #{checkoutDate,jdbcType=DATE}
+    where wish_property_id = #{wishPropertyId,jdbcType=BIGINT}
+  </update>
+</mapper>

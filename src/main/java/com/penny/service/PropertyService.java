@@ -5,11 +5,7 @@ import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
-import com.penny.request.CreatePropertyRequest;
-import com.penny.request.SearchPropertyRequest;
-import com.penny.request.SearchPropertyRequestDTO;
-import com.penny.request.UpdatePropertyRequest;
-import com.penny.request.SearchPropertyRequestDTOMapper;
+import com.penny.request.*;
 import com.penny.vo.*;
 import com.penny.vo.base.*;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +25,6 @@ public class PropertyService {
     private final EcUserService ecUserService;
 
     private final SearchPropertyRequestDTOMapper searchPropertyRequestDTOMapper;
-
 
     /**
      * 根據給定的搜尋參數，獲取房源資訊。

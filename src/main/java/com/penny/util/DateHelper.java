@@ -1,12 +1,17 @@
 package com.penny.util;
 
+import com.penny.vo.BookingAvailabilityVo;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.regex.Pattern;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class DateHelper {
@@ -39,5 +44,60 @@ public class DateHelper {
 
         // 檢查是否為星期六或星期日
         return dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
+    }
+
+    /**
+     * 計算兩個日期之間的天數差異。
+     *
+     * @param startDate 開始日期
+     * @param endDate   結束日期
+     * @return 兩個日期之間的天數差異
+     */
+    public int countDayDifference(LocalDate startDate, LocalDate endDate) {
+        return (int) ChronoUnit.DAYS.between(startDate, endDate);
+    }
+
+    /**
+     * 生成一段連續日期的列表，從起始日期到結束日期（包括起始日期和結束日期）。
+     *
+     * @param startDate 起始日期
+     * @param endDate   結束日期
+     * @return 一段連續日期的列表
+     */
+    public List<LocalDate> generateDateRange(LocalDate startDate, LocalDate endDate) {
+        List<LocalDate> dateList = new ArrayList<>();
+        LocalDate currentDate = startDate;
+
+        while (!currentDate.isAfter(endDate)) {
+            dateList.add(currentDate);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return dateList;
+    }
+
+    /**
+     * 找出連續日期列表中缺少的預訂日期。
+     *
+     * @param consecutiveDateList      連續日期列表
+     * @param bookingAvailabilityVoList 已預訂日期列表
+     * @return 缺少的預訂日期列表
+     */
+    public List<LocalDate> listMissingBookingDate(List<LocalDate> consecutiveDateList, List<BookingAvailabilityVo> bookingAvailabilityVoList) {
+        Set<LocalDate> dateSet = new HashSet<>(
+                bookingAvailabilityVoList
+                        .stream()
+                        .map(BookingAvailabilityVo::getBookingAvailabilityDate)
+                        .toList()
+        );
+        List<LocalDate> missingBookingDateList = new ArrayList<>();
+
+        for (LocalDate date : consecutiveDateList) {
+            if (!dateSet.contains(date)) {
+                missingBookingDateList.add(date);
+            }
+        }
+
+        return missingBookingDateList;
     }
 }
