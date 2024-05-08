@@ -19,6 +19,8 @@ public class EcUserController {
 
     private final WishPropertyService wishPropertyService;
 
+    private final BookingOrderService bookingOrderService;
+
     /**
      * 根據使用者 ID 列出願望房源列表。
      *
@@ -30,5 +32,21 @@ public class EcUserController {
             @PathVariable Long ecUserId
     ) {
         return ResponseEntity.ok(wishPropertyService.listWishPropertyByEcUserId(ecUserId));
+    }
+
+    /**
+     * 根據指定的 ecUserId 和 isHost 參數，獲取相應的預訂訂單列表。
+     *
+     * @param ecUserId 使用者 ID，必須提供以查詢相關的預訂訂單。
+     * @param isHost 是否為出租人（可選）。默認值為 false，表示查詢租客的訂單；如果設置為 true，則查詢出租人的訂單。
+     *
+     * @return ResponseEntity 包含預訂訂單列表的 ResponseEntity。
+     */
+    @GetMapping("{ecUserId}/booking-orders")
+    public ResponseEntity<List<BookingOrderVo>> listEcUserBookingOrders(
+            @PathVariable Long ecUserId,
+            @RequestParam(defaultValue = "false") Boolean isHost
+    ) {
+        return ResponseEntity.ok(bookingOrderService.getBookingOrders(ecUserId, isHost));
     }
 }
