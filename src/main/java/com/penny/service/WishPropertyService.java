@@ -4,6 +4,7 @@ import com.penny.dao.BookingAvailabilityVoMapper;
 import com.penny.dao.WishPropertyVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.WishPropertyBaseVoMapper;
+import com.penny.exception.AuthorizationException;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceDuplicateException;
 import com.penny.exception.ResourceNotFoundException;
@@ -85,10 +86,25 @@ public class WishPropertyService {
                 .builder()
                 .propertyId(createRequest.getPropertyId())
                 .checkinDate(checkinDate)
-                .checkinDate(checkoutDate)
+                .checkoutDate(checkoutDate)
                 .ecUserId(ecUserService.getLoginUser().getEcUserId())
                 .build();
 
         wishPropertyBaseVoMapper.insertSelective(wishPropertyBaseVo);
+    }
+
+    /**
+     * 根據使用者 ID 列出願望房源列表。
+     *
+     * @param ecUserId 使用者 ID
+     * @return 返回願望房源列表
+     * @throws AuthorizationException 如果登錄使用者無權執行操作，則拋出授權異常
+     */
+    public List<WishPropertyVo> listWishPropertyByEcUserId(Long ecUserId) {
+        if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) {
+            throw new AuthorizationException("login user is not authorized to do the operation");
+        }
+
+        return wishPropertyVoMapper.listByEcUserId(ecUserId);
     }
 }

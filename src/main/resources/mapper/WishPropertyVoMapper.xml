@@ -15,6 +15,13 @@
         select
         <include refid="Base_Column_List" />
         from wish_property
-        where property_id = #{PropertyId,jdbcType=BIGINT}
+        where property_id = #{propertyId,jdbcType=BIGINT}
+    </select>
+
+    <select id="listByEcUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from wish_property
+        where ec_user_id = #{ecUserId,jdbcType=BIGINT}
     </select>
 </mapper>
