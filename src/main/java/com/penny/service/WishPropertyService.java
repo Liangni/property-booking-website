@@ -107,4 +107,20 @@ public class WishPropertyService {
 
         return wishPropertyVoMapper.listByEcUserId(ecUserId);
     }
+
+    /**
+     * 根據願望房源 ID 刪除願望房源。
+     *
+     * @param wishPropertyId 要刪除的願望房源 ID
+     * @throws AuthorizationException 如果登錄使用者無權執行操作，則拋出授權異常
+     */
+    public void deleteWishPropertyById(Long wishPropertyId) {
+        WishPropertyBaseVo wishPropertyBaseVo = wishPropertyBaseVoMapper.selectByPrimaryKey(wishPropertyId);
+
+        if (!wishPropertyBaseVo.getEcUserId().equals(ecUserService.getLoginUser().getEcUserId())) {
+            throw new AuthorizationException("login user is not authorized to do the operation");
+        }
+
+        wishPropertyBaseVoMapper.deleteByPrimaryKey(wishPropertyId);
+    }
 }
