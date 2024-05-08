@@ -156,7 +156,7 @@ public class PropertyController {
      * @param sizeNum 圖片尺寸數量
      * @return ResponseEntity 包含房源圖片下載 URL map 列表 的 ResponseEntity
      */
-    @GetMapping("{propertyId}/image-download-urls")
+    @GetMapping("{propertyId}/picture-download-urls")
     public ResponseEntity<List<Map<String, Object>>> getPropertyImageDownloadUrlMap(
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
@@ -171,7 +171,7 @@ public class PropertyController {
      * @param fileExtension 檔案副檔名
      * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
      */
-    @GetMapping("{propertyId}/image-upload-urls")
+    @GetMapping("{propertyId}/picture-upload-urls")
     public ResponseEntity<Map<String, Object>> getPropertyImageUploadUrlMap(
             @PathVariable Long propertyId,
             @RequestParam String fileExtension
@@ -186,7 +186,7 @@ public class PropertyController {
      * @param updateRequest 更新圖片請求。
      * @return ResponseEntity，表示請求已成功處理。
      */
-    @PostMapping("{propertyId}/pictures")
+    @PostMapping("{propertyId}/property-pictures")
     public ResponseEntity<String> updatePropertyPicture(
             @PathVariable Long propertyId,
             @RequestBody @Valid UpdatePropertyPictureRequest updateRequest
