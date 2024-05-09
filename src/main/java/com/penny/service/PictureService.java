@@ -398,9 +398,6 @@ public class PictureService {
     public Map<String, Object> getEcUserPictureDownloadUrl(Long ecUserId) {
         int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getNum();
 
-        // 檢驗登入使用者權限
-        if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) throw new AuthorizationException("login user is not authorized for the operation");
-
         // 找尋使用者圖片
         EcUserPictureBaseVo ecUserPictureBaseVo = Optional.ofNullable(ecUserPictureVoMapper.selectByEcUserId(ecUserId))
                 .orElseThrow(() -> new ResourceNotFoundException("ecUser picture with ecUserId %s not found".formatted(ecUserId)));

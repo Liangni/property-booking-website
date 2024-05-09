@@ -2,6 +2,7 @@ package com.penny.controller;
 
 import com.penny.exception.AuthorizationException;
 import com.penny.request.CreateEcUserPictureRequest;
+import com.penny.response.ReadEcUserResponse;
 import com.penny.service.*;
 import com.penny.vo.BookingOrderVo;
 import com.penny.vo.PropertyVo;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RequestMapping("api/v1/ec-users")
 @RequiredArgsConstructor
 public class EcUserController {
+    private final EcUserService ecUserService;
 
     private final WishPropertyService wishPropertyService;
 
@@ -25,6 +27,19 @@ public class EcUserController {
     private final PropertyService propertyService;
 
     private final PictureService pictureService;
+
+    /**
+     * 根據使用者 ID 獲取使用者資訊。
+     *
+     * @param ecUserId 使用者的 ID
+     * @return ResponseEntity 包含使用者資訊的 ResponseEntity
+     */
+    @GetMapping("{ecUserId}")
+    public ResponseEntity<ReadEcUserResponse> getEcUser(
+            @PathVariable Long ecUserId
+    ) {
+        return ResponseEntity.ok(ecUserService.getEcUser(ecUserId));
+    }
 
     /**
      * 根據使用者 ID 列出願望房源列表。
