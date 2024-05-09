@@ -64,7 +64,7 @@ public class PictureService {
      * @throws RequestValidationException 如果房源ID或圖片附檔名為空，則拋出 RequestValidationException 異常。
      */
     @Transactional
-    public Map<String, Object> getPropertyImageUploadUrlMap(Long propertyId, String fileExtension) {
+    public Map<String, Object> getPropertyPictureUploadUrlMap(Long propertyId, String fileExtension) {
         // 檢驗參數
         if (!isPictureFileExtension(fileExtension)) throw new RequestValidationException("fileExtension can only be %s".formatted(PICTURE_EXTENSIONS.toString()));
 
@@ -209,7 +209,7 @@ public class PictureService {
      * @throws RequestValidationException 如果 propertyId 或 sizeNum 為 null，則拋出此異常
      * @throws ResourceNotFoundException 如果找不到指定的房源或房源未發佈，則拋出此異常
      */
-    public List<Map<String, Object>> listPublishedPropertyImageDownloadUrl(Long propertyId, Integer sizeNum) {
+    public List<Map<String, Object>> listPublishedPropertyPictureDownloadUrl(Long propertyId, Integer sizeNum) {
 
         // 檢查房源是否為 isPublished
         PropertyBaseVo property = propertyBaseVoMapper.selectByPrimaryKey(propertyId);

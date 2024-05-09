@@ -172,11 +172,11 @@ public class PropertyController {
      * @return 包含圖片上傳 URL 的 Map 的 ResponseEntity
      */
     @GetMapping("{propertyId}/picture-upload-urls")
-    public ResponseEntity<Map<String, Object>> getPropertyImageUploadUrlMap(
+    public ResponseEntity<Map<String, Object>> getPropertyPictureUploadUrlMap(
             @PathVariable Long propertyId,
             @RequestParam String fileExtension
     ) {
-        return ResponseEntity.ok(pictureService.getPropertyImageUploadUrlMap(propertyId, fileExtension));
+        return ResponseEntity.ok(pictureService.getPropertyPictureUploadUrlMap(propertyId, fileExtension));
     }
 
     /**

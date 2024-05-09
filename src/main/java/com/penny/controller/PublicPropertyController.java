@@ -51,12 +51,12 @@ public class PublicPropertyController {
      * @param sizeNum 圖片大小編號
      * @return 包含圖片下載 URL 列表的 ResponseEntity
      */
-    @GetMapping("{propertyId}/download-image-urls")
-    public ResponseEntity<List<Map<String, Object>>> getPropertyImageDownloadUrls(
+    @GetMapping("{propertyId}/download-picture-urls")
+    public ResponseEntity<List<Map<String, Object>>> getPropertyPictureDownloadUrls(
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
     ) {
-        return ResponseEntity.ok(pictureService.listPublishedPropertyImageDownloadUrl(propertyId, sizeNum));
+        return ResponseEntity.ok(pictureService.listPublishedPropertyPictureDownloadUrl(propertyId, sizeNum));
     }
 
     /**
