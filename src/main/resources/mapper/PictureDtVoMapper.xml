@@ -50,6 +50,13 @@
         and picture_dt_size = #{sizeNum}
     </select>
 
+    <select id="selectByPictureId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from picture_dt
+        where picture_id = #{pictureId}
+    </select>
+
     <update id="setIsUploadedTrueByPictureId" parameterType="java.lang.Long">
         update picture_dt
         <set>

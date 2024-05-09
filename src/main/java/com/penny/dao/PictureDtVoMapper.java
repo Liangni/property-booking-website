@@ -31,6 +31,9 @@ public interface PictureDtVoMapper {
      */
     PictureDtVo selectByPictureIdAndSizeNum(Long pictureId, Integer sizeNum);
 
+
+    List<PictureDtVo> selectByPictureId(Long pictureId);
+
     /**
      * 根據圖片 ID 將圖片詳細資訊設置為已上傳。
      *

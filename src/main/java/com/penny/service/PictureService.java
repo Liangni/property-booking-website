@@ -22,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import javax.xml.bind.ValidationException;
 import java.util.*;
 
 @Service
@@ -105,6 +103,8 @@ public class PictureService {
                 .forEach(size -> {
                     int pictureSizeNum = size.getNum();
                     String picDtBucketPath = generatePropertyPictureBucketPath(propertyId, String.valueOf(pictureSizeNum), lowerCaseFileExtension);
+
+                    // 創建圖片 DT
                     PictureDtBaseVo pictureDtBaseVo = PictureDtBaseVo
                             .builder()
                             .pictureDtStoragePath(picDtBucketPath)
@@ -145,6 +145,30 @@ public class PictureService {
         // 檢驗登入使用者是否為房源出租人
         ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
 
+        // 檢查圖片是否存在
+        PictureBaseVo pictureBaseVo = Optional.ofNullable(pictureBaseVoMapper.selectByPrimaryKey(pictureId))
+                .orElseThrow(() -> new ResourceNotFoundException("picture with id %s not found".formatted(pictureId)));
+
+        // 檢查圖片 dt 是否存在
+        List<PictureDtVo> pictureDtVoList = pictureDtVoMapper.selectByPictureId(pictureId);
+        if(pictureDtVoList.isEmpty()) throw new ResourceNotFoundException("resized picture with pictureId %s not found".formatted(pictureId));
+
+        // 檢查圖片是否上傳
+        try {
+            s3Service.getObjects(s3Buckets.getCustomer(), pictureBaseVo.getPictureStoragePath());
+        } catch (SdkClientException e) {
+            throw new RequestValidationException("picture with original size not uploaded");
+        }
+
+        // 檢查圖片 dt 是否已上傳
+        pictureDtVoList.forEach(pictureDtVo -> {
+            try {
+                s3Service.getObjects(s3Buckets.getCustomer(), pictureDtVo.getPictureDtStoragePath());
+            } catch (SdkClientException e) {
+                throw new RequestValidationException("resized picture with pictureId %s not uploaded".formatted(pictureId));
+            }
+        });
+
         // 更新圖片上傳狀態
         PictureBaseVo updatePictureVo = PictureBaseVo
                 .builder()
@@ -152,16 +176,10 @@ public class PictureService {
                 .pictureIsUploaded(true)
                 .build();
 
-        int updatePictureNum = pictureBaseVoMapper.updateByPrimaryKeySelective(updatePictureVo);
-        if (updatePictureNum == 0) {
-            throw new ResourceNotFoundException("picture with id %s not found".formatted(pictureId));
-        }
+        pictureBaseVoMapper.updateByPrimaryKeySelective(updatePictureVo);
 
         // 更新圖片詳細資訊上傳狀態
-        int updatePictureDtNum = pictureDtVoMapper.setIsUploadedTrueByPictureId(pictureId);
-        if (updatePictureDtNum == 0) {
-            throw new ResourceNotFoundException("picture details with pictureId %s not found".formatted(pictureId));
-        }
+        pictureDtVoMapper.setIsUploadedTrueByPictureId(pictureId);
 
         // 檢查房源與相同圖片順序是否已存在圖片
         PropertyPictureVo propertyPictureVo = propertyPictureVoMapper.selectByPropertyIdAndPictureOrder(propertyId, pictureOrder);
@@ -321,7 +339,7 @@ public class PictureService {
 
         //  檢查資料庫是否有指定圖片 dt
         PictureDtVo pictureDtVo = Optional.ofNullable(pictureDtVoMapper.selectByPictureIdAndSizeNum(pictureBaseVo.getPictureId(), defaultSizeNum))
-                .orElseThrow(() -> new ResourceNotFoundException("picture with size %s not found".formatted(defaultSizeNum)));
+                .orElseThrow(() -> new ResourceNotFoundException("resized picture with pictureId %s not found".formatted(pictureId)));
 
         // 檢查圖片是否已上傳
         try {
@@ -334,7 +352,7 @@ public class PictureService {
         try {
             s3Service.getObjects(s3Buckets.getCustomer(), pictureDtVo.getPictureDtStoragePath());
         } catch (SdkClientException e) {
-            throw new RequestValidationException("picture with size %s not uploaded".formatted(defaultSizeNum));
+            throw new RequestValidationException("resized picture with pictureId %s not uploaded".formatted(pictureId));
         }
 
         // 更新圖片上傳狀態
