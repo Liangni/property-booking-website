@@ -9,8 +9,6 @@ import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
 import com.penny.request.CreateBookingOrderRequest;
-import com.penny.request.CreateBookingOrderRequestDTO;
-import com.penny.request.CreateBookingOrderRequestDTOMapper;
 import com.penny.util.DateHelper;
 import com.penny.vo.BookingAvailabilityVo;
 import com.penny.vo.BookingOrderVo;
@@ -23,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,8 +40,7 @@ public class BookingOrderService {
     private final EcUserService ecUserService;
 
     private final DateHelper dateHelper;
-    
-    private final CreateBookingOrderRequestDTOMapper createBookingOrderRequestDTOMapper;
+
 
     /**
      * 創建預訂訂單。
@@ -63,9 +59,10 @@ public class BookingOrderService {
             throw new ResourceNotFoundException("property with propertyId %s not found".formatted(propertyId));
         }
 
-        CreateBookingOrderRequestDTO createRequestDTO = createBookingOrderRequestDTOMapper.apply(createRequest);
-        LocalDate checkinDate = createRequestDTO.getCheckinDate();
-        LocalDate checkoutDate = createRequestDTO.getCheckoutDate();
+        // 將 request 物件轉換為 bookingOrderBaseVo 物件
+        BookingOrderBaseVo bookingOrderBaseVo = bookingOrderMapper(createRequest);
+        LocalDate checkinDate = bookingOrderBaseVo.getCheckinDate();
+        LocalDate checkoutDate = bookingOrderBaseVo.getCheckoutDate();
 
         // 檢查 checkin 日期是否早於 checkout 日期
         if(checkinDate.isAfter(checkoutDate)) {
@@ -78,7 +75,6 @@ public class BookingOrderService {
         }
 
         // 獲取預訂訂單基本資訊
-        BookingOrderBaseVo bookingOrderBaseVo = bookingOrderMapper(createRequestDTO);
         bookingOrderBaseVo.setHostId(propertyBaseVo.getHostId());
         bookingOrderBaseVo.setCustomerId(ecUserService.getLoginUser().getEcUserId());
 
@@ -198,20 +194,20 @@ public class BookingOrderService {
     /**
      * 將預訂訂單創建請求映射為預訂訂單基本資訊。
      *
-     * @param createRequestDTO 預訂訂單創建請求
+     * @param createRequest 預訂訂單創建請求
      * @return 預訂訂單基本資訊
      */
-    private BookingOrderBaseVo bookingOrderMapper(CreateBookingOrderRequestDTO createRequestDTO) {
+    private BookingOrderBaseVo bookingOrderMapper(CreateBookingOrderRequest createRequest) {
         return BookingOrderBaseVo
                 .builder()
-                .checkinDate(createRequestDTO.getCheckinDate())
-                .checkoutDate(createRequestDTO.getCheckoutDate())
-                .arrivalTime(createRequestDTO.getArrivalTime())
-                .guestName(createRequestDTO.getGuestName())
-                .guestEmail(createRequestDTO.getGuestEmail())
-                .guestPhone(createRequestDTO.getGuestPhone())
-                .guestMessage(createRequestDTO.getGuestMessage())
-                .propertyId(createRequestDTO.getPropertyId())
+                .checkinDate(dateHelper.parseDateString(createRequest.getCheckinDateString()))
+                .checkoutDate(dateHelper.parseDateString(createRequest.getCheckoutDateString()))
+                .arrivalTime(createRequest.getArrivalTime())
+                .guestName(createRequest.getGuestName())
+                .guestEmail(createRequest.getGuestEmail())
+                .guestPhone(createRequest.getGuestPhone())
+                .guestMessage(createRequest.getGuestMessage())
+                .propertyId(createRequest.getPropertyId())
                 .build();
     }
 
