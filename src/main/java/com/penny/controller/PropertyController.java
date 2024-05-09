@@ -2,7 +2,7 @@ package com.penny.controller;
 
 import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.request.CreatePropertyRequest;
-import com.penny.request.UpdatePropertyPictureRequest;
+import com.penny.request.CreatePropertyPictureRequest;
 import com.penny.request.UpdatePropertyRequest;
 import com.penny.service.AmenityService;
 import com.penny.service.DiscountService;
@@ -161,7 +161,7 @@ public class PropertyController {
             @PathVariable Long propertyId,
             @RequestParam Integer sizeNum
     ) {
-        return ResponseEntity.ok(pictureService.listPropertyImageDownloadUrl(propertyId, sizeNum));
+        return ResponseEntity.ok(pictureService.listPropertyPictureDownloadUrl(propertyId, sizeNum));
     }
 
     /**
@@ -189,9 +189,9 @@ public class PropertyController {
     @PostMapping("{propertyId}/property-pictures")
     public ResponseEntity<String> updatePropertyPicture(
             @PathVariable Long propertyId,
-            @RequestBody @Valid UpdatePropertyPictureRequest updateRequest
+            @RequestBody @Valid CreatePropertyPictureRequest updateRequest
     ) {
-        pictureService.updatePropertyPicture(propertyId, updateRequest);
+        pictureService.createPropertyPicture(propertyId, updateRequest);
         return ResponseEntity.ok("ok");
     }
 }

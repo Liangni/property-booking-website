@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdatePropertyPictureRequest {
+public class CreatePropertyPictureRequest {
     @NotNull
     private Long pictureId;
 

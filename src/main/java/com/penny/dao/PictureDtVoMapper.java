@@ -37,5 +37,5 @@ public interface PictureDtVoMapper {
      * @param pictureId 圖片的唯一識別符。
      * @return 更新的圖片詳細資訊數量。
      */
-    Integer setIsUploadedTrueByPropertyId(Long pictureId);
+    Integer setIsUploadedTrueByPictureId(Long pictureId);
 }

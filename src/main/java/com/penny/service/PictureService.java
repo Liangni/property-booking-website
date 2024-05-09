@@ -1,34 +1,36 @@
 package com.penny.service;
 
 import com.amazonaws.HttpMethod;
+import com.amazonaws.SdkClientException;
+import com.penny.dao.EcUserPictureVoMapper;
 import com.penny.dao.PictureDtVoMapper;
 import com.penny.dao.PropertyPictureVoMapper;
-import com.penny.dao.base.PictureBaseVoMapper;
-import com.penny.dao.base.PictureDtBaseVoMapper;
-import com.penny.dao.base.PropertyBaseVoMapper;
-import com.penny.dao.base.PropertyPictureBaseVoMapper;
+import com.penny.dao.base.*;
 import com.penny.enums.PictureDtSize;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
-import com.penny.request.UpdatePropertyPictureRequest;
+import com.penny.request.CreateEcUserPictureRequest;
+import com.penny.request.CreatePropertyPictureRequest;
 import com.penny.s3.S3Buckets;
 import com.penny.s3.S3Service;
+import com.penny.vo.EcUserPictureVo;
 import com.penny.vo.PictureDtVo;
 import com.penny.vo.PropertyPictureVo;
-import com.penny.vo.base.PictureBaseVo;
-import com.penny.vo.base.PictureDtBaseVo;
-import com.penny.vo.base.PropertyBaseVo;
-import com.penny.vo.base.PropertyPictureBaseVo;
+import com.penny.vo.base.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import javax.xml.bind.ValidationException;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class PictureService {
+
+    private final PictureDtSize DEFAULT_EC_USER_PICTURE_DT_SIZE = PictureDtSize.SIZE_3;
     private final Set<String> PICTURE_EXTENSIONS = new HashSet<>(Set.of(
             "jpg", "jpeg", "png"
     ));
@@ -44,6 +46,10 @@ public class PictureService {
     private final PictureDtBaseVoMapper pictureDtBaseVoMapper;
 
     private final PictureDtVoMapper pictureDtVoMapper;
+
+    private final EcUserPictureBaseVoMapper ecUserPictureBaseVoMapper;
+
+    private final EcUserPictureVoMapper ecUserPictureVoMapper;
 
     private final EcUserService ecUserService;
 
@@ -72,7 +78,8 @@ public class PictureService {
         ecUserService.validatePropertyOwnership(propertyBaseVo.getHostId());
 
         // 創建圖片
-        String pictureBucketPath = generateBucketPath(propertyId, "original", fileExtension);
+        String lowerCaseFileExtension = fileExtension.toLowerCase();
+        String pictureBucketPath = generatePropertyPictureBucketPath(propertyId, "original", lowerCaseFileExtension);
         PictureBaseVo pictureBaseVo = PictureBaseVo
                 .builder()
                 .pictureStoragePath(pictureBucketPath)
@@ -97,7 +104,7 @@ public class PictureService {
         PictureDtSize.stream()
                 .forEach(size -> {
                     int pictureSizeNum = size.getNum();
-                    String picDtBucketPath = generateBucketPath(propertyId, String.valueOf(pictureSizeNum), fileExtension);
+                    String picDtBucketPath = generatePropertyPictureBucketPath(propertyId, String.valueOf(pictureSizeNum), lowerCaseFileExtension);
                     PictureDtBaseVo pictureDtBaseVo = PictureDtBaseVo
                             .builder()
                             .pictureDtStoragePath(picDtBucketPath)
@@ -127,7 +134,7 @@ public class PictureService {
      * @throws ResourceNotFoundException 如果找不到指定的圖片，將拋出此異常。
      */
     @Transactional
-    public void updatePropertyPicture(Long propertyId, UpdatePropertyPictureRequest updateRequest) {
+    public void createPropertyPicture(Long propertyId, CreatePropertyPictureRequest updateRequest) {
         Long pictureId = updateRequest.getPictureId();
         Integer pictureOrder = updateRequest.getPictureOrder();
 
@@ -151,7 +158,7 @@ public class PictureService {
         }
 
         // 更新圖片詳細資訊上傳狀態
-        int updatePictureDtNum = pictureDtVoMapper.setIsUploadedTrueByPropertyId(pictureId);
+        int updatePictureDtNum = pictureDtVoMapper.setIsUploadedTrueByPictureId(pictureId);
         if (updatePictureDtNum == 0) {
             throw new ResourceNotFoundException("picture details with pictureId %s not found".formatted(pictureId));
         }
@@ -207,7 +214,7 @@ public class PictureService {
      * @return 返回一個包含圖片下載 URL 的列表，如果找不到符合條件的圖片，則返回空列表。
      * @throws RequestValidationException 如果房源ID或圖片尺寸編號為空，則拋出 RequestValidationException 異常。
      */
-    public List<Map<String, Object>> listPropertyImageDownloadUrl(Long propertyId, Integer sizeNum) {
+    public List<Map<String, Object>> listPropertyPictureDownloadUrl(Long propertyId, Integer sizeNum) {
         // 檢驗 propertyId, sizeNum
         if (propertyId == null || sizeNum == null) {
             throw new RequestValidationException("propertyId and sizeNum are required");
@@ -227,6 +234,175 @@ public class PictureService {
 
         // 使用抽取的方法獲取圖片下載 URL 列表
         return listPropertyPictureDtDownloadUrlMap(propertyPictureVoList, sizeNum);
+    }
+
+    /**
+     * 根據使用者 ID 列出使用者圖片上傳 URL。
+     *
+     * @param ecUserId 使用者的 ID
+     * @param fileExtension 檔案擴展名
+     * @return 返回包含圖片上傳 URL 的 Map
+     * @throws RequestValidationException 如果檔案擴展名不合法，則拋出請求驗證異常
+     * @throws AuthorizationException 如果登入使用者無權執行操作，則拋出授權異常
+     */
+    @Transactional
+    public Map<String, Object> listEcUserPictureUploadUrl(Long ecUserId, String fileExtension) {
+        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getNum();
+
+        // 檢驗參數
+        if (!isPictureFileExtension(fileExtension)) throw new RequestValidationException("fileExtension can only be %s".formatted(PICTURE_EXTENSIONS.toString()));
+
+        // 檢查使用者是否有權限執行操作
+        if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) throw new AuthorizationException("login user is not authorized for the operation");
+
+        // 創建圖片
+        String lowerCaseFileExtension = fileExtension.toLowerCase();
+        String pictureBucketPath = generateEcUserPictureBucketPath(ecUserId, "original", lowerCaseFileExtension);
+        PictureBaseVo pictureBaseVo = PictureBaseVo
+                .builder()
+                .pictureStoragePath(pictureBucketPath)
+                .pictureIsUploaded(false)
+                .build();
+
+        // 將圖片資料存入資料庫
+        pictureBaseVoMapper.insertSelective(pictureBaseVo);
+        Long pictureId = pictureBaseVo.getPictureId();
+
+        // 初始化回傳結果 map
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("pictureId", pictureId);
+
+        // 將原始尺寸圖像的預簽名上傳 URL 加進回傳結果
+        resultMap.put(
+                "sizeOriginal",
+                s3Service.generatePreSignedUrl(s3Buckets.getCustomer(), pictureBucketPath, HttpMethod.PUT)
+        );
+
+        // 新增圖片 dt
+        String picDtBucketPath = generateEcUserPictureBucketPath(ecUserId, String.valueOf(defaultSizeNum), lowerCaseFileExtension);
+        PictureDtBaseVo pictureDtBaseVo = PictureDtBaseVo
+                .builder()
+                .pictureDtStoragePath(picDtBucketPath)
+                .pictureDtSize(defaultSizeNum)
+                .pictureId(pictureId)
+                .pictureDtIsUploaded(false)
+                .build();
+        pictureDtBaseVoMapper.insertSelective(pictureDtBaseVo);
+
+        // 將指定尺寸圖像的預簽名上傳 URL 加進回傳結果
+        resultMap.put(
+                "size%s".formatted(defaultSizeNum),
+                s3Service.generatePreSignedUrl(s3Buckets.getCustomer(), picDtBucketPath, HttpMethod.PUT)
+        );
+
+        return resultMap;
+    }
+
+    /**
+     * 創建使用者圖片。
+     *
+     * @param ecUserId 使用者的 ID
+     * @param createRequest 創建使用者圖片的請求
+     * @throws AuthorizationException 如果登入使用者無權執行操作，則拋出授權異常
+     * @throws ResourceNotFoundException 如果找不到指定的圖片或圖片 dt，則拋出資源未找到異常
+     * @throws RequestValidationException 如果圖片未上傳成功，則拋出請求驗證異常
+     */
+    @Transactional
+    public void createEcUserPicture(Long ecUserId, CreateEcUserPictureRequest createRequest) {
+        Long pictureId = createRequest.getPictureId();
+        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getNum();
+
+        // 檢查使用者是否有權限執行操作
+        if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) throw new AuthorizationException("login user is not authorized for the operation");
+
+        //  檢查資料庫是否有指定圖片
+        PictureBaseVo pictureBaseVo = Optional.ofNullable(pictureBaseVoMapper.selectByPrimaryKey(pictureId))
+                .orElseThrow(() -> new ResourceNotFoundException("picture with id %s not found".formatted(pictureId)));
+
+        //  檢查資料庫是否有指定圖片 dt
+        PictureDtVo pictureDtVo = Optional.ofNullable(pictureDtVoMapper.selectByPictureIdAndSizeNum(pictureBaseVo.getPictureId(), defaultSizeNum))
+                .orElseThrow(() -> new ResourceNotFoundException("picture with size %s not found".formatted(defaultSizeNum)));
+
+        // 檢查圖片是否已上傳
+        try {
+           s3Service.getObjects(s3Buckets.getCustomer(), pictureBaseVo.getPictureStoragePath());
+        } catch (SdkClientException e) {
+            throw new RequestValidationException("picture with original size not uploaded");
+        }
+
+        // 檢查圖片 dt 是否已上傳
+        try {
+            s3Service.getObjects(s3Buckets.getCustomer(), pictureDtVo.getPictureDtStoragePath());
+        } catch (SdkClientException e) {
+            throw new RequestValidationException("picture with size %s not uploaded".formatted(defaultSizeNum));
+        }
+
+        // 更新圖片上傳狀態
+        PictureBaseVo updatePictureVo = PictureBaseVo
+                .builder()
+                .pictureId(pictureId)
+                .pictureIsUploaded(true)
+                .build();
+
+        pictureBaseVoMapper.updateByPrimaryKeySelective(updatePictureVo);
+
+        // 更新圖片詳細資訊上傳狀態
+        pictureDtVoMapper.setIsUploadedTrueByPictureId(pictureId);
+
+        // 檢查 ecUserId 是否已存在使用者圖片
+        EcUserPictureVo ecUserPictureVo = ecUserPictureVoMapper.selectByEcUserId(ecUserId);
+
+        if (ecUserPictureVo != null) {
+            // 若存在，更新房源圖片關係的圖片 id
+            ecUserPictureVo.setPictureId(pictureId);
+            ecUserPictureBaseVoMapper.updateByPrimaryKeySelective(ecUserPictureVo);
+        } else {
+            // 若不存在，新增房源圖片關係
+            EcUserPictureBaseVo newEcUserPictureBaseVo = EcUserPictureBaseVo
+                    .builder()
+                    .ecUserId(ecUserId)
+                    .pictureId(pictureId)
+                    .build();
+
+            ecUserPictureBaseVoMapper.insertSelective(newEcUserPictureBaseVo);
+        }
+    }
+
+    /**
+     * 根據使用者 ID 獲取使用者圖片下載 URL。
+     *
+     * @param ecUserId 使用者的 ID
+     * @return 返回包含圖片下載 URL 的 Map
+     * @throws AuthorizationException 如果登入使用者無權執行操作，則拋出授權異常
+     * @throws ResourceNotFoundException 如果找不到指定的使用者圖片，則拋出資源未找到異常
+     * @throws RequestValidationException 如果圖片未成功上傳，則拋出請求驗證異常
+     */
+    public Map<String, Object> getEcUserPictureDownloadUrl(Long ecUserId) {
+        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getNum();
+
+        // 檢驗登入使用者權限
+        if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) throw new AuthorizationException("login user is not authorized for the operation");
+
+        // 找尋使用者圖片
+        EcUserPictureBaseVo ecUserPictureBaseVo = Optional.ofNullable(ecUserPictureVoMapper.selectByEcUserId(ecUserId))
+                .orElseThrow(() -> new ResourceNotFoundException("ecUser picture with ecUserId %s not found".formatted(ecUserId)));
+
+        // 找出 pictureId 與 sizeNum 相符的所有圖片DT物件
+        PictureDtVo pictureDtVo = pictureDtVoMapper.selectByPictureIdAndSizeNum(ecUserPictureBaseVo.getPictureId(), defaultSizeNum);
+
+        if(!pictureDtVo.getPictureDtIsUploaded()) throw new RequestValidationException("picture with ecUserId %s not uploaded".formatted(ecUserId));
+
+        // 取得圖片DT物件的Url
+        String pictureDtStoragePath =  pictureDtVo.getPictureDtStoragePath();
+
+        // 將圖像的預簽名上傳 URL 加進回傳結果
+        return Map.of(
+                "sizeNum", defaultSizeNum,
+                "downloadUrl", s3Service.generatePreSignedUrl(
+                s3Buckets.getCustomer(),
+                pictureDtStoragePath,
+                HttpMethod.GET)
+        );
     }
 
     /**
@@ -325,7 +501,19 @@ public class PictureService {
      * @param extension 文件擴展名。
      * @return 返回生成的存儲桶路徑。
      */
-    private String generateBucketPath(Long propertyId, String size,  String extension) {
+    private String generatePropertyPictureBucketPath(Long propertyId, String size,  String extension) {
         return "properties/%s/%s/%s".formatted(propertyId, "size-" + size, UUID.randomUUID() + "." + extension);
+    }
+
+    /**
+     * 生成存儲桶路徑。
+     *
+     * @param ecUserId 使用者ID。
+     * @param size 尺寸標識。
+     * @param extension 文件擴展名。
+     * @return 返回生成的存儲桶路徑。
+     */
+    private String generateEcUserPictureBucketPath(Long ecUserId, String size,  String extension) {
+        return "ecUsers/%s/%s/%s".formatted(ecUserId, "size-" + size, UUID.randomUUID() + "." + extension);
     }
 }

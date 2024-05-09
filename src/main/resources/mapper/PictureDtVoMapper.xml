@@ -11,7 +11,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        picture_dt_id, picture_id, picture_dt_storage_path, picture_dt_size
+        picture_dt_id, picture_id, picture_dt_storage_path, picture_dt_size, picture_dt_is_uploaded
     </sql>
 
     <sql id="Join_Column_List">
@@ -50,7 +50,7 @@
         and picture_dt_size = #{sizeNum}
     </select>
 
-    <update id="setIsUploadedTrueByPropertyId" parameterType="java.lang.Long">
+    <update id="setIsUploadedTrueByPictureId" parameterType="java.lang.Long">
         update picture_dt
         <set>
             picture_dt_is_uploaded = true,

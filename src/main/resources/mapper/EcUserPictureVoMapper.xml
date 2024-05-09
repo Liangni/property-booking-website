@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.EcUserPictureVoMapper">
+    <resultMap id="BaseResultMap" type="com.penny.vo.EcUserPictureVo">
+        <id column="ec_user_picture_id" jdbcType="BIGINT" property="ecUserPictureId" />
+        <result column="ec_user_id" jdbcType="BIGINT" property="ecUserId" />
+        <result column="picture_id" jdbcType="BIGINT" property="pictureId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        ec_user_picture_id, ec_user_id, picture_id
+    </sql>
+    <select id="selectByEcUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ec_user_picture
+        where ec_user_id = #{ecUserId,jdbcType=BIGINT}
+    </select>
+</mapper>
