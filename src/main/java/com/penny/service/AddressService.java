@@ -5,10 +5,14 @@ import com.penny.dao.DistrictVoMapper;
 import com.penny.dao.base.AddressBaseVoMapper;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceDuplicateException;
+import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.CreateAddressRequest;
 import com.penny.vo.AddressVo;
+import com.penny.vo.base.AddressBaseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +35,6 @@ public class AddressService {
         Long districtId = request.getDistrictId();
         String street = request.getStreet();
 
-        // 檢查 districtId 和 street 是否為 null
-        if(street == null) throw new RequestValidationException("street is required");
-
-        if (districtId == null) throw new RequestValidationException("districtId is required");
-
         // 限制 district 只能是行政劃分層級 3 的行政區
         if (districtVoMapper.selectAdminAreaLevelByPrimaryKey(districtId) != 3L) {
             throw new RequestValidationException("only district at administrative area level 3 is valid. The given district is at level %s".formatted(districtId));
@@ -55,5 +54,17 @@ public class AddressService {
                         .street(street)
                         .build()
         );
+    }
+
+    /**
+     * 根據地址 ID 獲取地址基本資訊。
+     *
+     * @param addressId 地址的 ID
+     * @return 返回地址基本資訊
+     * @throws ResourceNotFoundException 如果找不到指定 ID 的地址，則拋出資源未找到異常
+     */
+    public AddressBaseVo getAddress(Long addressId) {
+        return Optional.ofNullable(addressVoMapper.selectWithDistrictByAddressId(addressId))
+                .orElseThrow(() -> new ResourceNotFoundException("address with id %s not found".formatted(addressId)));
     }
 }

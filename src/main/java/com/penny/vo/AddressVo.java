@@ -9,4 +9,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class AddressVo extends AddressBaseVo {
+    private String districtName;
 }

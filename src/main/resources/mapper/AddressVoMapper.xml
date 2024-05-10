@@ -16,4 +16,12 @@
         where admin_area_level_3_district_id = #{districtId,jdbcType=BIGINT}
         and street = #{street, jdbcType=VARCHAR}
     </select>
+
+    <select id="selectWithDistrictByAddressId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />, d.district_name
+        from address as a
+        left join district as d on d.district_id = a.admin_area_level_3_district_id
+        where address_id = #{addressId, jdbcType=BIGINT}
+    </select>
 </mapper>

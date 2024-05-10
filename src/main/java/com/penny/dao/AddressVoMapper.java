@@ -13,4 +13,6 @@ public interface AddressVoMapper {
      * @return 符合條件的地址
      */
     AddressVo selectByDistrictIdAndStreet(Long districtId, String street);
+
+    AddressVo selectWithDistrictByAddressId(Long addressId);
 }

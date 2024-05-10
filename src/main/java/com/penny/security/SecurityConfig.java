@@ -45,7 +45,8 @@ public class SecurityConfig {
                                     "api/v1/property-main-types/**",
                                     "api/v1/property-share-types/**",
                                     "api/v1/ec-users/{ecUserId}",
-                                    "api/v1/ec-users/{ecUserId}/picture-download-urls"
+                                    "api/v1/ec-users/{ecUserId}/picture-download-urls",
+                                    "api/v1/addresses/{addressId}"
                                 )
                                 .permitAll()
                                 // 對於任何其他請求：需要身份驗證
