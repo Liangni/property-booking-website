@@ -78,8 +78,8 @@ public class PublicPropertyController {
      * @param propertyId 房源ID
      * @return 包含房間列表的 ResponseEntity
      */
-    @GetMapping("{propertyId}/rooms")
-    public  ResponseEntity<List<BedroomVo>> getPropertyRooms(
+    @GetMapping("{propertyId}/bedrooms")
+    public  ResponseEntity<List<BedroomVo>> getPropertyBedrooms(
             @PathVariable("propertyId") Long propertyId
     ) {
         return ResponseEntity.ok(bedroomService.listPublishedPropertyBedrooms(propertyId));
