@@ -16,10 +16,6 @@ public class PropertyVo extends PropertyBaseVo {
 
     private String street;
 
-    private Integer adminAreaLevel3DistrictId;
-
-    private String adminAreaLevel3DistrictName;
-
     private Long districtId;
 
     private Long parentDistrictId;

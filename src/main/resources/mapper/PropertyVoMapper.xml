@@ -19,8 +19,6 @@
         <result column="host_id" jdbcType="BIGINT" property="hostId"/>
         <result column="street" jdbcType="VARCHAR" property="street"/>
         <result column="apartment_floor" jdbcType="VARCHAR" property="apartmentFloor"/>
-        <result column="admin_area_level_3_district_id" jdbcType="BIGINT" property="adminAreaLevel3DistrictId"/>
-        <result column="admin_area_level_3_district_name" jdbcType="BIGINT" property="adminAreaLevel3DistrictName"/>
         <result column="district_id" jdbcType="BIGINT" property="districtId"/>
         <result column="district_name" jdbcType="BIGINT" property="districtName"/>
         <result column="parent_district_id" jdbcType="BIGINT" property="parentDistrictId"/>
