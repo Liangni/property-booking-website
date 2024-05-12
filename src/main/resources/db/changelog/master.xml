@@ -30,6 +30,7 @@
     <include file="/db/scripts/schema/21_create_property_discount_table.sql"/>
     <include file="/db/scripts/schema/22_create_wish_property_table.sql"/>
     <include file="/db/scripts/schema/23_create_ec_user_picture_table.sql"/>
+    <include file="/db/scripts/schema/24_create_booking_calendar_table.sql"/>
 
     <!--  initial data-->
     <include file="/db/scripts/initial_data/01_insert_data_property_main_type.sql"/>
@@ -56,4 +57,5 @@
     <include file="/db/scripts/example_data/11_insert_example_booking_order.sql"/>
     <include file="/db/scripts/example_data/12_insert_example_property_discount.sql"/>
     <include file="/db/scripts/example_data/13_insert_example_bedroom.sql"/>
+    <include file="/db/scripts/example_data/14_insert_example_booking_calendar.sql"/>
 </databaseChangeLog>
