@@ -15,10 +15,12 @@
     <result column="host_id" jdbcType="BIGINT" property="hostId" />
     <result column="customer_id" jdbcType="BIGINT" property="customerId" />
     <result column="discount_id" jdbcType="BIGINT" property="discountId" />
+    <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     booking_order_id, checkin_date, checkout_date, guest_name, guest_email, guest_phone, 
-    arrival_time, guest_message, order_total, property_id, host_id, customer_id, discount_id
+    arrival_time, guest_message, order_total, property_id, host_id, customer_id, discount_id, 
+    payment_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -34,13 +36,13 @@
     insert into booking_order (checkin_date, checkout_date, guest_name, 
       guest_email, guest_phone, arrival_time, 
       guest_message, order_total, property_id, 
-      host_id, customer_id, discount_id
-      )
+      host_id, customer_id, discount_id, 
+      payment_status)
     values (#{checkinDate,jdbcType=DATE}, #{checkoutDate,jdbcType=DATE}, #{guestName,jdbcType=VARCHAR}, 
       #{guestEmail,jdbcType=VARCHAR}, #{guestPhone,jdbcType=VARCHAR}, #{arrivalTime,jdbcType=VARCHAR}, 
       #{guestMessage,jdbcType=VARCHAR}, #{orderTotal,jdbcType=NUMERIC}, #{propertyId,jdbcType=BIGINT}, 
-      #{hostId,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT}, #{discountId,jdbcType=BIGINT}
-      )
+      #{hostId,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT}, #{discountId,jdbcType=BIGINT}, 
+      #{paymentStatus,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="booking_order_id" keyProperty="bookingOrderId" parameterType="com.penny.vo.base.BookingOrderBaseVo" useGeneratedKeys="true">
     insert into booking_order
@@ -81,6 +83,9 @@
       <if test="discountId != null">
         discount_id,
       </if>
+      <if test="paymentStatus != null">
+        payment_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="checkinDate != null">
@@ -118,6 +123,9 @@
       </if>
       <if test="discountId != null">
         #{discountId,jdbcType=BIGINT},
+      </if>
+      <if test="paymentStatus != null">
+        #{paymentStatus,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -160,6 +168,9 @@
       <if test="discountId != null">
         discount_id = #{discountId,jdbcType=BIGINT},
       </if>
+      <if test="paymentStatus != null">
+        payment_status = #{paymentStatus,jdbcType=VARCHAR},
+      </if>
     </set>
     where booking_order_id = #{bookingOrderId,jdbcType=BIGINT}
   </update>
@@ -176,7 +187,8 @@
       property_id = #{propertyId,jdbcType=BIGINT},
       host_id = #{hostId,jdbcType=BIGINT},
       customer_id = #{customerId,jdbcType=BIGINT},
-      discount_id = #{discountId,jdbcType=BIGINT}
+      discount_id = #{discountId,jdbcType=BIGINT},
+      payment_status = #{paymentStatus,jdbcType=VARCHAR}
     where booking_order_id = #{bookingOrderId,jdbcType=BIGINT}
   </update>
 </mapper>

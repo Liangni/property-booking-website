@@ -15,10 +15,12 @@
         <result column="host_id" jdbcType="BIGINT" property="hostId" />
         <result column="customer_id" jdbcType="BIGINT" property="customerId" />
         <result column="discount_id" jdbcType="BIGINT" property="discountId" />
+        <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
     </resultMap>
     <sql id="Base_Column_List">
         booking_order_id, checkin_date, checkout_date, guest_name, guest_email, guest_phone,
-    arrival_time, guest_message, order_total, property_id, host_id, customer_id, discount_id
+    arrival_time, guest_message, order_total, property_id, host_id, customer_id, discount_id,
+    payment_status
     </sql>
     <select id="listByCustomerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select

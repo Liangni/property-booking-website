@@ -6,7 +6,7 @@ import com.penny.dao.EcUserPictureVoMapper;
 import com.penny.dao.PictureDtVoMapper;
 import com.penny.dao.PropertyPictureVoMapper;
 import com.penny.dao.base.*;
-import com.penny.enums.PictureDtSize;
+import com.penny.enums.PictureDtSizeEnum;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
@@ -28,7 +28,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PictureService {
 
-    private final PictureDtSize DEFAULT_EC_USER_PICTURE_DT_SIZE = PictureDtSize.SIZE_3;
+    private final PictureDtSizeEnum DEFAULT_EC_USER_PICTURE_DT_SIZE = PictureDtSizeEnum.SIZE_3;
     private final Set<String> PICTURE_EXTENSIONS = new HashSet<>(Set.of(
             "jpg", "jpeg", "png"
     ));
@@ -99,7 +99,7 @@ public class PictureService {
         );
 
         // 創建不同尺寸的圖片DT及其對應的預簽名URL
-        PictureDtSize.stream()
+        PictureDtSizeEnum.stream()
                 .forEach(size -> {
                     int pictureSizeNum = size.getNum();
                     String picDtBucketPath = generatePropertyPictureBucketPath(propertyId, String.valueOf(pictureSizeNum), lowerCaseFileExtension);

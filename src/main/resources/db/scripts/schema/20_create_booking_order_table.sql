@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS booking_order
     host_id BIGINT NOT NULL,
     customer_id BIGINT NOT NULL,
     discount_id BIGINT,
+    payment_status VARCHAR(50) DEFAULT 'pending',
     FOREIGN KEY (property_id) REFERENCES property(property_id),
     FOREIGN KEY (host_id) REFERENCES ec_user(ec_user_id),
     FOREIGN KEY (customer_id) REFERENCES ec_user(ec_user_id),

@@ -7,14 +7,14 @@ import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Getter
-public enum PictureDtSize {
+public enum PictureDtSizeEnum {
     SIZE_1(1),
     SIZE_2(2),
     SIZE_3(3);
 
     private final int num;
 
-    public static Stream<PictureDtSize> stream() {
-        return Stream.of(PictureDtSize.values());
+    public static Stream<PictureDtSizeEnum> stream() {
+        return Stream.of(PictureDtSizeEnum.values());
     }
 }

@@ -37,4 +37,6 @@ public class BookingOrderBaseVo {
     private Long customerId;
 
     private Long discountId;
+
+    private String paymentStatus;
 }

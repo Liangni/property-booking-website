@@ -5,9 +5,11 @@ import com.penny.dao.BookingOrderVoMapper;
 import com.penny.dao.DiscountVoMapper;
 import com.penny.dao.base.BookingOrderBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
+import com.penny.enums.BookingOrderPaymentStatusEnum;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
+import com.penny.request.ConfirmPaymentRequest;
 import com.penny.request.CreateBookingOrderRequest;
 import com.penny.util.DateHelper;
 import com.penny.vo.BookingAvailabilityVo;
@@ -158,6 +160,23 @@ public class BookingOrderService {
             return bookingOrderVoMapper.listByHostId(loginEcUserId);
         }
         return bookingOrderVoMapper.listByCustomerId(loginEcUserId);
+    }
+
+    /**
+     * 更新訂單狀態。
+     *
+     * @param confirmPaymentRequest 確認付款請求
+     */
+    public void updateBookingOrderStatus(ConfirmPaymentRequest confirmPaymentRequest) {
+        BookingOrderBaseVo bookingOrderBaseVo = bookingOrderBaseVoMapper.selectByPrimaryKey(confirmPaymentRequest.getBookingOrderId());
+
+        if (confirmPaymentRequest.getIsPaymentSuccessful()) {
+            bookingOrderBaseVo.setPaymentStatus(BookingOrderPaymentStatusEnum.SUCCEED.getDisplayName());
+        } else {
+            bookingOrderBaseVo.setPaymentStatus(BookingOrderPaymentStatusEnum.FAIL.getDisplayName());
+        }
+
+        bookingOrderBaseVoMapper.updateByPrimaryKey(bookingOrderBaseVo);
     }
 
     /**
