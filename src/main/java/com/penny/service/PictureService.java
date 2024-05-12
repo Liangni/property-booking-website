@@ -101,7 +101,7 @@ public class PictureService {
         // 創建不同尺寸的圖片DT及其對應的預簽名URL
         PictureDtSizeEnum.stream()
                 .forEach(size -> {
-                    int pictureSizeNum = size.getNum();
+                    int pictureSizeNum = size.getDisplayNum();
                     String picDtBucketPath = generatePropertyPictureBucketPath(propertyId, String.valueOf(pictureSizeNum), lowerCaseFileExtension);
 
                     // 創建圖片 DT
@@ -265,7 +265,7 @@ public class PictureService {
      */
     @Transactional
     public Map<String, Object> listEcUserPictureUploadUrl(Long ecUserId, String fileExtension) {
-        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getNum();
+        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getDisplayNum();
 
         // 檢驗參數
         if (!isPictureFileExtension(fileExtension)) throw new RequestValidationException("fileExtension can only be %s".formatted(PICTURE_EXTENSIONS.toString()));
@@ -328,7 +328,7 @@ public class PictureService {
     @Transactional
     public void createEcUserPicture(Long ecUserId, CreateEcUserPictureRequest createRequest) {
         Long pictureId = createRequest.getPictureId();
-        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getNum();
+        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getDisplayNum();
 
         // 檢查使用者是否有權限執行操作
         if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) throw new AuthorizationException("login user is not authorized for the operation");
@@ -396,7 +396,7 @@ public class PictureService {
      * @throws RequestValidationException 如果圖片未成功上傳，則拋出請求驗證異常
      */
     public Map<String, Object> getEcUserPictureDownloadUrl(Long ecUserId) {
-        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getNum();
+        int defaultSizeNum = DEFAULT_EC_USER_PICTURE_DT_SIZE.getDisplayNum();
 
         // 找尋使用者圖片
         EcUserPictureBaseVo ecUserPictureBaseVo = Optional.ofNullable(ecUserPictureVoMapper.selectByEcUserId(ecUserId))

@@ -12,7 +12,7 @@ public enum PictureDtSizeEnum {
     SIZE_2(2),
     SIZE_3(3);
 
-    private final int num;
+    private final int displayNum;
 
     public static Stream<PictureDtSizeEnum> stream() {
         return Stream.of(PictureDtSizeEnum.values());
