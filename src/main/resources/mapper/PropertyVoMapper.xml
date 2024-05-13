@@ -194,35 +194,26 @@
     </select>
 
     <select id="listByStartAndEndAvailableDate" parameterType="com.penny.request.SearchPropertyRequestDTO" resultMap="BaseResultMap">
-        with property_availability as (
-        select
-            property_id
-        from
-            booking_availability
-        where
-            booking_availability_date between #{startAvailableDate} and #{endAvailableDate}
-        group by
-            property_id
-        having
-            sum(case when booking_availability_status = 'booked' then 1 else 0 end) = 0
-        ),
-        join_district as (
+        with join_district as (
         <include refid="join_district_table"/>
         )
         select
-            pr.*,
-            ad.*,
-            jd.*,
-            #{startAvailableDate} as start_available_date,
-            #{endAvailableDate} as end_available_date
+        pr.*,
+        ad.*,
+        jd.*,
+        #{startAvailableDate} as start_available_date,
+        #{endAvailableDate} as end_available_date
         from
-            property as pr
-            left join
-            address as ad on pr.address_id = ad.address_id
-            left join
-            join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
+        property as pr
+        left join
+        address as ad on pr.address_id = ad.address_id
+        left join
+        join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
+        left join
+        booking_calendar as b on pr.property_id = b.property_id
+        and b.booking_date between #{startAvailableDate} and  #{endAvailableDate}
         <where>
-            pr.property_id in (select property_id from property_availability)
+            b.booking_calendar_id is null
             <if test="numOfGuests != null">
                 and pr.max_num_of_guests >= #{numOfGuests}
             </if>

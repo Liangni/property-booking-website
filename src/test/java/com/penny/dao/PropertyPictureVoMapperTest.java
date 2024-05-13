@@ -100,7 +100,7 @@ public class PropertyPictureVoMapperTest {
             String picUrl = "www.fake.image"+ i +".com";
             PictureBaseVo picture = PictureBaseVo
                     .builder()
-                    .pictureUrl(picUrl)
+                    .pictureStoragePath(picUrl)
                     .build();
             pictureBaseVoMapper.insertSelective(picture);
             long picId = picture.getPictureId();
@@ -110,7 +110,7 @@ public class PropertyPictureVoMapperTest {
                     .builder()
                     .propertyId(propertyIdList.get(i - 1))
                     .pictureId(picId)
-                    .propertyPictureOrder(1L)
+                    .propertyPictureOrder(1)
                     .build();
             propertyPictureBaseVoMapper.insertSelective(propertyPic);
         }

@@ -19,8 +19,8 @@ public class SearchPropertyRequestDTOMapper implements Function<SearchPropertyRe
         return SearchPropertyRequestDTO
                 .builder()
                 .numOfAvailableDays(searchRequest.getNumOfAvailableDays())
-                .startAvailableDate(dateHelper.parseDateString(searchRequest.getEndAvailableDateString()))
-                .startAvailableDate(dateHelper.parseDateString(searchRequest.getEndAvailableDateString()))
+                .startAvailableDate(dateHelper.parseDateString(searchRequest.getStartAvailableDateString()))
+                .endAvailableDate(dateHelper.parseDateString(searchRequest.getEndAvailableDateString()))
                 .numOfGuests(searchRequest.getNumOfGuests())
                 .numOfBedrooms(searchRequest.getNumOfBedrooms())
                 .numOfBeds(searchRequest.getNumOfBeds())

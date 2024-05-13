@@ -58,7 +58,7 @@ public class PictureDtVoMapperTest {
         // 循環創建三個圖片
         for (int i = 1; i <= numOfPictureToInsert; i++) {
             // 創建圖片並插入到資料庫中
-            PictureBaseVo picture = PictureBaseVo.builder().pictureUrl("www.test.image" + i + ".com").build();
+            PictureBaseVo picture = PictureBaseVo.builder().pictureStoragePath("www.test.image" + i + ".com").build();
             pictureBaseVoMapper.insertSelective(picture);
             long pictureId = picture.getPictureId();
             pictureIdList.add(picture.getPictureId()); // 將圖片ID添加到列表中
@@ -66,7 +66,7 @@ public class PictureDtVoMapperTest {
             // 創建圖片詳細資訊並插入到資料庫中
             PictureDtBaseVo pictureDt = null;
             for (int size : sizeList) {
-                pictureDt = PictureDtBaseVo.builder().pictureId(pictureId).pictureDtUrl("www.test.image" + i + "." + size + ".com").pictureDtSize(size).build();
+                pictureDt = PictureDtBaseVo.builder().pictureId(pictureId).pictureDtStoragePath("www.test.image" + i + "." + size + ".com").pictureDtSize(size).build();
 
                 pictureDtBaseVoMapper.insertSelective(pictureDt);
             }
@@ -136,7 +136,7 @@ public class PictureDtVoMapperTest {
 
         // 在房源圖片表(property_picture) 將三張圖片與一個房源連結
         for (long pictureId : pictureIdList) {
-            PropertyPictureBaseVo propertyPicture = PropertyPictureBaseVo.builder().propertyId(propertyId).pictureId(pictureId).propertyPictureOrder(1L).build();
+            PropertyPictureBaseVo propertyPicture = PropertyPictureBaseVo.builder().propertyId(propertyId).pictureId(pictureId).propertyPictureOrder(1).build();
 
             propertyPictureBaseVoMapper.insertSelective(propertyPicture);
         }

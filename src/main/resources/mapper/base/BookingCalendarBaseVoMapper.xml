@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.penny.dao.base.BookingCalendarBaseVoMapper">
+  <resultMap id="BaseResultMap" type="com.penny.vo.base.BookingCalendarBaseVo">
+    <id column="booking_calendar_id" jdbcType="BIGINT" property="bookingCalendarId" />
+    <result column="booking_date" jdbcType="DATE" property="bookingDate" />
+    <result column="property_id" jdbcType="BIGINT" property="propertyId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    booking_calendar_id, booking_date, property_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from booking_calendar
+    where booking_calendar_id = #{bookingCalendarId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from booking_calendar
+    where booking_calendar_id = #{bookingCalendarId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="booking_calendar_id" keyProperty="bookingCalendarId" parameterType="com.penny.vo.base.BookingCalendarBaseVo" useGeneratedKeys="true">
+    insert into booking_calendar (booking_date, property_id)
+    values (#{bookingDate,jdbcType=DATE}, #{propertyId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="booking_calendar_id" keyProperty="bookingCalendarId" parameterType="com.penny.vo.base.BookingCalendarBaseVo" useGeneratedKeys="true">
+    insert into booking_calendar
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookingDate != null">
+        booking_date,
+      </if>
+      <if test="propertyId != null">
+        property_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookingDate != null">
+        #{bookingDate,jdbcType=DATE},
+      </if>
+      <if test="propertyId != null">
+        #{propertyId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.penny.vo.base.BookingCalendarBaseVo">
+    update booking_calendar
+    <set>
+      <if test="bookingDate != null">
+        booking_date = #{bookingDate,jdbcType=DATE},
+      </if>
+      <if test="propertyId != null">
+        property_id = #{propertyId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where booking_calendar_id = #{bookingCalendarId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.penny.vo.base.BookingCalendarBaseVo">
+    update booking_calendar
+    set booking_date = #{bookingDate,jdbcType=DATE},
+      property_id = #{propertyId,jdbcType=BIGINT}
+    where booking_calendar_id = #{bookingCalendarId,jdbcType=BIGINT}
+  </update>
+</mapper>

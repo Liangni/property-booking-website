@@ -31,7 +31,7 @@ public class PictureVoMapperTest {
         for (int i = 0; i < 3; i++) {
             PictureBaseVo picture = PictureVo
                     .builder()
-                    .pictureUrl("www.test.image" + i + ".com")
+                    .pictureStoragePath("www.test.image" + i + ".com")
                     .build();
 
             pictureBaseVoMapper.insertSelective(picture);

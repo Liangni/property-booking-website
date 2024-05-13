@@ -1,6 +1,5 @@
 package com.penny.dao;
 
-import com.penny.request.SearchPropertyRequest;
 import com.penny.request.SearchPropertyRequestDTO;
 import com.penny.vo.PropertyVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -33,6 +32,11 @@ public interface PropertyVoMapper {
      */
     List<PropertyVo> listByPropertyAttributes(SearchPropertyRequestDTO searchRequestDTO);
 
-
+    /**
+     * 根據出租使用者 ID 取得房源列表。
+     *
+     * @param ecUserId 出租使用者 ID
+     * @return 房源物件列表
+     */
     List<PropertyVo> listByHostId(Long ecUserId);
 }

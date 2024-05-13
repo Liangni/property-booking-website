@@ -159,7 +159,7 @@ public class SearchPropertyRequestDTOMapperTest {
      */
     @Test
     @DisplayName("用連續可訂天數來搜尋房源")
-    void listByNumOfAvailableDaysTest1(){
+    void listByNumOfAvailableDaysTest(){
         SearchPropertyRequest searchPropertyRequest = SearchPropertyRequest
                 .builder()
                 .numOfAvailableDays(NUM_OF_AVAILABLE_DAYS)
@@ -177,7 +177,7 @@ public class SearchPropertyRequestDTOMapperTest {
             Assertions.assertNotNull(property.getEndAvailableDate());
             Assertions.assertNotNull(property.getPropertyId());
             Assertions.assertNotNull(property.getStreet());
-            Assertions.assertNotNull(property.getAdminAreaLevel3DistrictId());
+            Assertions.assertNotNull(property.getDistrictId());
         }
 
         // 從返回的列表中提取房源 ID
@@ -195,7 +195,7 @@ public class SearchPropertyRequestDTOMapperTest {
      */
     @Test
     @DisplayName("用開始和結束可預訂日來搜尋房源")
-    void listByStartAndEndAvailableDayTest1(){
+    void listByStartAndEndAvailableDayTest(){
 
         LocalDate currentDate = LocalDate.now();
         LocalDate startAvailableDate = currentDate.plusDays(FIRST_AVAILABLE_DAY_FROM_NOW);
@@ -207,7 +207,7 @@ public class SearchPropertyRequestDTOMapperTest {
                 .startAvailableDate(startAvailableDate)
                 .endAvailableDate(endAvailableDate)
                 .build();
-        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDate(searchRequestDTO);
+        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDate1(searchRequestDTO);
 
         // 確認返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());
@@ -237,7 +237,7 @@ public class SearchPropertyRequestDTOMapperTest {
      */
     @Test
     @DisplayName("用房屋屬性來搜尋房源")
-    void listByPropertyAttributeTest1(){
+    void listByPropertyAttributeTest(){
         // 準備測試資料
         // 插入測試的設施類型和設施
         Long amenityTypeId = insertAmenityType("test amenity type");
