@@ -1,5 +1,6 @@
 package com.penny.controller;
 
+import com.penny.dao.BookingCalendarVoMapper;
 import com.penny.request.SearchPropertyRequest;
 import com.penny.service.*;
 import com.penny.vo.*;
@@ -22,7 +23,7 @@ public class PublicPropertyController {
 
         private final AmenityService amenityService;
 
-        private final BookingAvailabilityService bookingAvailabilityService;
+        private final BookingCalendarService bookingCalendarService;
 
         private final PropertyReviewService propertyReviewService;
 
@@ -102,13 +103,13 @@ public class PublicPropertyController {
      * 根據房源ID獲取預定日期。
      *
      * @param propertyId 房源ID
-     * @return ResponseEntity<List<BookingAvailabilityVo>> 包含房源預定日期的 ResponseEntity
+     * @return ResponseEntity<List<BookingCalendarVo>> 包含房源預定日期的 ResponseEntity
      */
-    @GetMapping("{propertyId}/booking-availability")
-    public ResponseEntity<List<BookingAvailabilityVo>> getPropertyBookingAvailability(
+    @GetMapping("{propertyId}/booking-calendars")
+    public ResponseEntity<List<BookingCalendarVo>> getPropertyBookingCalendars(
             @PathVariable("propertyId") Long propertyId
     ) {
-        return ResponseEntity.ok(bookingAvailabilityService.listPublishedPropertyBookingAvailability(propertyId));
+        return ResponseEntity.ok(bookingCalendarService.listPublishedPropertyBookingAvailability(propertyId));
     }
 
     /**

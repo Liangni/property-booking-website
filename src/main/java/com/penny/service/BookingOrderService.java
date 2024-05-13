@@ -1,8 +1,9 @@
 package com.penny.service;
 
-import com.penny.dao.BookingAvailabilityVoMapper;
+import com.penny.dao.BookingCalendarVoMapper;
 import com.penny.dao.BookingOrderVoMapper;
 import com.penny.dao.DiscountVoMapper;
+import com.penny.dao.base.BookingCalendarBaseVoMapper;
 import com.penny.dao.base.BookingOrderBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.enums.BookingOrderPaymentStatusEnum;
@@ -12,9 +13,10 @@ import com.penny.exception.AuthorizationException;
 import com.penny.request.ConfirmPaymentRequest;
 import com.penny.request.CreateBookingOrderRequest;
 import com.penny.util.DateHelper;
-import com.penny.vo.BookingAvailabilityVo;
+import com.penny.vo.BookingCalendarVo;
 import com.penny.vo.BookingOrderVo;
 import com.penny.vo.DiscountVo;
+import com.penny.vo.base.BookingCalendarBaseVo;
 import com.penny.vo.base.BookingOrderBaseVo;
 import com.penny.vo.base.PropertyBaseVo;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +26,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BookingOrderService {
     private final PropertyBaseVoMapper propertyBaseVoMapper;
 
-    private final BookingAvailabilityVoMapper bookingAvailabilityVoMapper;
+    private final BookingCalendarBaseVoMapper bookingCalendarBaseVoMapper;
+
+    private final BookingCalendarVoMapper bookingCalendarVoMapper;
 
     private final DiscountVoMapper discountVoMapper;
 
@@ -80,41 +83,31 @@ public class BookingOrderService {
         bookingOrderBaseVo.setHostId(propertyBaseVo.getHostId());
         bookingOrderBaseVo.setCustomerId(ecUserService.getLoginUser().getEcUserId());
 
-        // 檢查資料庫中的預訂日期是否足夠覆蓋指定日期範圍
-        List<BookingAvailabilityVo> bookingAvailabilityVoList = bookingAvailabilityVoMapper.listByStartAndEndDate(propertyId, checkinDate, checkoutDate);
-        if (bookingAvailabilityVoList.size() < dateHelper.countDayDifference(checkinDate, checkoutDate)) {
-            // 生成指定日期範圍內的連續日期列表
-            List<LocalDate> bookingLocalDateList = dateHelper.generateDateRange(checkinDate, checkoutDate);
-            // 找出資料庫缺少的預訂日期
-            List<LocalDate> dateMissingFromDb = dateHelper.listMissingBookingDate(bookingLocalDateList, bookingAvailabilityVoList);
-            // 拋出異常，指示找不到足夠日期進行預訂
-            throw new ResourceNotFoundException("%s are not available for booking".formatted(dateMissingFromDb));
-        }
-
-        int weekendCount = 0;
-        List<LocalDate> bookedDateList = new ArrayList<>();
-        for(BookingAvailabilityVo bookingDate : bookingAvailabilityVoList) {
-            // 檢查日期可預訂性
-            boolean isBooked = bookingDate.getBookingAvailabilityStatus().equals("booked");
-            if (isBooked) bookedDateList.add(bookingDate.getBookingAvailabilityDate());
-
-            // 計算假日數量
-            LocalDate currentDate = bookingDate.getBookingAvailabilityDate();
-            if (dateHelper.isWeekend(currentDate)) weekendCount ++;
-        }
-
-        // 若 checkin 至 checkout 期間有日期是已預訂，則拋出錯誤
-        if (!bookedDateList.isEmpty()) {
-            throw new RequestValidationException("date range %s has been booked".formatted(bookedDateList));
+        // 檢查指定日期區間是否已被預定
+        List<BookingCalendarVo> bookingCalendarVoList = bookingCalendarVoMapper.listByStartAndEndDate(propertyId, checkinDate, checkoutDate);
+        if (!bookingCalendarVoList.isEmpty()) {
+            throw new RequestValidationException("date range %s has been booked".formatted(
+                    bookingCalendarVoList.stream().map(BookingCalendarVo::getBookingDate).toList())
+            );
         }
 
         // 依照平日假日價格計算訂房費用
-        int numOfBookingDates = bookingAvailabilityVoList.size();
-        int weekdayCount = numOfBookingDates - weekendCount;
+        List<LocalDate> requestBookingDateList = dateHelper.generateDateRange(checkinDate, checkoutDate);
+        int weekendCount = 0;
+        int weekdayCount = 0;
+        for(LocalDate bookingDate : requestBookingDateList) {
+            if (dateHelper.isWeekend(bookingDate)) {
+                weekendCount ++;
+                continue;
+            }
+            weekdayCount ++;
+        }
+
         int totalBeforeDiscount = weekendCount * propertyBaseVo.getPriceOnWeekends()
                 + weekdayCount * propertyBaseVo.getPriceOnWeekdays();
 
         // 找出適用的折扣，計算折扣後的費用
+        int numOfBookingDates = requestBookingDateList.size();
         DiscountVo applicableDiscount = findApplicableDiscount(propertyId, numOfBookingDates);
         double discountValue = 0;
         if (applicableDiscount != null) {
@@ -124,18 +117,16 @@ public class BookingOrderService {
         BigDecimal totalAfterDiscount = BigDecimal.valueOf(Math.ceil(totalBeforeDiscount - discountValue));
         bookingOrderBaseVo.setOrderTotal(totalAfterDiscount);
 
-        // 提取 bookingAvailabilityVoList 中每個物件的 bookingAvailabilityId 到新的列表中
-        List<Long> bookingAvailabilityIdList = bookingAvailabilityVoList
-                .stream()
-                .map(BookingAvailabilityVo::getBookingAvailabilityId)
-                .collect(Collectors.toList());
+        // 新增預定日期到預定日曆表
+        for(LocalDate bookingDate : requestBookingDateList) {
+            BookingCalendarBaseVo bookingCalendarBaseVo = BookingCalendarBaseVo
+                    .builder()
+                    .bookingDate(bookingDate)
+                    .propertyId(propertyId)
+                    .build();
 
-        // 更新 bookingAvailabilityIdList 中對應的預定日期的狀態
-        int updateCount = bookingAvailabilityVoMapper.setStatusToBookingByPrimaryKeyList(bookingAvailabilityIdList);
-
-        // 檢查更新的數量是否與預期的數量相同，如果不同則拋出異常
-        if (updateCount != bookingAvailabilityVoList.size()) {
-            throw new RequestValidationException("The specified dates have been booked");
+            int insertCount = bookingCalendarBaseVoMapper.insertSelective(bookingCalendarBaseVo);
+            if (insertCount != 1) throw new RequestValidationException("The specified dates have been booked");
         }
 
         // 儲存訂單

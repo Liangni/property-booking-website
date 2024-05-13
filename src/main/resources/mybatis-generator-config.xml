@@ -124,15 +124,6 @@
             <generatedKey column="property_id" sqlStatement="JDBC" identity="true"/>
         </table>
 
-        <table schema="" tableName="booking_availability"
-               domainObjectName="BookingAvailabilityBaseVo" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--是否使用實際列名,默認為false-->
-            <!--<property name="useActualColumnNames" value="false" />-->
-            <generatedKey column="booking_availability_id" sqlStatement="JDBC" identity="true"/>
-        </table>
-
         <table schema="" tableName="picture"
                domainObjectName="PictureBaseVo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"

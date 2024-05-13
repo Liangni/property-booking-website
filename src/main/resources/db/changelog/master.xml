@@ -24,13 +24,12 @@
     <include file="/db/scripts/schema/15_create_picture_dt_table.sql"/>
     <include file="/db/scripts/schema/16_create_property_picture_table.sql"/>
     <include file="/db/scripts/schema/17_create_property_review_table.sql"/>
-    <include file="/db/scripts/schema/18_create_booking_availability_table.sql"/>
+    <include file="/db/scripts/schema/18_create_booking_calendar_table.sql"/>
     <include file="/db/scripts/schema/19_create_discount_table.sql"/>
     <include file="/db/scripts/schema/20_create_booking_order_table.sql"/>
     <include file="/db/scripts/schema/21_create_property_discount_table.sql"/>
     <include file="/db/scripts/schema/22_create_wish_property_table.sql"/>
     <include file="/db/scripts/schema/23_create_ec_user_picture_table.sql"/>
-    <include file="/db/scripts/schema/24_create_booking_calendar_table.sql"/>
 
     <!--  initial data-->
     <include file="/db/scripts/initial_data/01_insert_data_property_main_type.sql"/>
@@ -47,7 +46,7 @@
     <include file="/db/scripts/example_data/01_insert_example_ec_user.sql"/>
     <include file="/db/scripts/example_data/02_insert_example_address.sql"/>
     <include file="/db/scripts/example_data/03_insert_example_property.sql"/>
-    <include file="/db/scripts/example_data/04_insert_example_booking_availability.sql"/>
+    <include file="/db/scripts/example_data/04_insert_example_booking_calendar.sql"/>
     <include file="/db/scripts/example_data/05_insert_example_picture.sql"/>
     <include file="/db/scripts/example_data/06_insert_example_picture_dt.sql"/>
     <include file="/db/scripts/example_data/07_insert_example_property_picture.sql"/>
@@ -57,5 +56,4 @@
     <include file="/db/scripts/example_data/11_insert_example_booking_order.sql"/>
     <include file="/db/scripts/example_data/12_insert_example_property_discount.sql"/>
     <include file="/db/scripts/example_data/13_insert_example_bedroom.sql"/>
-    <include file="/db/scripts/example_data/14_insert_example_booking_calendar.sql"/>
 </databaseChangeLog>

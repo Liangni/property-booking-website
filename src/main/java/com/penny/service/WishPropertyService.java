@@ -1,6 +1,6 @@
 package com.penny.service;
 
-import com.penny.dao.BookingAvailabilityVoMapper;
+import com.penny.dao.BookingCalendarVoMapper;
 import com.penny.dao.WishPropertyVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.WishPropertyBaseVoMapper;
@@ -10,7 +10,7 @@ import com.penny.exception.ResourceDuplicateException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.CreateWishPropertyRequest;
 import com.penny.util.DateHelper;
-import com.penny.vo.BookingAvailabilityVo;
+import com.penny.vo.BookingCalendarVo;
 import com.penny.vo.WishPropertyVo;
 import com.penny.vo.base.PropertyBaseVo;
 import com.penny.vo.base.WishPropertyBaseVo;
@@ -32,7 +32,7 @@ public class WishPropertyService {
 
     private final WishPropertyVoMapper wishPropertyVoMapper;
 
-    private final BookingAvailabilityVoMapper bookingAvailabilityVoMapper;
+    private final BookingCalendarVoMapper bookingCalendarVoMapper;
 
     private final DateHelper dateHelper;
 
@@ -63,23 +63,12 @@ public class WishPropertyService {
         WishPropertyVo existingWishPropertyVo = wishPropertyVoMapper.selectByPropertyId(propertyId);
         if (existingWishPropertyVo != null) throw new ResourceDuplicateException("wish property with propertyId %s already exists".formatted(propertyId));
 
-
-        // 檢查預定時間是否有效
-        // 檢查資料庫中的預訂日期是否足夠覆蓋指定日期範圍
-        List<BookingAvailabilityVo> bookingAvailabilityVoList = bookingAvailabilityVoMapper.listByStartAndEndDate(propertyId, checkinDate, checkoutDate);
-        if (bookingAvailabilityVoList.size() < dateHelper.countDayDifference(checkinDate, checkoutDate)) {
-            // 生成指定日期範圍內的連續日期列表
-            List<LocalDate> bookingLocalDateList = dateHelper.generateDateRange(checkinDate, checkoutDate);
-            // 找出資料庫缺少的預訂日期
-            List<LocalDate> dateMissingFromDb = dateHelper.listMissingBookingDate(bookingLocalDateList, bookingAvailabilityVoList);
-            // 拋出異常，指示找不到足夠日期進行預訂
-            throw new ResourceNotFoundException("%s are not available for booking".formatted(dateMissingFromDb));
-        }
-
-        for(BookingAvailabilityVo bookingDate : bookingAvailabilityVoList) {
-            // 檢查日期可預訂性
-            boolean isBooked = bookingDate.getBookingAvailabilityStatus().equals("booked");
-            if (isBooked) throw new RequestValidationException("date range %s has been booked");
+        // 檢查日期是否可預訂
+        List<BookingCalendarVo> bookingDateList = bookingCalendarVoMapper.listByStartAndEndDate(propertyId, checkinDate, checkoutDate);
+        if (!bookingDateList.isEmpty()) {
+            throw new RequestValidationException("date range %s has been booked".formatted(
+                    bookingDateList.stream().map(BookingCalendarVo::getBookingDate).toList())
+            );
         }
 
         WishPropertyBaseVo wishPropertyBaseVo = WishPropertyBaseVo
