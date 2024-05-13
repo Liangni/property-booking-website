@@ -49,7 +49,7 @@ WITH third_week_dates AS (
 )
 
 -- 更新預訂可預訂性表
--- 將房源3未來第三周的日期標記為「可預訂」
+-- 將房源 3 未來第三周的日期標記為「可預訂」
 DELETE FROM booking_calendar
 WHERE booking_date >= (SELECT min(date) FROM third_week_dates)
   AND booking_date <= (SELECT max(date) FROM third_week_dates)

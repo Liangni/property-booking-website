@@ -33,49 +33,6 @@
     average_rating, property_main_sub_type_id, property_share_type_id, address_id, host_id
     </sql>
 
-    <sql id="available_periods_table">
-        -- 對 booking_availability 表進行查詢，選擇房源ID、可預訂日期以及計算其所在的連續可預定天數（consecutive_available_days）
-        select
-            property_id,
-            booking_availability_date,
-            count(*) over (partition by property_id, available_period_group) as consecutive_available_days
-        from (
-                 -- 子查詢：計算每個房源的連續可預定天數分組
-                 -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
-                 -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
-             select
-                 property_id,
-                 booking_availability_date,
-                 row_number() over (partition by property_id order by booking_availability_date) as nth_available_day,
-                 booking_availability_date - row_number() over (partition by property_id, booking_availability_status order by booking_availability_date) * interval '1 DAY' as available_period_group
-             from
-                 booking_availability
-             where
-                 booking_availability_status = 'available'
-         ) as subquery
-    </sql>
-
-    <sql id="property_availability_table">
-        select
-            property_id
-        from
-            booking_availability
-        where
-            booking_availability_date between
-                <choose>
-                    <when test="filterMap != null">
-                        #{filterMap.startAvailableDate} and #{filterMap.endAvailableDate}
-                    </when>
-                    <otherwise>
-                        #{startAvailableDate} and #{endAvailableDate}
-                    </otherwise>
-                </choose>
-        group by
-            property_id
-        having
-            sum(case when booking_availability_status = 'booked' then 1 else 0 end) = 0
-    </sql>
-
     <sql id="join_district_table">
         select
             d1.district_id   as parent_district_id,
@@ -89,45 +46,72 @@
     </sql>
 
     <select id="listByNumOfAvailableDays" parameterType="com.penny.request.SearchPropertyRequestDTO" resultMap="BaseResultMap">
-        with available_periods as (
-        -- 對 booking_availability 表進行查詢，選擇房源ID、可預訂日期以及計算其所在的連續可預定天數（consecutive_available_days）
-        select
-        property_id,
-        booking_availability_date,
-        count(*) over (partition by property_id, available_period_group) as consecutive_available_days
+        <bind name="numOfAvailableDaysString" value="numOfAvailableDays + ' day'" />
+        with calendar as (
+            select generate_series(
+                CURRENT_DATE,
+                CURRENT_DATE + interval '1 year' - interval '1 day',
+                interval '1 day'
+            ) as date
+        ),
+        property_calendar as (
+            select
+                p.property_id,
+                c.date
+            from
+                property p
+                CROSS JOIN
+                calendar c
+        ),
+        booking_calendar_with_status as (
+            select
+                pc.property_id,
+                pc.date,
+                case when bc.booking_calendar_id IS NOT NULL THEN true ELSE false END as is_booked
+            from
+                property_calendar pc
+                left join
+                booking_calendar bc ON pc.property_id = bc.property_id AND pc.date = bc.booking_date
+        )
+        ,available_periods as (
+            -- 對 booking_calendar_with_status 表進行查詢，選擇房源ID、可預訂日期以及計算其所在的連續可預定天數（consecutive_available_days）
+            select
+            property_id,
+            date,
+            count(*) over (partition by property_id, available_period_group) as consecutive_available_days
         from
-        (
-        -- 子查詢：計算每個房源的連續可預定天數分組
-        -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
-        -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
-        select
-        property_id,
-        booking_availability_date,
-        row_number() over (partition by property_id order by booking_availability_date) as nth_available_day,
-        booking_availability_date - row_number() over (partition by property_id, booking_availability_status order by booking_availability_date) * interval '1 DAY' as available_period_group
-        from
-        booking_availability
-        where
-        booking_availability_status = 'available'
-        ) as subquery
+            (
+                -- 子查詢：計算每個房源的連續可預定天數分組
+                -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
+                -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
+                select
+                    property_id,
+                    date,
+                    row_number() over (partition by property_id order by date) as nth_available_day,
+                    date - row_number() over (partition by property_id, is_booked order by date) * interval '1 DAY' as available_period_group
+                from
+                    booking_calendar_with_status
+                where
+                    is_booked = false
+            ) as subquery
         ),
         join_district as (
-        <include refid="join_district_table"/>
+            <include refid="join_district_table"/>
         )
         select
-        pr.*,
-        ad.*,
-        jd.*,
-        min(ap.booking_availability_date) as start_available_date,
-        min(ap.booking_availability_date) + #{numOfAvailableDays} as end_available_date
+            pr.*,
+            ad.*,
+            jd.*,
+            min(ap.date) as start_available_date,
+            min(ap.date) + interval '${numOfAvailableDays} day' as end_available_date
         from
-        property as pr
-        inner join
-        available_periods as ap on ap.property_id = pr.property_id
-        left join
-        address as ad on pr.address_id = ad.address_id
-        left join
-        join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
+            property as pr
+            inner join
+            available_periods as ap on ap.property_id = pr.property_id
+            left join
+            address as ad on pr.address_id = ad.address_id
+            left join
+            join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
         <where>
             ap.consecutive_available_days >= #{numOfAvailableDays}
             <if test="numOfGuests != null">
@@ -189,8 +173,6 @@
         jd.parent_district_name,
         jd.district_id,
         jd.district_name
-        having
-        min(ap.booking_availability_date) &lt; (current_date + interval '2 years');
     </select>
 
     <select id="listByStartAndEndAvailableDate" parameterType="com.penny.request.SearchPropertyRequestDTO" resultMap="BaseResultMap">

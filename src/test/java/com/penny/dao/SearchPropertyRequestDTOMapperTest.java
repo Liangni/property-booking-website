@@ -207,7 +207,7 @@ public class SearchPropertyRequestDTOMapperTest {
                 .startAvailableDate(startAvailableDate)
                 .endAvailableDate(endAvailableDate)
                 .build();
-        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDate1(searchRequestDTO);
+        List<PropertyVo> propertyList = propertyVoMapper.listByStartAndEndAvailableDate(searchRequestDTO);
 
         // 確認返回的房源列表不為空，並且包含了指定屬性的房源
         Assertions.assertNotEquals(0, propertyList.size());

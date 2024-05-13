@@ -120,7 +120,7 @@ public class PropertyService {
                 .hostId(ecUserService.getLoginUser().getEcUserId())
                 .build();
 
-        // 檢查必填欄位是否為空，如果有空欄位且房源已發佈，則拋出 RequestValidationException 異常
+        // 如果有空欄位且房源已發佈，則拋出 RequestValidationException 異常
         List<String> listOfFieldWithNullValue = new ArrayList<>();
         if (propertyBaseVo.getPropertyTitle() == null) listOfFieldWithNullValue.add("propertyTitle");
         if (propertyBaseVo.getMaxNumOfGuests() == null) listOfFieldWithNullValue.add("maxNumOfGuests");
