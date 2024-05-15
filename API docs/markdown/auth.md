@@ -1,31 +1,10 @@
 ---
 title: Property Booking Website
-language_tabs:
-  - shell: Shell
-  - http: HTTP
-  - javascript: JavaScript
-  - ruby: Ruby
-  - python: Python
-  - php: PHP
-  - java: Java
-  - go: Go
-toc_footers: []
-includes: []
-search: true
-code_clipboard: true
-highlight_theme: darkula
-headingLevel: 2
-generator: "@tarslib/widdershins v4.0.23"
-
 ---
 
 # Property Booking Website
 
-Base URLs:
-
-# Authentication
-
-# property-booking-website/auth
+# api/v1/auth
 
 ## POST 使用者註冊
 
@@ -121,5 +100,4 @@ HTTP Status Code **200**
 |---|---|---|---|---|---|
 |» token|string|true|none|令牌|驗證使用者身份的令牌|
 
-# Data Schema
 
