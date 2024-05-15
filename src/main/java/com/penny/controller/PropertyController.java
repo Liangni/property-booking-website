@@ -50,7 +50,7 @@ public class PropertyController {
      * @param updatePropertyRequest 包含更新資訊的請求物件
      * @return ResponseEntity 包含 "ok" 字串的 ResponseEntity
      */
-    @PutMapping("{propertyId}")
+    @PatchMapping("{propertyId}")
     public ResponseEntity<String> updateProperty(
             @PathVariable Long propertyId,
             @RequestBody @Valid UpdatePropertyRequest updatePropertyRequest
