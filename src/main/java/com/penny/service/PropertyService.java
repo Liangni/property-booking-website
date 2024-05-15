@@ -5,6 +5,7 @@ import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.exception.RequestValidationException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
+import com.penny.redis.RedisService;
 import com.penny.request.*;
 import com.penny.vo.*;
 import com.penny.vo.base.*;
@@ -25,6 +26,8 @@ public class PropertyService {
     private final EcUserService ecUserService;
 
     private final SearchPropertyRequestDTOMapper searchPropertyRequestDTOMapper;
+
+    private final RedisService redisService;
 
     /**
      * 根據給定的搜尋參數，獲取房源資訊。
@@ -100,7 +103,6 @@ public class PropertyService {
      * 創建房源。
      *
      * @param createRequest 要用於創建房源的創建請求
-     * @throws RequestValidationException 如果某些欄位為空且房源已發佈，則拋出驗證異常
      */
     public void createProperty(CreatePropertyRequest createRequest){
 
@@ -120,20 +122,19 @@ public class PropertyService {
                 .hostId(ecUserService.getLoginUser().getEcUserId())
                 .build();
 
-        // 如果有空欄位且房源已發佈，則拋出 RequestValidationException 異常
-        List<String> listOfFieldWithNullValue = new ArrayList<>();
-        if (propertyBaseVo.getPropertyTitle() == null) listOfFieldWithNullValue.add("propertyTitle");
-        if (propertyBaseVo.getMaxNumOfGuests() == null) listOfFieldWithNullValue.add("maxNumOfGuests");
-        if (propertyBaseVo.getNumOfBedrooms() == null) listOfFieldWithNullValue.add("numOfBedrooms");
-        if (propertyBaseVo.getNumOfBeds() == null) listOfFieldWithNullValue.add("numOfBeds");
-        if (propertyBaseVo.getPriceOnWeekdays() == null) listOfFieldWithNullValue.add("priceOnWeekdays");
-        if (propertyBaseVo.getPriceOnWeekends() == null) listOfFieldWithNullValue.add("priceOnWeekends");
-        if (propertyBaseVo.getPropertyMainSubTypeId() == null) listOfFieldWithNullValue.add("propertyMainSubTypeId");
-        if (propertyBaseVo.getPropertyShareTypeId() == null) listOfFieldWithNullValue.add("propertyShareTypeId");
-        if (propertyBaseVo.getAddressId() == null) listOfFieldWithNullValue.add("addressId");
+        // 如果房源未發佈，則直接新增資料庫並返回
+        if (!propertyBaseVo.getIsPublished()) {
+            propertyBaseVoMapper.insertSelective(propertyBaseVo);
+            return;
+        }
 
-        if (!listOfFieldWithNullValue.isEmpty()) throw new RequestValidationException("When isPublished is true, the following fields are required : %s".formatted(listOfFieldWithNullValue));
+        // 如果房源已發佈，驗證必要欄位
+        validatePublicProperty(propertyBaseVo);
 
+        // 從 Redis 中刪除 key 為 "initialPagePropertyList" 的字串，確保首頁呈現最新資訊
+        redisService.deleteStr("initialPagePropertyList");
+
+        // 新增房源
         propertyBaseVoMapper.insertSelective(propertyBaseVo);
     }
 
@@ -144,8 +145,7 @@ public class PropertyService {
      * @param updateRequest 更新請求物件，包含新的房源資訊
      *
      * @throws ResourceNotFoundException 如果找不到指定 ID 的房源
-     * @throws AuthorizationException 如果登錄使用者沒有執行操作的權限
-     * @throws RequestValidationException 如果未發現任何數據變更或某些欄位為空且房源已發佈，則拋出驗證異常
+     * @throws AuthorizationException 如果登入使用者沒有執行操作的權限
      */
     public void updateProperty(Long propertyId, UpdatePropertyRequest updateRequest) {
         // 根據房源 ID 取得對應的 PropertyBaseVo 物件，如果不存在則拋出 ResourceNotFoundException 異常
@@ -227,19 +227,11 @@ public class PropertyService {
             return;
         }
 
-        // 檢查必填欄位是否為空，如果有空欄位且房源已發佈，則拋出 RequestValidationException 異常
-        List<String> listOfFieldWithNullValue = new ArrayList<>();
-        if (propertyBaseVo.getPropertyTitle() == null) listOfFieldWithNullValue.add("propertyTitle");
-        if (propertyBaseVo.getMaxNumOfGuests() == null) listOfFieldWithNullValue.add("maxNumOfGuests");
-        if (propertyBaseVo.getNumOfBedrooms() == null) listOfFieldWithNullValue.add("numOfBedrooms");
-        if (propertyBaseVo.getNumOfBeds() == null) listOfFieldWithNullValue.add("numOfBeds");
-        if (propertyBaseVo.getPriceOnWeekdays() == null) listOfFieldWithNullValue.add("priceOnWeekdays");
-        if (propertyBaseVo.getPriceOnWeekends() == null) listOfFieldWithNullValue.add("priceOnWeekends");
-        if (propertyBaseVo.getPropertyMainSubTypeId() == null) listOfFieldWithNullValue.add("propertyMainSubTypeId");
-        if (propertyBaseVo.getPropertyShareTypeId() == null) listOfFieldWithNullValue.add("propertyShareTypeId");
-        if (propertyBaseVo.getAddressId() == null) listOfFieldWithNullValue.add("addressId");
+        /// 如果房源已發佈，驗證必要欄位
+        validatePublicProperty(propertyBaseVo);
 
-        if (!listOfFieldWithNullValue.isEmpty()) throw new RequestValidationException("When isPublished is true, the following fields are required : %s".formatted(listOfFieldWithNullValue));
+        // 從 Redis 中刪除 key 為 "initialPagePropertyList" 的字串，確保首頁呈現最新資訊
+        redisService.deleteStr("initialPagePropertyList");
 
         // 更新資料庫中的房源資訊
         propertyBaseVoMapper.updateByPrimaryKey(propertyBaseVo);
@@ -258,5 +250,30 @@ public class PropertyService {
          }
 
          return propertyVoMapper.listByHostId(ecUserId);
+    }
+
+    /**
+     * 驗證已發布房源（當 isPublished 為 true 時）。
+     *
+     * @param propertyBaseVo 房源物件
+     * @throws RequestValidationException 當有必填欄位為空時拋出驗證異常
+     */
+    private void validatePublicProperty(PropertyBaseVo propertyBaseVo) {
+        // 儲存空值欄位的清單
+        List<String> listOfFieldWithNullValue = new ArrayList<>();
+
+        // 檢查每個屬性是否為空，並將空值欄位加入清單
+        if (propertyBaseVo.getPropertyTitle() == null) listOfFieldWithNullValue.add("propertyTitle");
+        if (propertyBaseVo.getMaxNumOfGuests() == null) listOfFieldWithNullValue.add("maxNumOfGuests");
+        if (propertyBaseVo.getNumOfBedrooms() == null) listOfFieldWithNullValue.add("numOfBedrooms");
+        if (propertyBaseVo.getNumOfBeds() == null) listOfFieldWithNullValue.add("numOfBeds");
+        if (propertyBaseVo.getPriceOnWeekdays() == null) listOfFieldWithNullValue.add("priceOnWeekdays");
+        if (propertyBaseVo.getPriceOnWeekends() == null) listOfFieldWithNullValue.add("priceOnWeekends");
+        if (propertyBaseVo.getPropertyMainSubTypeId() == null) listOfFieldWithNullValue.add("propertyMainSubTypeId");
+        if (propertyBaseVo.getPropertyShareTypeId() == null) listOfFieldWithNullValue.add("propertyShareTypeId");
+        if (propertyBaseVo.getAddressId() == null) listOfFieldWithNullValue.add("addressId");
+
+        // 如果空值欄位清單不為空，則拋出驗證異常
+        if (!listOfFieldWithNullValue.isEmpty()) throw new RequestValidationException("When isPublished is true, the following fields are required : %s".formatted(listOfFieldWithNullValue));
     }
 }
