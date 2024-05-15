@@ -20,7 +20,6 @@ POST /api/v1/addresses
 |Name|Location|Type|Required|Title|Description|
 |---|---|---|---|---|---|
 |Authorization|header|string| yes ||none|
-|body|body|object| no ||none|
 |» districtId|body|integer| yes | 地區 ID|none|
 |» street|body|string| yes | 街道名稱|none|
 

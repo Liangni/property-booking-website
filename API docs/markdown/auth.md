@@ -21,7 +21,6 @@ POST /api/v1/auth/register
 
 |Name|Location|Type|Required|Title|Description|
 |---|---|---|---|---|---|
-|body|body|object| no ||none|
 |» ecUserUsername|body|string| yes | 帳號|none|
 |» ecUserPassword|body|string| yes | 密碼|none|
 |» ecUserName|body|string| yes | 姓名|none|
@@ -68,7 +67,6 @@ POST /api/v1/auth/login
 
 |Name|Location|Type|Required|Title|Description|
 |---|---|---|---|---|---|
-|body|body|object| no ||none|
 |» ecUserUsername|body|string| yes | 帳號|none|
 |» ecUserPassword|body|string| yes | 密碼|none|
 
