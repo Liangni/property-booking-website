@@ -1,6 +1,5 @@
 package com.penny.rabbitMq;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.penny.request.ConfirmPaymentRequest;
 import com.penny.service.BookingOrderService;
 import com.penny.util.JsonConverter;

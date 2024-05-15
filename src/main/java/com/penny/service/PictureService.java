@@ -153,22 +153,6 @@ public class PictureService {
         List<PictureDtVo> pictureDtVoList = pictureDtVoMapper.selectByPictureId(pictureId);
         if(pictureDtVoList.isEmpty()) throw new ResourceNotFoundException("resized picture with pictureId %s not found".formatted(pictureId));
 
-        // 檢查圖片是否上傳
-        try {
-            s3Service.getObjects(s3Buckets.getCustomer(), pictureBaseVo.getPictureStoragePath());
-        } catch (SdkClientException e) {
-            throw new RequestValidationException("picture with original size not uploaded");
-        }
-
-        // 檢查圖片 dt 是否已上傳
-        pictureDtVoList.forEach(pictureDtVo -> {
-            try {
-                s3Service.getObjects(s3Buckets.getCustomer(), pictureDtVo.getPictureDtStoragePath());
-            } catch (SdkClientException e) {
-                throw new RequestValidationException("resized picture with pictureId %s not uploaded".formatted(pictureId));
-            }
-        });
-
         // 更新圖片上傳狀態
         PictureBaseVo updatePictureVo = PictureBaseVo
                 .builder()
@@ -340,20 +324,6 @@ public class PictureService {
         //  檢查資料庫是否有指定圖片 dt
         PictureDtVo pictureDtVo = Optional.ofNullable(pictureDtVoMapper.selectByPictureIdAndSizeNum(pictureBaseVo.getPictureId(), defaultSizeNum))
                 .orElseThrow(() -> new ResourceNotFoundException("resized picture with pictureId %s not found".formatted(pictureId)));
-
-        // 檢查圖片是否已上傳
-        try {
-           s3Service.getObjects(s3Buckets.getCustomer(), pictureBaseVo.getPictureStoragePath());
-        } catch (SdkClientException e) {
-            throw new RequestValidationException("picture with original size not uploaded");
-        }
-
-        // 檢查圖片 dt 是否已上傳
-        try {
-            s3Service.getObjects(s3Buckets.getCustomer(), pictureDtVo.getPictureDtStoragePath());
-        } catch (SdkClientException e) {
-            throw new RequestValidationException("resized picture with pictureId %s not uploaded".formatted(pictureId));
-        }
 
         // 更新圖片上傳狀態
         PictureBaseVo updatePictureVo = PictureBaseVo

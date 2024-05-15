@@ -29,15 +29,4 @@ public class S3Service {
         return amazonS3.generatePresignedUrl(bucketName,filePath,cal.getTime(),http).toString();
     }
 
-    public byte[] getObjects(String bucketName, String filePath) {
-        GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, filePath);
-
-        S3Object res = amazonS3.getObject(getObjectRequest);
-
-        try {
-            return res.getObjectContent().readAllBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
