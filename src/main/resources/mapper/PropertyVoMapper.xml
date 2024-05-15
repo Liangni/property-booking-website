@@ -321,9 +321,19 @@
     </select>
 
     <select id="listByHostId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        with join_district as (
+        <include refid="join_district_table"/>
+        )
         select
-        <include refid="Base_Column_List" />
-        from property
+         pr.*,
+         ad.*,
+         jd.*
+        from
+            property as pr
+            left join
+            address as ad on pr.address_id = ad.address_id
+            left join
+            join_district as jd on ad.admin_area_level_3_district_id = jd.district_id
         where host_id = #{ecUserId,jdbcType=BIGINT}
     </select>
 

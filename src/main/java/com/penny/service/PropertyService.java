@@ -7,6 +7,7 @@ import com.penny.exception.ResourceNotFoundException;
 import com.penny.exception.AuthorizationException;
 import com.penny.redis.RedisService;
 import com.penny.request.*;
+import com.penny.response.ReadEcUserPropertyResponse;
 import com.penny.vo.*;
 import com.penny.vo.base.*;
 import lombok.RequiredArgsConstructor;
@@ -244,12 +245,21 @@ public class PropertyService {
      * @return 返回房源列表
      * @throws AuthorizationException 如果登錄使用者無權執行操作，則拋出授權異常
      */
-    public List<PropertyVo> listPropertyByEcUserId(Long ecUserId) {
+    public List<ReadEcUserPropertyResponse> listPropertyByEcUserId(Long ecUserId) {
          if (!ecUserId.equals(ecUserService.getLoginUser().getEcUserId())) {
              throw new AuthorizationException("login user is not authorized to do the operation");
          }
 
-         return propertyVoMapper.listByHostId(ecUserId);
+         List<PropertyVo> propertyVoList = propertyVoMapper.listByHostId(ecUserId);
+         return propertyVoList.stream().map(propertyVo -> ReadEcUserPropertyResponse
+                 .builder()
+                 .propertyId(propertyVo.getPropertyId())
+                 .propertyTitle(propertyVo.getPropertyTitle())
+                 .districtId(propertyVo.getDistrictId())
+                 .districtName(propertyVo.getDistrictName())
+                 .parentDistrictId(propertyVo.getParentDistrictId())
+                 .parentDistrictName(propertyVo.getDistrictName())
+                 .build()).toList();
     }
 
     /**

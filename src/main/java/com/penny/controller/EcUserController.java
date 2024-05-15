@@ -2,6 +2,7 @@ package com.penny.controller;
 
 import com.penny.exception.AuthorizationException;
 import com.penny.request.CreateEcUserPictureRequest;
+import com.penny.response.ReadEcUserPropertyResponse;
 import com.penny.response.ReadEcUserResponse;
 import com.penny.service.*;
 import com.penny.vo.BookingOrderVo;
@@ -77,7 +78,7 @@ public class EcUserController {
      * @return ResponseEntity 包含房源列表的 ResponseEntity
      */
     @GetMapping("{ecUserId}/properties")
-    public ResponseEntity<List<PropertyVo>> listEcUserProperties(
+    public ResponseEntity<List<ReadEcUserPropertyResponse>> listEcUserProperties(
             @PathVariable Long ecUserId
     ) {
         return ResponseEntity.ok(propertyService.listPropertyByEcUserId(ecUserId));
