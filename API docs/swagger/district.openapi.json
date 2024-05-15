@@ -1,1 +1,2935 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/districts":{"get":{"summary":"取得地區","deprecated":false,"description":"","tags":[],"parameters":[],"responses":{"200":{"description":"districts","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"districtName":{"type":"string","title":"地區名稱"},"childDistricts":{"type":"array","items":{"type":"object","properties":{"districtId":{"type":"integer","title":"地區 ID"},"districtName":{"type":"string","title":"地區名稱"},"administrativeAreaId":{"type":"integer","title":"行政區 ID"},"parentDistrictId":{"type":"integer","title":"父地區 ID"},"parentDistrictName":{"type":"string","title":"父地區名稱"}},"required":["districtId","districtName","administrativeAreaId","parentDistrictId","parentDistrictName"]},"title":"子地區"},"administrativeAreaId":{"type":"integer","title":"行政區 ID"},"districtId":{"type":"integer","title":"地區 ID"}},"required":["districtName","childDistricts","administrativeAreaId","districtId"]}},"examples":{"1":{"summary":"districts","value":[{"districtName":"新北市","childDistricts":[{"districtId":7,"districtName":"板橋區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":8,"districtName":"三重區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":9,"districtName":"中和區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":10,"districtName":"永和區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":11,"districtName":"新莊區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":12,"districtName":"新店區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":13,"districtName":"樹林區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":14,"districtName":"鶯歌區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":15,"districtName":"三峽區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":16,"districtName":"淡水區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":17,"districtName":"汐止區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":18,"districtName":"瑞芳區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":19,"districtName":"土城區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":20,"districtName":"蘆洲區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":21,"districtName":"五股區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":22,"districtName":"泰山區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":23,"districtName":"林口區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":24,"districtName":"深坑區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":25,"districtName":"石碇區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":26,"districtName":"坪林區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":27,"districtName":"三芝區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":28,"districtName":"石門區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":29,"districtName":"八里區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":30,"districtName":"平溪區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":31,"districtName":"雙溪區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":32,"districtName":"貢寮區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":33,"districtName":"金山區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":34,"districtName":"萬里區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"},{"districtId":35,"districtName":"烏來區","administrativeAreaId":3,"parentDistrictId":1,"parentDistrictName":"新北市"}],"administrativeAreaId":1,"districtId":1},{"districtName":"臺北市","childDistricts":[{"districtId":36,"districtName":"松山區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":37,"districtName":"信義區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":38,"districtName":"大安區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":39,"districtName":"中山區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":40,"districtName":"中正區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":41,"districtName":"大同區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":42,"districtName":"萬華區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":43,"districtName":"文山區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":44,"districtName":"南港區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":45,"districtName":"內湖區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":46,"districtName":"士林區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"},{"districtId":47,"districtName":"北投區","administrativeAreaId":3,"parentDistrictId":2,"parentDistrictName":"臺北市"}],"administrativeAreaId":1,"districtId":2},{"districtName":"桃園市","childDistricts":[{"districtId":48,"districtName":"桃園區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":49,"districtName":"中壢區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":50,"districtName":"大溪區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":51,"districtName":"楊梅區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":52,"districtName":"蘆竹區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":53,"districtName":"大園區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":54,"districtName":"龜山區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":55,"districtName":"八德區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":56,"districtName":"龍潭區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":57,"districtName":"平鎮區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":58,"districtName":"新屋區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":59,"districtName":"觀音區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"},{"districtId":60,"districtName":"復興區","administrativeAreaId":3,"parentDistrictId":3,"parentDistrictName":"桃園市"}],"administrativeAreaId":1,"districtId":3},{"districtName":"臺中市","childDistricts":[{"districtId":61,"districtName":"中區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":62,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":63,"districtName":"南區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":64,"districtName":"西區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":65,"districtName":"北區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":66,"districtName":"西屯區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":67,"districtName":"南屯區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":68,"districtName":"北屯區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":69,"districtName":"豐原區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":70,"districtName":"東勢區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":71,"districtName":"大甲區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":72,"districtName":"清水區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":73,"districtName":"沙鹿區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":74,"districtName":"梧棲區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":75,"districtName":"后里區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":76,"districtName":"神岡區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":77,"districtName":"潭子區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":78,"districtName":"大雅區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":79,"districtName":"新社區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":80,"districtName":"石岡區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":81,"districtName":"外埔區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":82,"districtName":"大安區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":83,"districtName":"烏日區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":84,"districtName":"大肚區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":85,"districtName":"龍井區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":86,"districtName":"霧峰區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":87,"districtName":"太平區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":88,"districtName":"大里區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":89,"districtName":"和平區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"}],"administrativeAreaId":1,"districtId":4},{"districtName":"臺南市","childDistricts":[{"districtId":90,"districtName":"新營區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":91,"districtName":"鹽水區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":92,"districtName":"白河區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":93,"districtName":"柳營區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":94,"districtName":"後壁區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":95,"districtName":"東山區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":96,"districtName":"麻豆區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":97,"districtName":"下營區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":98,"districtName":"六甲區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":99,"districtName":"官田區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":100,"districtName":"大內區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":101,"districtName":"佳里區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":102,"districtName":"學甲區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":103,"districtName":"西港區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":104,"districtName":"七股區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":105,"districtName":"將軍區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":106,"districtName":"北門區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":107,"districtName":"新化區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":108,"districtName":"善化區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":109,"districtName":"新市區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":110,"districtName":"安定區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":111,"districtName":"山上區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":112,"districtName":"玉井區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":113,"districtName":"楠西區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":114,"districtName":"南化區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":115,"districtName":"左鎮區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":116,"districtName":"仁德區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":117,"districtName":"歸仁區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":118,"districtName":"關廟區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":119,"districtName":"龍崎區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":120,"districtName":"永康區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":121,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":122,"districtName":"南區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":123,"districtName":"北區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":124,"districtName":"安南區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":125,"districtName":"安平區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":126,"districtName":"中西區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"}],"administrativeAreaId":1,"districtId":5},{"districtName":"高雄市","childDistricts":[{"districtId":127,"districtName":"鹽埕區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":128,"districtName":"鼓山區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":129,"districtName":"左營區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":130,"districtName":"楠梓區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":131,"districtName":"三民區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":132,"districtName":"新興區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":133,"districtName":"前金區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":134,"districtName":"苓雅區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":135,"districtName":"前鎮區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":136,"districtName":"旗津區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":137,"districtName":"小港區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":138,"districtName":"鳳山區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":139,"districtName":"林園區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":140,"districtName":"大寮區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":141,"districtName":"大樹區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":142,"districtName":"大社區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":143,"districtName":"仁武區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":144,"districtName":"鳥松區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":145,"districtName":"岡山區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":146,"districtName":"橋頭區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":147,"districtName":"燕巢區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":148,"districtName":"田寮區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":149,"districtName":"阿蓮區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":150,"districtName":"路竹區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":151,"districtName":"湖內區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":152,"districtName":"茄萣區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":153,"districtName":"永安區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":154,"districtName":"彌陀區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":155,"districtName":"梓官區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":156,"districtName":"旗山區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":157,"districtName":"美濃區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":158,"districtName":"六龜區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":159,"districtName":"甲仙區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":160,"districtName":"杉林區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":161,"districtName":"內門區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":162,"districtName":"茂林區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":163,"districtName":"桃源區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"},{"districtId":164,"districtName":"那瑪夏區","administrativeAreaId":3,"parentDistrictId":6,"parentDistrictName":"高雄市"}],"administrativeAreaId":1,"districtId":6},{"districtName":"宜蘭縣","childDistricts":[{"districtId":181,"districtName":"宜蘭市","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":182,"districtName":"羅東鎮","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":183,"districtName":"蘇澳鎮","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":184,"districtName":"頭城鎮","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":185,"districtName":"礁溪鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":186,"districtName":"壯圍鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":187,"districtName":"員山鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":188,"districtName":"冬山鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":189,"districtName":"五結鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":190,"districtName":"三星鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":191,"districtName":"大同鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":192,"districtName":"南澳鄉","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"}],"administrativeAreaId":2,"districtId":165},{"districtName":"新竹縣","childDistricts":[{"districtId":193,"districtName":"竹北市","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":194,"districtName":"關西鎮","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":195,"districtName":"新埔鎮","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":196,"districtName":"竹東鎮","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":197,"districtName":"湖口鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":198,"districtName":"橫山鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":199,"districtName":"新豐鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":200,"districtName":"芎林鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":201,"districtName":"寶山鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":202,"districtName":"北埔鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":203,"districtName":"峨眉鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":204,"districtName":"尖石鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":205,"districtName":"五峰鄉","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"}],"administrativeAreaId":2,"districtId":166},{"districtName":"苗栗縣","childDistricts":[{"districtId":206,"districtName":"苗栗市","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":207,"districtName":"頭份市","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":208,"districtName":"苑裡鎮","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":209,"districtName":"通霄鎮","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":210,"districtName":"竹南鎮","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":211,"districtName":"後龍鎮","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":212,"districtName":"卓蘭鎮","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":213,"districtName":"大湖鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":214,"districtName":"公館鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":215,"districtName":"銅鑼鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":216,"districtName":"南鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":217,"districtName":"頭屋鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":218,"districtName":"三義鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":219,"districtName":"西湖鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":220,"districtName":"造橋鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":221,"districtName":"三灣鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":222,"districtName":"獅潭鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"},{"districtId":223,"districtName":"泰安鄉","administrativeAreaId":3,"parentDistrictId":167,"parentDistrictName":"苗栗縣"}],"administrativeAreaId":2,"districtId":167},{"districtName":"彰化縣","childDistricts":[{"districtId":224,"districtName":"彰化市","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":225,"districtName":"員林市","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":226,"districtName":"鹿港鎮","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":227,"districtName":"和美鎮","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":228,"districtName":"北斗鎮","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":229,"districtName":"溪湖鎮","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":230,"districtName":"田中鎮","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":231,"districtName":"二林鎮","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":232,"districtName":"線西鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":233,"districtName":"伸港鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":234,"districtName":"福興鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":235,"districtName":"秀水鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":236,"districtName":"花壇鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":237,"districtName":"芬園鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":238,"districtName":"大村鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":239,"districtName":"埔鹽鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":240,"districtName":"埔心鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":241,"districtName":"永靖鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":242,"districtName":"社頭鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":243,"districtName":"二水鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":244,"districtName":"田尾鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":245,"districtName":"埤頭鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":246,"districtName":"芳苑鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":247,"districtName":"大城鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":248,"districtName":"竹塘鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"},{"districtId":249,"districtName":"溪州鄉","administrativeAreaId":3,"parentDistrictId":168,"parentDistrictName":"彰化縣"}],"administrativeAreaId":2,"districtId":168},{"districtName":"南投縣","childDistricts":[{"districtId":250,"districtName":"南投市","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":251,"districtName":"埔里鎮","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":252,"districtName":"草屯鎮","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":253,"districtName":"竹山鎮","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":254,"districtName":"集集鎮","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":255,"districtName":"名間鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":256,"districtName":"鹿谷鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":257,"districtName":"中寮鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":258,"districtName":"魚池鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":259,"districtName":"國姓鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":260,"districtName":"水里鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":261,"districtName":"信義鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"},{"districtId":262,"districtName":"仁愛鄉","administrativeAreaId":3,"parentDistrictId":169,"parentDistrictName":"南投縣"}],"administrativeAreaId":2,"districtId":169},{"districtName":"雲林縣","childDistricts":[{"districtId":263,"districtName":"斗六市","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":264,"districtName":"斗南鎮","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":265,"districtName":"虎尾鎮","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":266,"districtName":"西螺鎮","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":267,"districtName":"土庫鎮","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":268,"districtName":"北港鎮","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":269,"districtName":"古坑鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":270,"districtName":"大埤鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":271,"districtName":"莿桐鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":272,"districtName":"林內鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":273,"districtName":"二崙鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":274,"districtName":"崙背鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":275,"districtName":"麥寮鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":276,"districtName":"東勢鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":277,"districtName":"褒忠鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":278,"districtName":"臺西鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":279,"districtName":"元長鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":280,"districtName":"四湖鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":281,"districtName":"口湖鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":282,"districtName":"水林鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"}],"administrativeAreaId":2,"districtId":170},{"districtName":"嘉義縣","childDistricts":[{"districtId":283,"districtName":"太保市","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":284,"districtName":"朴子市","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":285,"districtName":"布袋鎮","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":286,"districtName":"大林鎮","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":287,"districtName":"民雄鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":288,"districtName":"溪口鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":289,"districtName":"新港鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":290,"districtName":"六腳鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":291,"districtName":"東石鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":292,"districtName":"義竹鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":293,"districtName":"鹿草鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":294,"districtName":"水上鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":295,"districtName":"中埔鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":296,"districtName":"竹崎鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":297,"districtName":"梅山鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":298,"districtName":"番路鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":299,"districtName":"大埔鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":300,"districtName":"阿里山鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"}],"administrativeAreaId":2,"districtId":171},{"districtName":"屏東縣","childDistricts":[{"districtId":301,"districtName":"屏東市","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":302,"districtName":"潮州鎮","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":303,"districtName":"東港鎮","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":304,"districtName":"恆春鎮","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":305,"districtName":"萬丹鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":306,"districtName":"長治鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":307,"districtName":"麟洛鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":308,"districtName":"九如鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":309,"districtName":"里港鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":310,"districtName":"鹽埔鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":311,"districtName":"高樹鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":312,"districtName":"萬巒鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":313,"districtName":"內埔鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":314,"districtName":"竹田鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":315,"districtName":"新埤鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":316,"districtName":"枋寮鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":317,"districtName":"新園鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":318,"districtName":"崁頂鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":319,"districtName":"林邊鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":320,"districtName":"南州鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":321,"districtName":"佳冬鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":322,"districtName":"琉球鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":323,"districtName":"車城鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":324,"districtName":"滿州鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":325,"districtName":"枋山鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":326,"districtName":"三地門鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":327,"districtName":"霧臺鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":328,"districtName":"瑪家鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":329,"districtName":"泰武鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":330,"districtName":"來義鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":331,"districtName":"春日鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":332,"districtName":"獅子鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":333,"districtName":"牡丹鄉","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"}],"administrativeAreaId":2,"districtId":172},{"districtName":"花蓮縣","childDistricts":[],"administrativeAreaId":2,"districtId":173},{"districtName":"臺東縣","childDistricts":[{"districtId":334,"districtName":"臺東市","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":335,"districtName":"成功鎮","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":336,"districtName":"關山鎮","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":337,"districtName":"卑南鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":338,"districtName":"大武鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":339,"districtName":"太麻里鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":340,"districtName":"東河鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":341,"districtName":"長濱鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":342,"districtName":"鹿野鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":343,"districtName":"池上鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":344,"districtName":"綠島鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":345,"districtName":"延平鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":346,"districtName":"海端鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":347,"districtName":"達仁鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":348,"districtName":"金峰鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":349,"districtName":"蘭嶼鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"}],"administrativeAreaId":2,"districtId":174},{"districtName":"澎湖縣","childDistricts":[{"districtId":350,"districtName":"馬公市","administrativeAreaId":3,"parentDistrictId":175,"parentDistrictName":"澎湖縣"},{"districtId":351,"districtName":"湖西鄉","administrativeAreaId":3,"parentDistrictId":175,"parentDistrictName":"澎湖縣"},{"districtId":352,"districtName":"白沙鄉","administrativeAreaId":3,"parentDistrictId":175,"parentDistrictName":"澎湖縣"},{"districtId":353,"districtName":"西嶼鄉","administrativeAreaId":3,"parentDistrictId":175,"parentDistrictName":"澎湖縣"},{"districtId":354,"districtName":"望安鄉","administrativeAreaId":3,"parentDistrictId":175,"parentDistrictName":"澎湖縣"},{"districtId":355,"districtName":"七美鄉","administrativeAreaId":3,"parentDistrictId":175,"parentDistrictName":"澎湖縣"}],"administrativeAreaId":2,"districtId":175},{"districtName":"金門縣","childDistricts":[{"districtId":356,"districtName":"金城鎮","administrativeAreaId":3,"parentDistrictId":176,"parentDistrictName":"金門縣"},{"districtId":357,"districtName":"金湖鎮","administrativeAreaId":3,"parentDistrictId":176,"parentDistrictName":"金門縣"},{"districtId":358,"districtName":"金沙鎮","administrativeAreaId":3,"parentDistrictId":176,"parentDistrictName":"金門縣"},{"districtId":359,"districtName":"金寧鄉","administrativeAreaId":3,"parentDistrictId":176,"parentDistrictName":"金門縣"},{"districtId":360,"districtName":"烈嶼鄉","administrativeAreaId":3,"parentDistrictId":176,"parentDistrictName":"金門縣"},{"districtId":361,"districtName":"烏坵鄉","administrativeAreaId":3,"parentDistrictId":176,"parentDistrictName":"金門縣"}],"administrativeAreaId":2,"districtId":176},{"districtName":"連江縣","childDistricts":[{"districtId":362,"districtName":"南竿鄉","administrativeAreaId":3,"parentDistrictId":177,"parentDistrictName":"連江縣"},{"districtId":363,"districtName":"北竿鄉","administrativeAreaId":3,"parentDistrictId":177,"parentDistrictName":"連江縣"},{"districtId":364,"districtName":"莒光鄉","administrativeAreaId":3,"parentDistrictId":177,"parentDistrictName":"連江縣"},{"districtId":365,"districtName":"東引鄉","administrativeAreaId":3,"parentDistrictId":177,"parentDistrictName":"連江縣"}],"administrativeAreaId":2,"districtId":177},{"districtName":"基隆市","childDistricts":[{"districtId":366,"districtName":"中正區","administrativeAreaId":3,"parentDistrictId":178,"parentDistrictName":"基隆市"},{"districtId":367,"districtName":"七堵區","administrativeAreaId":3,"parentDistrictId":178,"parentDistrictName":"基隆市"},{"districtId":368,"districtName":"暖暖區","administrativeAreaId":3,"parentDistrictId":178,"parentDistrictName":"基隆市"},{"districtId":369,"districtName":"仁愛區","administrativeAreaId":3,"parentDistrictId":178,"parentDistrictName":"基隆市"},{"districtId":370,"districtName":"中山區","administrativeAreaId":3,"parentDistrictId":178,"parentDistrictName":"基隆市"},{"districtId":371,"districtName":"安樂區","administrativeAreaId":3,"parentDistrictId":178,"parentDistrictName":"基隆市"},{"districtId":372,"districtName":"信義區","administrativeAreaId":3,"parentDistrictId":178,"parentDistrictName":"基隆市"}],"administrativeAreaId":2,"districtId":178},{"districtName":"新竹市","childDistricts":[{"districtId":373,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":179,"parentDistrictName":"新竹市"},{"districtId":374,"districtName":"北區","administrativeAreaId":3,"parentDistrictId":179,"parentDistrictName":"新竹市"},{"districtId":375,"districtName":"香山區","administrativeAreaId":3,"parentDistrictId":179,"parentDistrictName":"新竹市"}],"administrativeAreaId":2,"districtId":179},{"districtName":"嘉義市","childDistricts":[{"districtId":376,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":180,"parentDistrictName":"嘉義市"},{"districtId":377,"districtName":"西區","administrativeAreaId":3,"parentDistrictId":180,"parentDistrictName":"嘉義市"}],"administrativeAreaId":2,"districtId":180}]}}}}}},"security":[]}},"/api/v1/districts/search":{"get":{"summary":"以關鍵字搜尋地區","deprecated":false,"description":"","tags":[],"parameters":[{"name":"keyword","in":"query","description":"搜尋關鍵字","required":true,"example":"","schema":{"type":"string"}}],"responses":{"200":{"description":"districts/search?keyword=","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"districtId":{"type":"integer","title":"地區 ID"},"districtName":{"type":"string","title":"地區名稱"},"administrativeAreaId":{"type":"integer","title":"行政區 ID"},"parentDistrictId":{"type":"integer","title":"父地區 ID","nullable":true},"parentDistrictName":{"type":"string","title":"父地區名稱","nullable":true}},"required":["districtId","districtName","administrativeAreaId","parentDistrictId","parentDistrictName"]}},"examples":{"1":{"summary":"districts/search?keyword=","value":[{"districtId":70,"districtName":"東勢區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":62,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":4,"parentDistrictName":"臺中市"},{"districtId":95,"districtName":"東山區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":121,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":5,"parentDistrictName":"臺南市"},{"districtId":182,"districtName":"羅東鎮","administrativeAreaId":3,"parentDistrictId":165,"parentDistrictName":"宜蘭縣"},{"districtId":196,"districtName":"竹東鎮","administrativeAreaId":3,"parentDistrictId":166,"parentDistrictName":"新竹縣"},{"districtId":276,"districtName":"東勢鄉","administrativeAreaId":3,"parentDistrictId":170,"parentDistrictName":"雲林縣"},{"districtId":291,"districtName":"東石鄉","administrativeAreaId":3,"parentDistrictId":171,"parentDistrictName":"嘉義縣"},{"districtId":301,"districtName":"屏東市","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":303,"districtName":"東港鎮","administrativeAreaId":3,"parentDistrictId":172,"parentDistrictName":"屏東縣"},{"districtId":340,"districtName":"東河鄉","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":334,"districtName":"臺東市","administrativeAreaId":3,"parentDistrictId":174,"parentDistrictName":"臺東縣"},{"districtId":365,"districtName":"東引鄉","administrativeAreaId":3,"parentDistrictId":177,"parentDistrictName":"連江縣"},{"districtId":373,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":179,"parentDistrictName":"新竹市"},{"districtId":376,"districtName":"東區","administrativeAreaId":3,"parentDistrictId":180,"parentDistrictName":"嘉義市"},{"districtId":172,"districtName":"屏東縣","administrativeAreaId":2,"parentDistrictId":null,"parentDistrictName":null},{"districtId":174,"districtName":"臺東縣","administrativeAreaId":2,"parentDistrictId":null,"parentDistrictName":null}]}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/districts": {
+      "get": {
+        "summary": "取得地區",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "districts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "districtName": {
+                        "type": "string",
+                        "title": "地區名稱"
+                      },
+                      "childDistricts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "districtId": {
+                              "type": "integer",
+                              "title": "地區 ID"
+                            },
+                            "districtName": {
+                              "type": "string",
+                              "title": "地區名稱"
+                            },
+                            "administrativeAreaId": {
+                              "type": "integer",
+                              "title": "行政區 ID"
+                            },
+                            "parentDistrictId": {
+                              "type": "integer",
+                              "title": "父地區 ID"
+                            },
+                            "parentDistrictName": {
+                              "type": "string",
+                              "title": "父地區名稱"
+                            }
+                          },
+                          "required": [
+                            "districtId",
+                            "districtName",
+                            "administrativeAreaId",
+                            "parentDistrictId",
+                            "parentDistrictName"
+                          ]
+                        },
+                        "title": "子地區"
+                      },
+                      "administrativeAreaId": {
+                        "type": "integer",
+                        "title": "行政區 ID"
+                      },
+                      "districtId": {
+                        "type": "integer",
+                        "title": "地區 ID"
+                      }
+                    },
+                    "required": [
+                      "districtName",
+                      "childDistricts",
+                      "administrativeAreaId",
+                      "districtId"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "districts",
+                    "value": [
+                      {
+                        "districtName": "新北市",
+                        "childDistricts": [
+                          {
+                            "districtId": 7,
+                            "districtName": "板橋區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 8,
+                            "districtName": "三重區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 9,
+                            "districtName": "中和區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 10,
+                            "districtName": "永和區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 11,
+                            "districtName": "新莊區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 12,
+                            "districtName": "新店區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 13,
+                            "districtName": "樹林區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 14,
+                            "districtName": "鶯歌區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 15,
+                            "districtName": "三峽區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 16,
+                            "districtName": "淡水區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 17,
+                            "districtName": "汐止區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 18,
+                            "districtName": "瑞芳區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 19,
+                            "districtName": "土城區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 20,
+                            "districtName": "蘆洲區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 21,
+                            "districtName": "五股區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 22,
+                            "districtName": "泰山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 23,
+                            "districtName": "林口區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 24,
+                            "districtName": "深坑區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 25,
+                            "districtName": "石碇區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 26,
+                            "districtName": "坪林區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 27,
+                            "districtName": "三芝區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 28,
+                            "districtName": "石門區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 29,
+                            "districtName": "八里區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 30,
+                            "districtName": "平溪區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 31,
+                            "districtName": "雙溪區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 32,
+                            "districtName": "貢寮區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 33,
+                            "districtName": "金山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 34,
+                            "districtName": "萬里區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          },
+                          {
+                            "districtId": 35,
+                            "districtName": "烏來區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 1,
+                            "parentDistrictName": "新北市"
+                          }
+                        ],
+                        "administrativeAreaId": 1,
+                        "districtId": 1
+                      },
+                      {
+                        "districtName": "臺北市",
+                        "childDistricts": [
+                          {
+                            "districtId": 36,
+                            "districtName": "松山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 37,
+                            "districtName": "信義區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 38,
+                            "districtName": "大安區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 39,
+                            "districtName": "中山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 40,
+                            "districtName": "中正區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 41,
+                            "districtName": "大同區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 42,
+                            "districtName": "萬華區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 43,
+                            "districtName": "文山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 44,
+                            "districtName": "南港區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 45,
+                            "districtName": "內湖區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 46,
+                            "districtName": "士林區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          },
+                          {
+                            "districtId": 47,
+                            "districtName": "北投區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 2,
+                            "parentDistrictName": "臺北市"
+                          }
+                        ],
+                        "administrativeAreaId": 1,
+                        "districtId": 2
+                      },
+                      {
+                        "districtName": "桃園市",
+                        "childDistricts": [
+                          {
+                            "districtId": 48,
+                            "districtName": "桃園區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 49,
+                            "districtName": "中壢區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 50,
+                            "districtName": "大溪區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 51,
+                            "districtName": "楊梅區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 52,
+                            "districtName": "蘆竹區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 53,
+                            "districtName": "大園區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 54,
+                            "districtName": "龜山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 55,
+                            "districtName": "八德區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 56,
+                            "districtName": "龍潭區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 57,
+                            "districtName": "平鎮區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 58,
+                            "districtName": "新屋區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 59,
+                            "districtName": "觀音區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          },
+                          {
+                            "districtId": 60,
+                            "districtName": "復興區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 3,
+                            "parentDistrictName": "桃園市"
+                          }
+                        ],
+                        "administrativeAreaId": 1,
+                        "districtId": 3
+                      },
+                      {
+                        "districtName": "臺中市",
+                        "childDistricts": [
+                          {
+                            "districtId": 61,
+                            "districtName": "中區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 62,
+                            "districtName": "東區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 63,
+                            "districtName": "南區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 64,
+                            "districtName": "西區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 65,
+                            "districtName": "北區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 66,
+                            "districtName": "西屯區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 67,
+                            "districtName": "南屯區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 68,
+                            "districtName": "北屯區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 69,
+                            "districtName": "豐原區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 70,
+                            "districtName": "東勢區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 71,
+                            "districtName": "大甲區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 72,
+                            "districtName": "清水區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 73,
+                            "districtName": "沙鹿區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 74,
+                            "districtName": "梧棲區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 75,
+                            "districtName": "后里區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 76,
+                            "districtName": "神岡區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 77,
+                            "districtName": "潭子區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 78,
+                            "districtName": "大雅區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 79,
+                            "districtName": "新社區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 80,
+                            "districtName": "石岡區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 81,
+                            "districtName": "外埔區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 82,
+                            "districtName": "大安區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 83,
+                            "districtName": "烏日區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 84,
+                            "districtName": "大肚區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 85,
+                            "districtName": "龍井區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 86,
+                            "districtName": "霧峰區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 87,
+                            "districtName": "太平區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 88,
+                            "districtName": "大里區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          },
+                          {
+                            "districtId": 89,
+                            "districtName": "和平區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 4,
+                            "parentDistrictName": "臺中市"
+                          }
+                        ],
+                        "administrativeAreaId": 1,
+                        "districtId": 4
+                      },
+                      {
+                        "districtName": "臺南市",
+                        "childDistricts": [
+                          {
+                            "districtId": 90,
+                            "districtName": "新營區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 91,
+                            "districtName": "鹽水區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 92,
+                            "districtName": "白河區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 93,
+                            "districtName": "柳營區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 94,
+                            "districtName": "後壁區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 95,
+                            "districtName": "東山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 96,
+                            "districtName": "麻豆區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 97,
+                            "districtName": "下營區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 98,
+                            "districtName": "六甲區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 99,
+                            "districtName": "官田區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 100,
+                            "districtName": "大內區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 101,
+                            "districtName": "佳里區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 102,
+                            "districtName": "學甲區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 103,
+                            "districtName": "西港區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 104,
+                            "districtName": "七股區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 105,
+                            "districtName": "將軍區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 106,
+                            "districtName": "北門區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 107,
+                            "districtName": "新化區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 108,
+                            "districtName": "善化區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 109,
+                            "districtName": "新市區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 110,
+                            "districtName": "安定區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 111,
+                            "districtName": "山上區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 112,
+                            "districtName": "玉井區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 113,
+                            "districtName": "楠西區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 114,
+                            "districtName": "南化區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 115,
+                            "districtName": "左鎮區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 116,
+                            "districtName": "仁德區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 117,
+                            "districtName": "歸仁區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 118,
+                            "districtName": "關廟區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 119,
+                            "districtName": "龍崎區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 120,
+                            "districtName": "永康區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 121,
+                            "districtName": "東區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 122,
+                            "districtName": "南區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 123,
+                            "districtName": "北區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 124,
+                            "districtName": "安南區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 125,
+                            "districtName": "安平區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          },
+                          {
+                            "districtId": 126,
+                            "districtName": "中西區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 5,
+                            "parentDistrictName": "臺南市"
+                          }
+                        ],
+                        "administrativeAreaId": 1,
+                        "districtId": 5
+                      },
+                      {
+                        "districtName": "高雄市",
+                        "childDistricts": [
+                          {
+                            "districtId": 127,
+                            "districtName": "鹽埕區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 128,
+                            "districtName": "鼓山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 129,
+                            "districtName": "左營區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 130,
+                            "districtName": "楠梓區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 131,
+                            "districtName": "三民區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 132,
+                            "districtName": "新興區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 133,
+                            "districtName": "前金區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 134,
+                            "districtName": "苓雅區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 135,
+                            "districtName": "前鎮區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 136,
+                            "districtName": "旗津區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 137,
+                            "districtName": "小港區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 138,
+                            "districtName": "鳳山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 139,
+                            "districtName": "林園區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 140,
+                            "districtName": "大寮區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 141,
+                            "districtName": "大樹區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 142,
+                            "districtName": "大社區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 143,
+                            "districtName": "仁武區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 144,
+                            "districtName": "鳥松區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 145,
+                            "districtName": "岡山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 146,
+                            "districtName": "橋頭區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 147,
+                            "districtName": "燕巢區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 148,
+                            "districtName": "田寮區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 149,
+                            "districtName": "阿蓮區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 150,
+                            "districtName": "路竹區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 151,
+                            "districtName": "湖內區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 152,
+                            "districtName": "茄萣區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 153,
+                            "districtName": "永安區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 154,
+                            "districtName": "彌陀區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 155,
+                            "districtName": "梓官區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 156,
+                            "districtName": "旗山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 157,
+                            "districtName": "美濃區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 158,
+                            "districtName": "六龜區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 159,
+                            "districtName": "甲仙區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 160,
+                            "districtName": "杉林區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 161,
+                            "districtName": "內門區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 162,
+                            "districtName": "茂林區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 163,
+                            "districtName": "桃源區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          },
+                          {
+                            "districtId": 164,
+                            "districtName": "那瑪夏區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 6,
+                            "parentDistrictName": "高雄市"
+                          }
+                        ],
+                        "administrativeAreaId": 1,
+                        "districtId": 6
+                      },
+                      {
+                        "districtName": "宜蘭縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 181,
+                            "districtName": "宜蘭市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 182,
+                            "districtName": "羅東鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 183,
+                            "districtName": "蘇澳鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 184,
+                            "districtName": "頭城鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 185,
+                            "districtName": "礁溪鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 186,
+                            "districtName": "壯圍鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 187,
+                            "districtName": "員山鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 188,
+                            "districtName": "冬山鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 189,
+                            "districtName": "五結鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 190,
+                            "districtName": "三星鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 191,
+                            "districtName": "大同鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          },
+                          {
+                            "districtId": 192,
+                            "districtName": "南澳鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 165,
+                            "parentDistrictName": "宜蘭縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 165
+                      },
+                      {
+                        "districtName": "新竹縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 193,
+                            "districtName": "竹北市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 194,
+                            "districtName": "關西鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 195,
+                            "districtName": "新埔鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 196,
+                            "districtName": "竹東鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 197,
+                            "districtName": "湖口鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 198,
+                            "districtName": "橫山鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 199,
+                            "districtName": "新豐鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 200,
+                            "districtName": "芎林鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 201,
+                            "districtName": "寶山鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 202,
+                            "districtName": "北埔鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 203,
+                            "districtName": "峨眉鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 204,
+                            "districtName": "尖石鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          },
+                          {
+                            "districtId": 205,
+                            "districtName": "五峰鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 166,
+                            "parentDistrictName": "新竹縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 166
+                      },
+                      {
+                        "districtName": "苗栗縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 206,
+                            "districtName": "苗栗市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 207,
+                            "districtName": "頭份市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 208,
+                            "districtName": "苑裡鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 209,
+                            "districtName": "通霄鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 210,
+                            "districtName": "竹南鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 211,
+                            "districtName": "後龍鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 212,
+                            "districtName": "卓蘭鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 213,
+                            "districtName": "大湖鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 214,
+                            "districtName": "公館鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 215,
+                            "districtName": "銅鑼鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 216,
+                            "districtName": "南鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 217,
+                            "districtName": "頭屋鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 218,
+                            "districtName": "三義鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 219,
+                            "districtName": "西湖鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 220,
+                            "districtName": "造橋鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 221,
+                            "districtName": "三灣鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 222,
+                            "districtName": "獅潭鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          },
+                          {
+                            "districtId": 223,
+                            "districtName": "泰安鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 167,
+                            "parentDistrictName": "苗栗縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 167
+                      },
+                      {
+                        "districtName": "彰化縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 224,
+                            "districtName": "彰化市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 225,
+                            "districtName": "員林市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 226,
+                            "districtName": "鹿港鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 227,
+                            "districtName": "和美鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 228,
+                            "districtName": "北斗鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 229,
+                            "districtName": "溪湖鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 230,
+                            "districtName": "田中鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 231,
+                            "districtName": "二林鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 232,
+                            "districtName": "線西鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 233,
+                            "districtName": "伸港鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 234,
+                            "districtName": "福興鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 235,
+                            "districtName": "秀水鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 236,
+                            "districtName": "花壇鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 237,
+                            "districtName": "芬園鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 238,
+                            "districtName": "大村鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 239,
+                            "districtName": "埔鹽鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 240,
+                            "districtName": "埔心鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 241,
+                            "districtName": "永靖鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 242,
+                            "districtName": "社頭鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 243,
+                            "districtName": "二水鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 244,
+                            "districtName": "田尾鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 245,
+                            "districtName": "埤頭鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 246,
+                            "districtName": "芳苑鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 247,
+                            "districtName": "大城鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 248,
+                            "districtName": "竹塘鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          },
+                          {
+                            "districtId": 249,
+                            "districtName": "溪州鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 168,
+                            "parentDistrictName": "彰化縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 168
+                      },
+                      {
+                        "districtName": "南投縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 250,
+                            "districtName": "南投市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 251,
+                            "districtName": "埔里鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 252,
+                            "districtName": "草屯鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 253,
+                            "districtName": "竹山鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 254,
+                            "districtName": "集集鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 255,
+                            "districtName": "名間鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 256,
+                            "districtName": "鹿谷鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 257,
+                            "districtName": "中寮鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 258,
+                            "districtName": "魚池鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 259,
+                            "districtName": "國姓鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 260,
+                            "districtName": "水里鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 261,
+                            "districtName": "信義鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          },
+                          {
+                            "districtId": 262,
+                            "districtName": "仁愛鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 169,
+                            "parentDistrictName": "南投縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 169
+                      },
+                      {
+                        "districtName": "雲林縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 263,
+                            "districtName": "斗六市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 264,
+                            "districtName": "斗南鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 265,
+                            "districtName": "虎尾鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 266,
+                            "districtName": "西螺鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 267,
+                            "districtName": "土庫鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 268,
+                            "districtName": "北港鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 269,
+                            "districtName": "古坑鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 270,
+                            "districtName": "大埤鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 271,
+                            "districtName": "莿桐鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 272,
+                            "districtName": "林內鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 273,
+                            "districtName": "二崙鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 274,
+                            "districtName": "崙背鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 275,
+                            "districtName": "麥寮鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 276,
+                            "districtName": "東勢鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 277,
+                            "districtName": "褒忠鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 278,
+                            "districtName": "臺西鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 279,
+                            "districtName": "元長鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 280,
+                            "districtName": "四湖鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 281,
+                            "districtName": "口湖鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          },
+                          {
+                            "districtId": 282,
+                            "districtName": "水林鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 170,
+                            "parentDistrictName": "雲林縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 170
+                      },
+                      {
+                        "districtName": "嘉義縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 283,
+                            "districtName": "太保市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 284,
+                            "districtName": "朴子市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 285,
+                            "districtName": "布袋鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 286,
+                            "districtName": "大林鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 287,
+                            "districtName": "民雄鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 288,
+                            "districtName": "溪口鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 289,
+                            "districtName": "新港鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 290,
+                            "districtName": "六腳鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 291,
+                            "districtName": "東石鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 292,
+                            "districtName": "義竹鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 293,
+                            "districtName": "鹿草鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 294,
+                            "districtName": "水上鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 295,
+                            "districtName": "中埔鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 296,
+                            "districtName": "竹崎鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 297,
+                            "districtName": "梅山鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 298,
+                            "districtName": "番路鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 299,
+                            "districtName": "大埔鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          },
+                          {
+                            "districtId": 300,
+                            "districtName": "阿里山鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 171,
+                            "parentDistrictName": "嘉義縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 171
+                      },
+                      {
+                        "districtName": "屏東縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 301,
+                            "districtName": "屏東市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 302,
+                            "districtName": "潮州鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 303,
+                            "districtName": "東港鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 304,
+                            "districtName": "恆春鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 305,
+                            "districtName": "萬丹鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 306,
+                            "districtName": "長治鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 307,
+                            "districtName": "麟洛鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 308,
+                            "districtName": "九如鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 309,
+                            "districtName": "里港鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 310,
+                            "districtName": "鹽埔鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 311,
+                            "districtName": "高樹鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 312,
+                            "districtName": "萬巒鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 313,
+                            "districtName": "內埔鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 314,
+                            "districtName": "竹田鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 315,
+                            "districtName": "新埤鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 316,
+                            "districtName": "枋寮鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 317,
+                            "districtName": "新園鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 318,
+                            "districtName": "崁頂鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 319,
+                            "districtName": "林邊鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 320,
+                            "districtName": "南州鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 321,
+                            "districtName": "佳冬鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 322,
+                            "districtName": "琉球鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 323,
+                            "districtName": "車城鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 324,
+                            "districtName": "滿州鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 325,
+                            "districtName": "枋山鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 326,
+                            "districtName": "三地門鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 327,
+                            "districtName": "霧臺鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 328,
+                            "districtName": "瑪家鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 329,
+                            "districtName": "泰武鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 330,
+                            "districtName": "來義鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 331,
+                            "districtName": "春日鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 332,
+                            "districtName": "獅子鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          },
+                          {
+                            "districtId": 333,
+                            "districtName": "牡丹鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 172,
+                            "parentDistrictName": "屏東縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 172
+                      },
+                      {
+                        "districtName": "花蓮縣",
+                        "childDistricts": [],
+                        "administrativeAreaId": 2,
+                        "districtId": 173
+                      },
+                      {
+                        "districtName": "臺東縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 334,
+                            "districtName": "臺東市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 335,
+                            "districtName": "成功鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 336,
+                            "districtName": "關山鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 337,
+                            "districtName": "卑南鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 338,
+                            "districtName": "大武鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 339,
+                            "districtName": "太麻里鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 340,
+                            "districtName": "東河鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 341,
+                            "districtName": "長濱鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 342,
+                            "districtName": "鹿野鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 343,
+                            "districtName": "池上鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 344,
+                            "districtName": "綠島鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 345,
+                            "districtName": "延平鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 346,
+                            "districtName": "海端鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 347,
+                            "districtName": "達仁鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 348,
+                            "districtName": "金峰鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          },
+                          {
+                            "districtId": 349,
+                            "districtName": "蘭嶼鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 174,
+                            "parentDistrictName": "臺東縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 174
+                      },
+                      {
+                        "districtName": "澎湖縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 350,
+                            "districtName": "馬公市",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 175,
+                            "parentDistrictName": "澎湖縣"
+                          },
+                          {
+                            "districtId": 351,
+                            "districtName": "湖西鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 175,
+                            "parentDistrictName": "澎湖縣"
+                          },
+                          {
+                            "districtId": 352,
+                            "districtName": "白沙鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 175,
+                            "parentDistrictName": "澎湖縣"
+                          },
+                          {
+                            "districtId": 353,
+                            "districtName": "西嶼鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 175,
+                            "parentDistrictName": "澎湖縣"
+                          },
+                          {
+                            "districtId": 354,
+                            "districtName": "望安鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 175,
+                            "parentDistrictName": "澎湖縣"
+                          },
+                          {
+                            "districtId": 355,
+                            "districtName": "七美鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 175,
+                            "parentDistrictName": "澎湖縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 175
+                      },
+                      {
+                        "districtName": "金門縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 356,
+                            "districtName": "金城鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 176,
+                            "parentDistrictName": "金門縣"
+                          },
+                          {
+                            "districtId": 357,
+                            "districtName": "金湖鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 176,
+                            "parentDistrictName": "金門縣"
+                          },
+                          {
+                            "districtId": 358,
+                            "districtName": "金沙鎮",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 176,
+                            "parentDistrictName": "金門縣"
+                          },
+                          {
+                            "districtId": 359,
+                            "districtName": "金寧鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 176,
+                            "parentDistrictName": "金門縣"
+                          },
+                          {
+                            "districtId": 360,
+                            "districtName": "烈嶼鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 176,
+                            "parentDistrictName": "金門縣"
+                          },
+                          {
+                            "districtId": 361,
+                            "districtName": "烏坵鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 176,
+                            "parentDistrictName": "金門縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 176
+                      },
+                      {
+                        "districtName": "連江縣",
+                        "childDistricts": [
+                          {
+                            "districtId": 362,
+                            "districtName": "南竿鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 177,
+                            "parentDistrictName": "連江縣"
+                          },
+                          {
+                            "districtId": 363,
+                            "districtName": "北竿鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 177,
+                            "parentDistrictName": "連江縣"
+                          },
+                          {
+                            "districtId": 364,
+                            "districtName": "莒光鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 177,
+                            "parentDistrictName": "連江縣"
+                          },
+                          {
+                            "districtId": 365,
+                            "districtName": "東引鄉",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 177,
+                            "parentDistrictName": "連江縣"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 177
+                      },
+                      {
+                        "districtName": "基隆市",
+                        "childDistricts": [
+                          {
+                            "districtId": 366,
+                            "districtName": "中正區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 178,
+                            "parentDistrictName": "基隆市"
+                          },
+                          {
+                            "districtId": 367,
+                            "districtName": "七堵區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 178,
+                            "parentDistrictName": "基隆市"
+                          },
+                          {
+                            "districtId": 368,
+                            "districtName": "暖暖區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 178,
+                            "parentDistrictName": "基隆市"
+                          },
+                          {
+                            "districtId": 369,
+                            "districtName": "仁愛區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 178,
+                            "parentDistrictName": "基隆市"
+                          },
+                          {
+                            "districtId": 370,
+                            "districtName": "中山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 178,
+                            "parentDistrictName": "基隆市"
+                          },
+                          {
+                            "districtId": 371,
+                            "districtName": "安樂區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 178,
+                            "parentDistrictName": "基隆市"
+                          },
+                          {
+                            "districtId": 372,
+                            "districtName": "信義區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 178,
+                            "parentDistrictName": "基隆市"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 178
+                      },
+                      {
+                        "districtName": "新竹市",
+                        "childDistricts": [
+                          {
+                            "districtId": 373,
+                            "districtName": "東區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 179,
+                            "parentDistrictName": "新竹市"
+                          },
+                          {
+                            "districtId": 374,
+                            "districtName": "北區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 179,
+                            "parentDistrictName": "新竹市"
+                          },
+                          {
+                            "districtId": 375,
+                            "districtName": "香山區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 179,
+                            "parentDistrictName": "新竹市"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 179
+                      },
+                      {
+                        "districtName": "嘉義市",
+                        "childDistricts": [
+                          {
+                            "districtId": 376,
+                            "districtName": "東區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 180,
+                            "parentDistrictName": "嘉義市"
+                          },
+                          {
+                            "districtId": 377,
+                            "districtName": "西區",
+                            "administrativeAreaId": 3,
+                            "parentDistrictId": 180,
+                            "parentDistrictName": "嘉義市"
+                          }
+                        ],
+                        "administrativeAreaId": 2,
+                        "districtId": 180
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/districts/search": {
+      "get": {
+        "summary": "以關鍵字搜尋地區",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "搜尋關鍵字",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "districts/search?keyword=",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "districtId": {
+                        "type": "integer",
+                        "title": "地區 ID"
+                      },
+                      "districtName": {
+                        "type": "string",
+                        "title": "地區名稱"
+                      },
+                      "administrativeAreaId": {
+                        "type": "integer",
+                        "title": "行政區 ID"
+                      },
+                      "parentDistrictId": {
+                        "type": "integer",
+                        "title": "父地區 ID",
+                        "nullable": true
+                      },
+                      "parentDistrictName": {
+                        "type": "string",
+                        "title": "父地區名稱",
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "districtId",
+                      "districtName",
+                      "administrativeAreaId",
+                      "parentDistrictId",
+                      "parentDistrictName"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "districts/search?keyword=",
+                    "value": [
+                      {
+                        "districtId": 70,
+                        "districtName": "東勢區",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 4,
+                        "parentDistrictName": "臺中市"
+                      },
+                      {
+                        "districtId": 62,
+                        "districtName": "東區",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 4,
+                        "parentDistrictName": "臺中市"
+                      },
+                      {
+                        "districtId": 95,
+                        "districtName": "東山區",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 5,
+                        "parentDistrictName": "臺南市"
+                      },
+                      {
+                        "districtId": 121,
+                        "districtName": "東區",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 5,
+                        "parentDistrictName": "臺南市"
+                      },
+                      {
+                        "districtId": 182,
+                        "districtName": "羅東鎮",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 165,
+                        "parentDistrictName": "宜蘭縣"
+                      },
+                      {
+                        "districtId": 196,
+                        "districtName": "竹東鎮",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 166,
+                        "parentDistrictName": "新竹縣"
+                      },
+                      {
+                        "districtId": 276,
+                        "districtName": "東勢鄉",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 170,
+                        "parentDistrictName": "雲林縣"
+                      },
+                      {
+                        "districtId": 291,
+                        "districtName": "東石鄉",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 171,
+                        "parentDistrictName": "嘉義縣"
+                      },
+                      {
+                        "districtId": 301,
+                        "districtName": "屏東市",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 172,
+                        "parentDistrictName": "屏東縣"
+                      },
+                      {
+                        "districtId": 303,
+                        "districtName": "東港鎮",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 172,
+                        "parentDistrictName": "屏東縣"
+                      },
+                      {
+                        "districtId": 340,
+                        "districtName": "東河鄉",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 174,
+                        "parentDistrictName": "臺東縣"
+                      },
+                      {
+                        "districtId": 334,
+                        "districtName": "臺東市",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 174,
+                        "parentDistrictName": "臺東縣"
+                      },
+                      {
+                        "districtId": 365,
+                        "districtName": "東引鄉",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 177,
+                        "parentDistrictName": "連江縣"
+                      },
+                      {
+                        "districtId": 373,
+                        "districtName": "東區",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 179,
+                        "parentDistrictName": "新竹市"
+                      },
+                      {
+                        "districtId": 376,
+                        "districtName": "東區",
+                        "administrativeAreaId": 3,
+                        "parentDistrictId": 180,
+                        "parentDistrictName": "嘉義市"
+                      },
+                      {
+                        "districtId": 172,
+                        "districtName": "屏東縣",
+                        "administrativeAreaId": 2,
+                        "parentDistrictId": null,
+                        "parentDistrictName": null
+                      },
+                      {
+                        "districtId": 174,
+                        "districtName": "臺東縣",
+                        "administrativeAreaId": 2,
+                        "parentDistrictId": null,
+                        "parentDistrictName": null
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

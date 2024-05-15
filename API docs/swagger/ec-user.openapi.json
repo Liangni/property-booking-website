@@ -1,1 +1,601 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/":{"get":{"summary":"取得使用者願望房源","deprecated":false,"description":"","tags":[],"parameters":[],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"wishPropertyId":{"type":"integer","title":"願望房源 ID"},"propertyId":{"type":"integer","title":"房源 ID"},"ecUserId":{"type":"integer","title":"使用者 ID"},"checkinDate":{"type":"string","title":"入住時間"},"checkoutDate":{"type":"string","title":"退房時間"}}}},"examples":{"1":{"summary":"200","value":[{"wishPropertyId":1,"propertyId":1,"ecUserId":1,"checkinDate":"2024-05-17","checkoutDate":"2024-05-18"}]}}}}}},"security":[]}},"/api/v1/ec-users/{ecUserId}/booking-orders":{"get":{"summary":"取得使用者住宿訂單","deprecated":false,"description":"","tags":[],"parameters":[{"name":"ecUserId","in":"path","description":"使用者 ID","required":true,"example":"","schema":{"type":"string"}},{"name":"isHost","in":"query","description":"是否為房源出租人","required":true,"example":"","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"responses":{"200":{"description":"查詢住宿訂單","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"bookingOrderId":{"type":"integer","title":"住宿訂單 ID"},"checkinDate":{"type":"string","title":"入住日期"},"checkoutDate":{"type":"string","title":"退房日期"},"guestName":{"type":"string","title":"房客姓名"},"guestEmail":{"type":"string","title":"房客電子信箱地址"},"guestPhone":{"type":"string","title":"房客聯絡電話"},"arrivalTime":{"type":"string","title":"到達時間"},"guestMessage":{"type":"string","title":"備註"},"orderTotal":{"type":"integer","title":"訂單金額"},"propertyId":{"type":"integer","title":"房源 ID"},"hostId":{"type":"integer","title":"出租人 ID"},"customerId":{"type":"integer","title":"房客 ID"},"discountId":{"type":"integer","title":"折扣 ID"}}}},"examples":{"1":{"summary":"查詢住宿訂單","value":[{"bookingOrderId":2,"checkinDate":"2024-04-30","checkoutDate":"2024-05-01","guestName":"test guest name","guestEmail":"test guest email","guestPhone":"0933333333","arrivalTime":"11:00-13:00","guestMessage":null,"orderTotal":1400,"propertyId":1,"hostId":1,"customerId":1,"discountId":null}]}}}}}},"security":[]}},"/api/v1/ec-users/{ecUserId}/properties":{"get":{"summary":"取得使用者房源","deprecated":false,"description":"","tags":[],"parameters":[{"name":"ecUserId","in":"path","description":"使用者 ID","required":true,"example":"1","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"propertyId":{"type":"integer","title":"房源 ID"},"propertyTitle":{"type":"string","title":"房源名稱"},"districtId":{"type":"integer","title":"地區 ID"},"parentDistrictId":{"type":"integer","title":"父地區 ID"},"districtName":{"type":"string","title":"地區名稱"},"parentDistrictName":{"type":"string","title":"父地區名稱"}},"required":["propertyId","propertyTitle","districtId","parentDistrictId","districtName","parentDistrictName"]}},"examples":{"1":{"summary":"200","value":[{"propertyId":2,"propertyTitle":"test property 2","districtId":181,"districtName":"宜蘭市","parentDistrictId":165,"parentDistrictName":"宜蘭市"},{"propertyId":3,"propertyTitle":"test property 3","districtId":127,"districtName":"鹽埕區","parentDistrictId":6,"parentDistrictName":"鹽埕區"},{"propertyId":1,"propertyTitle":"森林小屋1","districtId":181,"districtName":"宜蘭市","parentDistrictId":165,"parentDistrictName":"宜蘭市"}]}}}}}},"security":[]}},"/api/v1/ec-users/{ecUserId}/picture-upload-urls":{"get":{"summary":"取得使用者圖片上傳連結","deprecated":false,"description":"","tags":[],"parameters":[{"name":"ecUserId","in":"path","description":"使用者 ID","required":true,"example":"1","schema":{"type":"string"}},{"name":"fileExtension","in":"query","description":"圖片檔案副檔名","required":true,"example":"jpg","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"object","properties":{"pictureId":{"type":"integer","title":"圖片 ID"},"sizeOriginal":{"type":"string","title":"原始圖片的上傳連結"},"size1":{"type":"string","title":"圖片尺寸代號 1 的上傳連結"}},"required":["pictureId","sizeOriginal","size1"]},"examples":{"1":{"summary":"200","value":{"pictureId":10,"sizeOriginal":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/ecUsers/1/size-original/02cdf2a4-34eb-401b-9a3c-ccfbb48d9f45.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240509T033910Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240509%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=78dc77ccea76e2b0b65b1e776886469b5f6473b5108291ed95559acee349d1d7","size1":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/ecUsers/1/size-1/b100d3b2-f75e-400a-ba36-b218f3565fb6.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240509T033910Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240509%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=f279c49bf87e12d1ad1ebe09bf662162d5ac7ce005d775a11450c94de546377c"}}}}}}},"security":[]}},"/api/v1/ec-users/{ecUserId}/ec-user-pictures":{"post":{"summary":"新增使用者圖片","deprecated":false,"description":"","tags":[],"parameters":[{"name":"ecUserId","in":"path","description":"使用者 ID","required":true,"example":"1","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"pictureId":{"type":"integer","title":"圖片 ID"}},"required":["pictureId"]},"example":{"pictureId":10}}}},"responses":{"200":{"description":"200","content":{"*/*":{"schema":{"type":"object","properties":{}},"examples":{"1":{"summary":"200","value":"ok"}}}}}},"security":[]}},"/api/v1/ec-users/{ecUserId}/picture-download-urls":{"get":{"summary":"取得使用者圖片下載連結","deprecated":false,"description":"","tags":[],"parameters":[{"name":"ecUserId","in":"path","description":"使用者 ID","required":true,"example":"1","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"object","properties":{"sizeNum":{"type":"integer","title":"圖片尺寸代號"},"downloadUrl":{"type":"string","title":"下載連結"}},"required":["sizeNum","downloadUrl"]},"examples":{"1":{"summary":"200","value":{"sizeNum":3,"downloadUrl":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/ecUsers/1/size-3/8e772f73-1a62-479b-a5f9-a3b355edbd02.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240509T085417Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=AKIAYUGJSPN7IY6RUGER%2F20240509%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=f4fc08848cf96f5327fbe5a5c75622e95090c5661a5cd8d79df1118eb588bcfb"}}}}}}},"security":[]}},"/api/v1/ec-users/{ecUserId}":{"get":{"summary":"取得使用者資訊","deprecated":false,"description":"","tags":[],"parameters":[{"name":"ecUserId","in":"path","description":"使用者 ID","required":true,"example":"1","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"object","properties":{"ecUserName":{"type":"string","title":"使用者姓名"},"ecUserUsername":{"type":"string","title":"帳號"},"ecUserIntroduction":{"type":"string","title":"使用者自我介紹"}},"required":["ecUserName","ecUserUsername","ecUserIntroduction"]},"examples":{"1":{"summary":"200","value":{"ecUserName":"test user 1","ecUserUsername":"user1","ecUserIntroduction":"test introduction 1"}}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/ec-users/{ecUserId}/wish-properties": {
+      "get": {
+        "summary": "取得使用者願望房源",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "ecUserId",
+            "in": "path",
+            "description": "使用者 ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "wishPropertyId": {
+                        "type": "integer",
+                        "title": "願望房源 ID"
+                      },
+                      "propertyId": {
+                        "type": "integer",
+                        "title": "房源 ID"
+                      },
+                      "ecUserId": {
+                        "type": "integer",
+                        "title": "使用者 ID"
+                      },
+                      "checkinDate": {
+                        "type": "string",
+                        "title": "入住時間"
+                      },
+                      "checkoutDate": {
+                        "type": "string",
+                        "title": "退房時間"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": [
+                      {
+                        "wishPropertyId": 1,
+                        "propertyId": 1,
+                        "ecUserId": 1,
+                        "checkinDate": "2024-05-17",
+                        "checkoutDate": "2024-05-18"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/ec-users/{ecUserId}/booking-orders": {
+      "get": {
+        "summary": "取得使用者住宿訂單",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "ecUserId",
+            "in": "path",
+            "description": "使用者 ID",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isHost",
+            "in": "query",
+            "description": "是否為房源出租人",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查詢住宿訂單",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "bookingOrderId": {
+                        "type": "integer",
+                        "title": "住宿訂單 ID"
+                      },
+                      "checkinDate": {
+                        "type": "string",
+                        "title": "入住日期"
+                      },
+                      "checkoutDate": {
+                        "type": "string",
+                        "title": "退房日期"
+                      },
+                      "guestName": {
+                        "type": "string",
+                        "title": "房客姓名"
+                      },
+                      "guestEmail": {
+                        "type": "string",
+                        "title": "房客電子信箱地址"
+                      },
+                      "guestPhone": {
+                        "type": "string",
+                        "title": "房客聯絡電話"
+                      },
+                      "arrivalTime": {
+                        "type": "string",
+                        "title": "到達時間"
+                      },
+                      "guestMessage": {
+                        "type": "string",
+                        "title": "備註"
+                      },
+                      "orderTotal": {
+                        "type": "integer",
+                        "title": "訂單金額"
+                      },
+                      "propertyId": {
+                        "type": "integer",
+                        "title": "房源 ID"
+                      },
+                      "hostId": {
+                        "type": "integer",
+                        "title": "出租人 ID"
+                      },
+                      "customerId": {
+                        "type": "integer",
+                        "title": "房客 ID"
+                      },
+                      "discountId": {
+                        "type": "integer",
+                        "title": "折扣 ID"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "查詢住宿訂單",
+                    "value": [
+                      {
+                        "bookingOrderId": 2,
+                        "checkinDate": "2024-04-30",
+                        "checkoutDate": "2024-05-01",
+                        "guestName": "test guest name",
+                        "guestEmail": "test guest email",
+                        "guestPhone": "0933333333",
+                        "arrivalTime": "11:00-13:00",
+                        "guestMessage": null,
+                        "orderTotal": 1400,
+                        "propertyId": 1,
+                        "hostId": 1,
+                        "customerId": 1,
+                        "discountId": null
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/ec-users/{ecUserId}/properties": {
+      "get": {
+        "summary": "取得使用者房源",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "ecUserId",
+            "in": "path",
+            "description": "使用者 ID",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "propertyId": {
+                        "type": "integer",
+                        "title": "房源 ID"
+                      },
+                      "propertyTitle": {
+                        "type": "string",
+                        "title": "房源名稱"
+                      },
+                      "districtId": {
+                        "type": "integer",
+                        "title": "地區 ID"
+                      },
+                      "parentDistrictId": {
+                        "type": "integer",
+                        "title": "父地區 ID"
+                      },
+                      "districtName": {
+                        "type": "string",
+                        "title": "地區名稱"
+                      },
+                      "parentDistrictName": {
+                        "type": "string",
+                        "title": "父地區名稱"
+                      }
+                    },
+                    "required": [
+                      "propertyId",
+                      "propertyTitle",
+                      "districtId",
+                      "parentDistrictId",
+                      "districtName",
+                      "parentDistrictName"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": [
+                      {
+                        "propertyId": 2,
+                        "propertyTitle": "test property 2",
+                        "districtId": 181,
+                        "districtName": "宜蘭市",
+                        "parentDistrictId": 165,
+                        "parentDistrictName": "宜蘭市"
+                      },
+                      {
+                        "propertyId": 3,
+                        "propertyTitle": "test property 3",
+                        "districtId": 127,
+                        "districtName": "鹽埕區",
+                        "parentDistrictId": 6,
+                        "parentDistrictName": "鹽埕區"
+                      },
+                      {
+                        "propertyId": 1,
+                        "propertyTitle": "森林小屋1",
+                        "districtId": 181,
+                        "districtName": "宜蘭市",
+                        "parentDistrictId": 165,
+                        "parentDistrictName": "宜蘭市"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/ec-users/{ecUserId}/picture-upload-urls": {
+      "get": {
+        "summary": "取得使用者圖片上傳連結",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "ecUserId",
+            "in": "path",
+            "description": "使用者 ID",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileExtension",
+            "in": "query",
+            "description": "圖片檔案副檔名",
+            "required": true,
+            "example": "jpg",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pictureId": {
+                      "type": "integer",
+                      "title": "圖片 ID"
+                    },
+                    "sizeOriginal": {
+                      "type": "string",
+                      "title": "原始圖片的上傳連結"
+                    },
+                    "size1": {
+                      "type": "string",
+                      "title": "圖片尺寸代號 1 的上傳連結"
+                    }
+                  },
+                  "required": [
+                    "pictureId",
+                    "sizeOriginal",
+                    "size1"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": {
+                      "pictureId": 10,
+                      "sizeOriginal": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/ecUsers/1/size-original/02cdf2a4-34eb-401b-9a3c-ccfbb48d9f45.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240509T033910Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240509%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=78dc77ccea76e2b0b65b1e776886469b5f6473b5108291ed95559acee349d1d7",
+                      "size1": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/ecUsers/1/size-1/b100d3b2-f75e-400a-ba36-b218f3565fb6.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240509T033910Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240509%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=f279c49bf87e12d1ad1ebe09bf662162d5ac7ce005d775a11450c94de546377c"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/ec-users/{ecUserId}/ec-user-pictures": {
+      "post": {
+        "summary": "新增使用者圖片",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "ecUserId",
+            "in": "path",
+            "description": "使用者 ID",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pictureId": {
+                    "type": "integer",
+                    "title": "圖片 ID"
+                  }
+                },
+                "required": [
+                  "pictureId"
+                ]
+              },
+              "example": {
+                "pictureId": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": "ok"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/ec-users/{ecUserId}/picture-download-urls": {
+      "get": {
+        "summary": "取得使用者圖片下載連結",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "ecUserId",
+            "in": "path",
+            "description": "使用者 ID",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sizeNum": {
+                      "type": "integer",
+                      "title": "圖片尺寸代號"
+                    },
+                    "downloadUrl": {
+                      "type": "string",
+                      "title": "下載連結"
+                    }
+                  },
+                  "required": [
+                    "sizeNum",
+                    "downloadUrl"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": {
+                      "sizeNum": 3,
+                      "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/ecUsers/1/size-3/8e772f73-1a62-479b-a5f9-a3b355edbd02.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240509T085417Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=AKIAYUGJSPN7IY6RUGER%2F20240509%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=f4fc08848cf96f5327fbe5a5c75622e95090c5661a5cd8d79df1118eb588bcfb"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/ec-users/{ecUserId}": {
+      "get": {
+        "summary": "取得使用者資訊",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "ecUserId",
+            "in": "path",
+            "description": "使用者 ID",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ecUserName": {
+                      "type": "string",
+                      "title": "使用者姓名"
+                    },
+                    "ecUserUsername": {
+                      "type": "string",
+                      "title": "帳號"
+                    },
+                    "ecUserIntroduction": {
+                      "type": "string",
+                      "title": "使用者自我介紹"
+                    }
+                  },
+                  "required": [
+                    "ecUserName",
+                    "ecUserUsername",
+                    "ecUserIntroduction"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": {
+                      "ecUserName": "test user 1",
+                      "ecUserUsername": "user1",
+                      "ecUserIntroduction": "test introduction 1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}
