@@ -23,8 +23,14 @@
         from booking_calendar
         where property_id = #{propertyId,jdbcType=BIGINT}
         and
-        booking_date >= #{startDate}
+        booking_date >= #{propertyId,jdbcType=BIGINT}
         and
         booking_date &lt;= #{endDate};
     </select>
+
+    <delete id="deleteByPropertyIdAndCheckinPeriod"  parameterType="java.util.Map">
+        delete from booking_calendar
+        where property_id = #{propertyId,jdbcType=BIGINT}
+            and booking_date between #{checkinDate} and  #{checkoutDate};
+    </delete>
 </mapper>

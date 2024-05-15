@@ -1,6 +1,5 @@
 package com.penny.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -46,6 +45,29 @@ public class JsonConverter {
         try {
             // 反序列化 JSON 成特定的物件
             return objectMapper.readValue(json, valueTypeRef);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error parsing JSON: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 將 JSON 字串反序列化為指定類型的物件。
+     *
+     * @param json      要反序列化的 JSON 字串
+     * @param valueType 目標類型的 Class 對象，用於指定反序列化後的物件類型
+     * @param <T>       反序列化後的物件類型
+     * @return 反序列化後的指定類型物件，如果 JSON 字串為空或為 "null"，則返回 null
+     * @throws IllegalArgumentException 如果反序列化過程中發生錯誤，將拋出 IllegalArgumentException
+     */
+    public <T> T convertJsonToObject(String json, Class<T> valueType)  {
+        // 驗證 JSON 字串
+        if (json == null || json.isEmpty() || json.equals("null")) {
+            return null;
+        }
+
+        try {
+            // 反序列化 JSON 成特定的物件
+            return objectMapper.readValue(json, valueType);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error parsing JSON: " + e.getMessage(), e);
         }

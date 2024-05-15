@@ -1,23 +1,21 @@
 package com.penny.rabbitMq;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.penny.request.ConfirmPaymentRequest;
 import com.penny.service.BookingOrderService;
+import com.penny.util.JsonConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Arrays;
 
 
 @Component
 @RequiredArgsConstructor
 public class PaymentRabbitListener {
     private final BookingOrderService bookingOrderService;
+
+    private final JsonConverter jsonConverter;
 
     /**
      * RabbitMQ 監聽器，用於處理支付列隊中的訊息。
@@ -26,39 +24,26 @@ public class PaymentRabbitListener {
      */
     @RabbitListener(queues = "paymentQueue")
     void completeBookingOrder(Message message) {
+        // 將 Message 的 body 轉換為 ConfirmPaymentRequest 物件
+        ConfirmPaymentRequest confirmPaymentRequest = parseMessageContent(message, ConfirmPaymentRequest.class);
 
-        try {
-            // 將 Message 的 body 轉換為 ConfirmPaymentRequest 物件
-            ConfirmPaymentRequest confirmPaymentRequest = parseMessageContent(message);
-
-            // 更新 booking order 狀態
-            bookingOrderService.updateBookingOrderStatus(confirmPaymentRequest);
-
-        } catch (Exception e) {
-            System.err.println("Error processing message: " + e.getMessage());
-        }
+        // 更新 booking order 狀態
+        bookingOrderService.updateBookingOrderStatus(confirmPaymentRequest);
     }
 
     /**
-     * 解析 RabbitMQ 消息的內容，將其轉換為 ConfirmPaymentRequest 物件。
+     * 解析消息的內容並將其轉換為指定類型的物件。
      *
-     * @param message RabbitMQ 的消息
-     * @return 解析後的 ConfirmPaymentRequest 物件
+     * @param message    要解析的消息
+     * @param valueType 目標類型的 Type
+     * @param <T>         目標類型
+     * @return 解析後的目標物件
      */
-    private ConfirmPaymentRequest parseMessageContent(Message message) {
+    private <T> T parseMessageContent(Message message, Class<T> valueType) {
+        // 獲取 Message 的內容，並轉換為字串
+        String jsonContent = new String(message.getBody());
 
-        try {
-            // 獲取 Message 的內容，並轉換為字串
-            String jsonContent = new String(message.getBody());
-
-            // 使用 Jackson 將 JSON 轉換為 ConfirmPaymentRequest 物件
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(jsonContent, ConfirmPaymentRequest.class);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error parsing message content: " + e.getMessage());
-        }
-
+        return jsonConverter.convertJsonToObject(jsonContent, valueType);
     }
 
 }
