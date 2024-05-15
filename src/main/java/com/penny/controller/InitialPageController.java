@@ -1,11 +1,14 @@
 package com.penny.controller;
 
+import com.penny.response.ReadInitialPagePropertyResponse;
 import com.penny.service.InitialPageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,8 +23,8 @@ public class InitialPageController {
      * @return 包含初始頁面資料的 Map 的 ResponseEntity
      */
     @GetMapping("init")
-    public Map<String, Object> getInitialPage(
+    public ResponseEntity<List<ReadInitialPagePropertyResponse>> getInitialPage(
     ) {
-        return initialPageService.getInitialPageData();
+        return ResponseEntity.ok(initialPageService.getInitialPageData());
     }
 }

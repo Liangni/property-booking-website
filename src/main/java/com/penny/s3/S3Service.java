@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,7 +16,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class S3Service {
 
-    private static final int EXPIRE_IN_MIN = 60;
+    @Value("${aws.presigned-url.expire-in-min}")
+    private Integer EXPIRE_IN_MIN;
 
     private final AmazonS3 amazonS3;
 

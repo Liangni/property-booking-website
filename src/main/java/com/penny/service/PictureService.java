@@ -220,7 +220,7 @@ public class PictureService {
         // 找尋房源圖片並排序
         List<PropertyPictureVo> propertyPictureVoList = listPropertyPictureInOrder(propertyId);
 
-        // 使用抽取的方法獲取圖片下載 URL 列表
+        // 獲取圖片下載 URL 列表
         return listPropertyPictureDtDownloadUrlMap(propertyPictureVoList, sizeNum);
     }
 
@@ -441,7 +441,7 @@ public class PictureService {
      * @param propertyId 房源ID
      * @return 排序後的房源圖片列表
      */
-    private List<PropertyPictureVo> listPropertyPictureInOrder(Long propertyId) {
+    public List<PropertyPictureVo> listPropertyPictureInOrder(Long propertyId) {
         // 從資料庫找尋 propertyId 相符的房源圖片
         List<PropertyPictureVo> propertyPictureVoList = propertyPictureVoMapper.listByPropertyId(propertyId);
 
@@ -458,7 +458,7 @@ public class PictureService {
      * @param sizeNum 圖片大小編號
      * @return 包含圖片下載 URL 的 Map 列表
      */
-    private List<Map<String, Object>> listPropertyPictureDtDownloadUrlMap(List<PropertyPictureVo> propertyPictureVoList, Integer sizeNum) {
+    public List<Map<String, Object>> listPropertyPictureDtDownloadUrlMap(List<PropertyPictureVo> propertyPictureVoList, Integer sizeNum) {
         return propertyPictureVoList
                 .stream()
                 // 將每個房屋圖片 map 為對應的圖片下載 URL Map
