@@ -445,7 +445,7 @@
         "security": []
       }
     },
-    "/districts": {
+    "/api/v1//districts": {
       "get": {
         "summary": "取得地區",
         "deprecated": false,
