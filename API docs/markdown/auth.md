@@ -1,10 +1,6 @@
----
-title: Property Booking Website
----
-
 # Property Booking Website
 
-# api/v1/auth
+# auth
 
 ## POST 使用者註冊
 
