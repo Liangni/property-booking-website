@@ -158,15 +158,24 @@ public class BookingOrderService {
      *
      * @param confirmPaymentRequest 確認付款請求
      */
+    @Transactional
     public void updateBookingOrderStatus(ConfirmPaymentRequest confirmPaymentRequest) {
+        // 根據支付確認請求中的預訂訂單 ID 查詢相關的預訂訂單
         BookingOrderBaseVo bookingOrderBaseVo = bookingOrderBaseVoMapper.selectByPrimaryKey(confirmPaymentRequest.getBookingOrderId());
 
+        // 如果支付成功
         if (confirmPaymentRequest.getIsPaymentSuccessful()) {
+            // 設置預訂訂單的支付狀態為成功
             bookingOrderBaseVo.setPaymentStatus(BookingOrderPaymentStatusEnum.SUCCEED.getDisplayName());
         } else {
+            // 如果支付失敗，設置預訂訂單的支付狀態為失敗
             bookingOrderBaseVo.setPaymentStatus(BookingOrderPaymentStatusEnum.FAIL.getDisplayName());
+
+            // 根據預訂訂單的屬性 ID、入住日期和退房日期刪除對應的預訂日曆記錄
+            bookingCalendarVoMapper.deleteByPropertyIdAndCheckinPeriod(bookingOrderBaseVo.getPropertyId(), bookingOrderBaseVo.getCheckinDate(), bookingOrderBaseVo.getCheckoutDate());
         }
 
+        // 更新預訂訂單資訊
         bookingOrderBaseVoMapper.updateByPrimaryKey(bookingOrderBaseVo);
     }
 
