@@ -5,6 +5,7 @@ import com.penny.dao.PropertyDiscountVoMapper;
 import com.penny.dao.base.DiscountBaseVoMapper;
 import com.penny.dao.base.PropertyBaseVoMapper;
 import com.penny.dao.base.PropertyDiscountBaseVoMapper;
+import com.penny.exception.ResourceDuplicateException;
 import com.penny.exception.ResourceNotFoundException;
 import com.penny.request.CreatePropertyDiscountRequest;
 import com.penny.vo.DiscountVo;
@@ -74,10 +75,11 @@ public class DiscountService {
     }
 
     /**
-     * 根據建立房源折扣請求來新增房源折扣。
+     * 根據房源 ID 建立新的房源折扣資料。
      *
-     * @param propertyId 房源 ID
-     * @param createRequest 創建房源折扣請求
+     * @param propertyId     房源 ID
+     * @param createRequest  建立房源折扣的請求
+     * @throws ResourceDuplicateException    如果該房源已存在相同折扣或該房源已存在相同最少預定天數的折扣，則拋出資源重複異常
      */
     public void createPropertyDiscount(Long propertyId, CreatePropertyDiscountRequest createRequest){
         // 取得建立房源折扣請求中的折扣值和最少預訂天數
@@ -104,10 +106,19 @@ public class DiscountService {
         }
 
         // 查詢是否已存在相同的房源折扣
-        PropertyDiscountVo existingPropertyDiscountVo = propertyDiscountVoMapper.selectByPropertyIdAndDiscountId(propertyId, discountId);
+        List<DiscountVo> propertyDiscountList = discountVoMapper.listByPropertyId(propertyId);
 
-        // 如果已存在相同的房源折扣，則不進行新增操作
-        if (existingPropertyDiscountVo != null) return;
+        for (DiscountVo discountVo: propertyDiscountList) {
+            // 如果已存在相同的房源折扣，則拋出錯誤
+            if (discountVo.getDiscountId().equals(discountId)) {
+                throw new ResourceDuplicateException("Property discount with discountId %s already exists".formatted(discountId));
+            }
+
+            // 如果已存在有相同最少預定天數的房源折扣，則拋出錯誤
+            if (discountVo.getLeastNumOfBookingDays().equals(leastNumOfBookingDays)) {
+                throw new ResourceDuplicateException("Property already has discount with the same leastNumOfBookingDays");
+            }
+        }
 
         // 建立新的房源折扣資料
         PropertyDiscountBaseVo newPropertyDiscountBaseVo = PropertyDiscountBaseVo
