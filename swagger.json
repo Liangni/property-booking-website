@@ -4035,9 +4035,7 @@
         "summary": "刪除指定房源設施",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "property"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "propertyId",
@@ -4070,33 +4068,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "propertyId": {
-                    "type": "integer",
-                    "title": "房源 ID"
-                  },
-                  "amenityId": {
-                    "type": "integer",
-                    "title": "設施 ID"
-                  }
-                },
-                "required": [
-                  "propertyId",
-                  "amenityId"
-                ]
-              },
-              "example": {
-                "propertyId": 1,
-                "amenityId": 1
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "200",
@@ -4864,21 +4835,18 @@
         "security": []
       }
     },
-    "/api/v1/amenities/property-amenities": {
+    "/api/v1/properties/{propertyId}/amenities": {
       "get": {
         "summary": "取得指定房源設施",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "amenity"
-        ],
+        "tags": ["property"],
         "parameters": [
           {
             "name": "propertyId",
-            "in": "query",
+            "in": "path",
             "description": "房源 ID",
             "required": true,
-            "example": "1",
             "schema": {
               "type": "string"
             }
