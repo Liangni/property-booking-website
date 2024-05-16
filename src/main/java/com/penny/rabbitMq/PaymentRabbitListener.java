@@ -4,6 +4,7 @@ import com.penny.request.ConfirmPaymentRequest;
 import com.penny.service.BookingOrderService;
 import com.penny.util.JsonConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -17,17 +18,23 @@ public class PaymentRabbitListener {
     private final JsonConverter jsonConverter;
 
     /**
-     * RabbitMQ 監聽器，用於處理支付列隊中的訊息。
+     * 監聽 "paymentQueue" 隊列，處理完成預訂訂單的訊息。
      *
-     * @param message RabbitMQ 的消息
+     * @param message RabbitMQ 接收到的訊息
+     * @throws AmqpRejectAndDontRequeueException 如果處理過程中發生錯誤，訊息將被拋至死信隊列
      */
     @RabbitListener(queues = "paymentQueue")
     void completeBookingOrder(Message message) {
-        // 將 Message 的 body 轉換為 ConfirmPaymentRequest 物件
-        ConfirmPaymentRequest confirmPaymentRequest = parseMessageContent(message, ConfirmPaymentRequest.class);
+        try {
+            // 將 Message 的 body 轉換為 ConfirmPaymentRequest 物件
+            ConfirmPaymentRequest confirmPaymentRequest = parseMessageContent(message, ConfirmPaymentRequest.class);
 
-        // 更新 booking order 狀態
-        bookingOrderService.updateBookingOrderStatus(confirmPaymentRequest);
+            // 更新 booking order 狀態
+            bookingOrderService.updateBookingOrderStatus(confirmPaymentRequest);
+        } catch(Exception e) {
+            // 若發生錯誤，將訊息發至死信列隊
+            throw new AmqpRejectAndDontRequeueException("Error in receiving paymentQueue message: " + e.getMessage());
+        }
     }
 
     /**
