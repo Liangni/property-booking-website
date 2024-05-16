@@ -3975,9 +3975,7 @@
         "summary": "新增指定房源設施",
         "deprecated": false,
         "description": "",
-        "tags": [
-          "property"
-        ],
+        "tags": ["property"],
         "parameters": [
           {
             "name": "propertyId",
