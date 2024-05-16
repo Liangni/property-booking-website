@@ -3423,7 +3423,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "public-properties"
+          "public-property"
         ],
         "parameters": [
           {
