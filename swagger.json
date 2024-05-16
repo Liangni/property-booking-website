@@ -4035,7 +4035,7 @@
         "summary": "刪除指定房源設施",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["property"],
         "parameters": [
           {
             "name": "propertyId",

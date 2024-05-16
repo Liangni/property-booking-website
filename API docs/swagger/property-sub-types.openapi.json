@@ -1,1 +1,99 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/property-sub-types":{"get":{"summary":"取得次房源類型","deprecated":false,"description":"","tags":[],"parameters":[{"name":"propertyMainTypeId","in":"query","description":"房源主要類型 ID","required":true,"example":"1","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"propertySubTypeId":{"type":"integer","title":"房源次要類型 ID"},"propertySubTypeName":{"type":"string","title":"房源次要類型名稱"}},"required":["propertySubTypeId","propertySubTypeName"]}},"examples":{"1":{"summary":"200","value":[{"propertySubTypeId":1,"propertySubTypeName":"出租房源"},{"propertySubTypeId":1,"propertySubTypeName":"出租房源"},{"propertySubTypeId":1,"propertySubTypeName":"出租房源"},{"propertySubTypeId":1,"propertySubTypeName":"出租房源"}]}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/property-sub-types": {
+      "get": {
+        "summary": "取得次房源類型",
+        "deprecated": false,
+        "description": "",
+        "tags": ["property-sub-type"],
+        "parameters": [
+          {
+            "name": "propertyMainTypeId",
+            "in": "query",
+            "description": "房源主要類型 ID",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "propertySubTypeId": {
+                        "type": "integer",
+                        "title": "房源次要類型 ID"
+                      },
+                      "propertySubTypeName": {
+                        "type": "string",
+                        "title": "房源次要類型名稱"
+                      }
+                    },
+                    "required": [
+                      "propertySubTypeId",
+                      "propertySubTypeName"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": [
+                      {
+                        "propertySubTypeId": 1,
+                        "propertySubTypeName": "出租房源"
+                      },
+                      {
+                        "propertySubTypeId": 1,
+                        "propertySubTypeName": "出租房源"
+                      },
+                      {
+                        "propertySubTypeId": 1,
+                        "propertySubTypeName": "出租房源"
+                      },
+                      {
+                        "propertySubTypeId": 1,
+                        "propertySubTypeName": "出租房源"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

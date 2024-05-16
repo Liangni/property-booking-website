@@ -1,1 +1,151 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/addresses":{"post":{"summary":"增加地址","deprecated":false,"description":"","tags":[],"parameters":[{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"districtId":{"type":"integer","title":"地區 ID"},"street":{"type":"string","title":"街道名稱"}},"required":["districtId","street"]},"example":{"districtId":8,"street":"大仁街40號"}}}},"responses":{"200":{"description":"addresses","content":{"*/*":{"schema":{"type":"object","properties":{}},"examples":{"1":{"summary":"addresses","value":"ok"}}}}}},"security":[]}},"/api/v1/addresses/{addressId}":{"get":{"summary":"取得指定地址資訊","deprecated":false,"description":"","tags":[],"parameters":[{"name":"addressId","in":"path","description":"地址 ID","required":true,"example":"","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"object","properties":{"addressId":{"type":"integer","title":"地址 ID"},"street":{"type":"string","title":"街道名稱"},"adminAreaLevel3DistrictId":{"type":"integer","title":"第三級行政區 ID"},"districtName":{"type":"string","title":"行政區名稱"}},"required":["addressId","street","adminAreaLevel3DistrictId","districtName"]},"examples":{"1":{"summary":"200","value":{"addressId":1,"street":"test street 1","adminAreaLevel3DistrictId":181,"districtName":"宜蘭市"}}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/addresses": {
+      "post": {
+        "summary": "增加地址",
+        "deprecated": false,
+        "description": "",
+        "tags": ["address"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "districtId": {
+                    "type": "integer",
+                    "title": "地區 ID"
+                  },
+                  "street": {
+                    "type": "string",
+                    "title": "街道名稱"
+                  }
+                },
+                "required": [
+                  "districtId",
+                  "street"
+                ]
+              },
+              "example": {
+                "districtId": 8,
+                "street": "大仁街40號"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "addresses",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "1": {
+                    "summary": "addresses",
+                    "value": "ok"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/addresses/{addressId}": {
+      "get": {
+        "summary": "取得指定地址資訊",
+        "deprecated": false,
+        "description": "",
+        "tags": ["address"],
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "地址 ID",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "addressId": {
+                      "type": "integer",
+                      "title": "地址 ID"
+                    },
+                    "street": {
+                      "type": "string",
+                      "title": "街道名稱"
+                    },
+                    "adminAreaLevel3DistrictId": {
+                      "type": "integer",
+                      "title": "第三級行政區 ID"
+                    },
+                    "districtName": {
+                      "type": "string",
+                      "title": "行政區名稱"
+                    }
+                  },
+                  "required": [
+                    "addressId",
+                    "street",
+                    "adminAreaLevel3DistrictId",
+                    "districtName"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": {
+                      "addressId": 1,
+                      "street": "test street 1",
+                      "adminAreaLevel3DistrictId": 181,
+                      "districtName": "宜蘭市"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

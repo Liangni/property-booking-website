@@ -1,1 +1,86 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/property-main-types":{"get":{"summary":"取得主要房源類型","deprecated":false,"description":"","tags":[],"parameters":[],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"propertyMainTypeId":{"type":"integer","title":"主要房源類型 ID"},"propertyMainTypeName":{"type":"string","title":"主要房源類型名稱"}},"required":["propertyMainTypeId","propertyMainTypeName"]}},"examples":{"1":{"summary":"200","value":[{"propertyMainTypeId":1,"propertyMainTypeName":"公寓"},{"propertyMainTypeId":2,"propertyMainTypeName":"獨棟房屋"},{"propertyMainTypeId":3,"propertyMainTypeName":"附屬建築"},{"propertyMainTypeId":4,"propertyMainTypeName":"獨特房源"},{"propertyMainTypeId":5,"propertyMainTypeName":"B&B"},{"propertyMainTypeId":6,"propertyMainTypeName":"精品旅館"}]}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/property-main-types": {
+      "get": {
+        "summary": "取得主要房源類型",
+        "deprecated": false,
+        "description": "",
+        "tags": ["property-main-type"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "propertyMainTypeId": {
+                        "type": "integer",
+                        "title": "主要房源類型 ID"
+                      },
+                      "propertyMainTypeName": {
+                        "type": "string",
+                        "title": "主要房源類型名稱"
+                      }
+                    },
+                    "required": [
+                      "propertyMainTypeId",
+                      "propertyMainTypeName"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": [
+                      {
+                        "propertyMainTypeId": 1,
+                        "propertyMainTypeName": "公寓"
+                      },
+                      {
+                        "propertyMainTypeId": 2,
+                        "propertyMainTypeName": "獨棟房屋"
+                      },
+                      {
+                        "propertyMainTypeId": 3,
+                        "propertyMainTypeName": "附屬建築"
+                      },
+                      {
+                        "propertyMainTypeId": 4,
+                        "propertyMainTypeName": "獨特房源"
+                      },
+                      {
+                        "propertyMainTypeId": 5,
+                        "propertyMainTypeName": "B&B"
+                      },
+                      {
+                        "propertyMainTypeId": 6,
+                        "propertyMainTypeName": "精品旅館"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

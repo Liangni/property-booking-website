@@ -1,1 +1,162 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/auth/register":{"post":{"summary":"使用者註冊","deprecated":false,"description":"","tags":[],"parameters":[],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"ecUserUsername":{"type":"string","title":"帳號"},"ecUserPassword":{"type":"string","title":"密碼"},"ecUserName":{"type":"string","title":"姓名"},"ecUserEmail":{"type":"string","title":"電子信箱地址"}},"required":["ecUserUsername","ecUserPassword","ecUserName","ecUserEmail"]},"example":{"ecUserUsername":"test12","ecUserPassword":"password12","ecUserName":"test12","ecUserEmail":"test12"}}}},"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"object","properties":{"token":{"type":"string","title":"令牌","description":"驗證使用者身份的令牌"}},"required":["token"]},"examples":{"1":{"summary":"200","value":{"token":"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE3MTM4NjQyNTgsImV4cCI6MTcxMzk1MDY1OH0.SDV6sqPQDSTqUH0L-xIT-UmcUyQEmF-Uspl2Pi0ZRWkWco3WpQT9LP4OaH7Yn3Dm"}}}}}}},"security":[]}},"/api/v1/auth/login":{"post":{"summary":"使用者登入","deprecated":false,"description":"","tags":[],"parameters":[],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"ecUserUsername":{"type":"string","title":"帳號"},"ecUserPassword":{"type":"string","title":"密碼"}},"required":["ecUserUsername","ecUserPassword"]},"example":{"ecUserUsername":"user1","ecUserPassword":"123456"}}}},"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"object","properties":{"token":{"type":"string","title":"令牌","description":"驗證使用者身份的令牌"}},"required":["token"]},"examples":{"1":{"summary":"200","value":{"token":"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTcxMzg2NTEyMCwiZXhwIjoxNzEzOTUxNTIwfQ.QO23Sm9s8FrxpNbt6rlI2OVDBsNHNFSjvxWEwz-P01iiXslsZMoVLoesS7PLvxNj"}}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "summary": "使用者註冊",
+        "deprecated": false,
+        "description": "",
+        "tags": ["auth"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ecUserUsername": {
+                    "type": "string",
+                    "title": "帳號"
+                  },
+                  "ecUserPassword": {
+                    "type": "string",
+                    "title": "密碼"
+                  },
+                  "ecUserName": {
+                    "type": "string",
+                    "title": "姓名"
+                  },
+                  "ecUserEmail": {
+                    "type": "string",
+                    "title": "電子信箱地址"
+                  }
+                },
+                "required": [
+                  "ecUserUsername",
+                  "ecUserPassword",
+                  "ecUserName",
+                  "ecUserEmail"
+                ]
+              },
+              "example": {
+                "ecUserUsername": "test12",
+                "ecUserPassword": "password12",
+                "ecUserName": "test12",
+                "ecUserEmail": "test12"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "title": "令牌",
+                      "description": "驗證使用者身份的令牌"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": {
+                      "token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE3MTM4NjQyNTgsImV4cCI6MTcxMzk1MDY1OH0.SDV6sqPQDSTqUH0L-xIT-UmcUyQEmF-Uspl2Pi0ZRWkWco3WpQT9LP4OaH7Yn3Dm"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "使用者登入",
+        "deprecated": false,
+        "description": "",
+        "tags": ["auth"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ecUserUsername": {
+                    "type": "string",
+                    "title": "帳號"
+                  },
+                  "ecUserPassword": {
+                    "type": "string",
+                    "title": "密碼"
+                  }
+                },
+                "required": [
+                  "ecUserUsername",
+                  "ecUserPassword"
+                ]
+              },
+              "example": {
+                "ecUserUsername": "user1",
+                "ecUserPassword": "123456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "title": "令牌",
+                      "description": "驗證使用者身份的令牌"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": {
+                      "token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTcxMzg2NTEyMCwiZXhwIjoxNzEzOTUxNTIwfQ.QO23Sm9s8FrxpNbt6rlI2OVDBsNHNFSjvxWEwz-P01iiXslsZMoVLoesS7PLvxNj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

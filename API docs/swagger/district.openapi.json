@@ -12,7 +12,7 @@
         "summary": "取得地區",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["address"],
         "parameters": [],
         "responses": {
           "200": {
@@ -2738,7 +2738,7 @@
         "summary": "以關鍵字搜尋地區",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["address"],
         "parameters": [
           {
             "name": "keyword",

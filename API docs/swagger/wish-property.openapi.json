@@ -1,1 +1,141 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/wish-properties":{"post":{"summary":"新增願望房源","deprecated":false,"description":"","tags":[],"parameters":[{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"propertyId":{"type":"integer","title":"房源 ID"},"checkinDateString":{"type":"string","title":"入住日期字串","description":"格式 YYYY-MM-DD"},"checkoutDateString":{"type":"string","title":"退房日期字串","description":"格式 YYYY-MM-DD"}},"required":["propertyId","checkinDateString","checkoutDateString"]},"example":{"propertyId":1,"checkinDateString":"2024-04-01","checkoutDateString":"2024-04-05"}}}},"responses":{"200":{"description":"200","content":{"*/*":{"schema":{"type":"object","properties":{}},"examples":{"1":{"summary":"200","value":"ok"}}}}}},"security":[]}},"/api/v1/wish-properties/{wishPropertyId}":{"delete":{"summary":"刪除願望房源","deprecated":false,"description":"","tags":[],"parameters":[{"name":"wishPropertyId","in":"path","description":"願望房源 ID","required":true,"example":"","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"*/*":{"schema":{"type":"object","properties":{}},"examples":{"1":{"summary":"200","value":"ok"}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/wish-properties": {
+      "post": {
+        "summary": "新增願望房源",
+        "deprecated": false,
+        "description": "",
+        "tags": ["wish-property"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "propertyId": {
+                    "type": "integer",
+                    "title": "房源 ID"
+                  },
+                  "checkinDateString": {
+                    "type": "string",
+                    "title": "入住日期字串",
+                    "description": "格式 YYYY-MM-DD"
+                  },
+                  "checkoutDateString": {
+                    "type": "string",
+                    "title": "退房日期字串",
+                    "description": "格式 YYYY-MM-DD"
+                  }
+                },
+                "required": [
+                  "propertyId",
+                  "checkinDateString",
+                  "checkoutDateString"
+                ]
+              },
+              "example": {
+                "propertyId": 1,
+                "checkinDateString": "2024-04-01",
+                "checkoutDateString": "2024-04-05"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": "ok"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/wish-properties/{wishPropertyId}": {
+      "delete": {
+        "summary": "刪除願望房源",
+        "deprecated": false,
+        "description": "",
+        "tags": ["wish-property"],
+        "parameters": [
+          {
+            "name": "wishPropertyId",
+            "in": "path",
+            "description": "願望房源 ID",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": "ok"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

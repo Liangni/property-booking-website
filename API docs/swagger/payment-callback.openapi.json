@@ -1,1 +1,72 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/payment-callbacks":{"post":{"summary":"第三方金流確認收款","deprecated":false,"description":"","tags":[],"parameters":[],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"bookingOrderId":{"type":"integer","title":"訂單 ID"},"isPaymentSuccessful":{"type":"boolean","title":"支付是否成功"}},"required":["bookingOrderId","isPaymentSuccessful"]},"example":{"bookingOrderId":1,"isPaymentSuccessful":true}}}},"responses":{"200":{"description":"200","content":{"*/*":{"schema":{"type":"object","properties":{}},"examples":{"1":{"summary":"200","value":"ok"}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/payment-callbacks": {
+      "post": {
+        "summary": "第三方金流確認收款",
+        "deprecated": false,
+        "description": "",
+        "tags": ["payment-callback"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bookingOrderId": {
+                    "type": "integer",
+                    "title": "訂單 ID"
+                  },
+                  "isPaymentSuccessful": {
+                    "type": "boolean",
+                    "title": "支付是否成功"
+                  }
+                },
+                "required": [
+                  "bookingOrderId",
+                  "isPaymentSuccessful"
+                ]
+              },
+              "example": {
+                "bookingOrderId": 1,
+                "isPaymentSuccessful": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": "ok"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

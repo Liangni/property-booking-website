@@ -1,1 +1,116 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/booking-orders":{"post":{"summary":"新增住宿訂單","deprecated":false,"description":"","tags":[],"parameters":[{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"checkinDateString":{"type":"string","title":"入住時間","description":"格式 YYYY-MM-DD"},"checkoutDateString":{"type":"string","title":"退房時間","description":"格式 YYYY-MM-DD"},"guestName":{"type":"string","title":"房客姓名"},"guestEmail":{"type":"string","title":"房客電子信箱地址"},"guestPhone":{"type":"string","title":"房客聯絡電話"},"arrivalTime":{"type":"string","title":"到達時間","description":"格式 HH:mm-HH:mm"},"propertyId":{"type":"integer","title":"房源 ID"}},"required":["checkinDateString","checkoutDateString","guestName","guestEmail","guestPhone","arrivalTime","propertyId"]},"example":{"checkinDateString":"2024-05-10","checkoutDateString":"2024-05-10","guestName":"test guest name","guestEmail":"test@email.com","guestPhone":"0933333333","arrivalTime":"13:00-14:00","propertyId":1}}}},"responses":{"200":{"description":"booking-orders","content":{"*/*":{"schema":{"type":"object","properties":{}},"examples":{"1":{"summary":"booking-orders","value":"ok"}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/booking-orders": {
+      "post": {
+        "summary": "新增住宿訂單",
+        "deprecated": false,
+        "description": "",
+        "tags": ["booking-order"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "checkinDateString": {
+                    "type": "string",
+                    "title": "入住時間",
+                    "description": "格式 YYYY-MM-DD"
+                  },
+                  "checkoutDateString": {
+                    "type": "string",
+                    "title": "退房時間",
+                    "description": "格式 YYYY-MM-DD"
+                  },
+                  "guestName": {
+                    "type": "string",
+                    "title": "房客姓名"
+                  },
+                  "guestEmail": {
+                    "type": "string",
+                    "title": "房客電子信箱地址"
+                  },
+                  "guestPhone": {
+                    "type": "string",
+                    "title": "房客聯絡電話"
+                  },
+                  "arrivalTime": {
+                    "type": "string",
+                    "title": "到達時間",
+                    "description": "格式 HH:mm-HH:mm"
+                  },
+                  "propertyId": {
+                    "type": "integer",
+                    "title": "房源 ID"
+                  }
+                },
+                "required": [
+                  "checkinDateString",
+                  "checkoutDateString",
+                  "guestName",
+                  "guestEmail",
+                  "guestPhone",
+                  "arrivalTime",
+                  "propertyId"
+                ]
+              },
+              "example": {
+                "checkinDateString": "2024-05-10",
+                "checkoutDateString": "2024-05-10",
+                "guestName": "test guest name",
+                "guestEmail": "test@email.com",
+                "guestPhone": "0933333333",
+                "arrivalTime": "13:00-14:00",
+                "propertyId": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "booking-orders",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "1": {
+                    "summary": "booking-orders",
+                    "value": "ok"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

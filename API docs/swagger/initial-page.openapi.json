@@ -1,1 +1,187 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/initial-page/init":{"get":{"summary":"取得首頁房源","deprecated":false,"description":"","tags":[],"parameters":[],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"propertyId":{"type":"integer","title":"房源 ID"},"propertyTitle":{"type":"string","title":"房源描述"},"priceOnWeekdays":{"type":"integer","title":"平日價格"},"priceOnWeekends":{"type":"integer","title":"週末價格"},"averageRating":{"type":"integer","title":"平均評價分數"},"reviewCount":{"type":"integer","title":"評論數量"},"districtId":{"type":"integer","title":"地區 ID"},"districtName":{"type":"string","title":"地區名稱"},"parentDistrictId":{"type":"integer","title":"父地區 ID"},"parentDistrictName":{"type":"string","title":"父地區名稱"},"propertyImageList":{"type":"array","items":{"type":"object","properties":{"pictureOrder":{"type":"integer","title":"圖片順序"},"downloadUrl":{"type":"string","title":"下載連結"},"sizeNum":{"type":"integer","title":"圖片尺寸代號"}},"required":["pictureOrder","downloadUrl","sizeNum"]},"title":"房源圖片列表"}},"required":["propertyId","propertyTitle","priceOnWeekdays","priceOnWeekends","averageRating","reviewCount","districtId","districtName","parentDistrictId","parentDistrictName","propertyImageList"]}},"examples":{"1":{"summary":"200","value":[{"propertyId":1,"propertyTitle":"test property 1","priceOnWeekdays":700,"priceOnWeekends":1000,"averageRating":5,"reviewCount":1,"districtId":181,"districtName":"宜蘭市","parentDistrictId":165,"parentDistrictName":"宜蘭縣","propertyImageList":[{"pictureOrder":1,"downloadUrl":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=91d61d3564f9e4ebf7acfb3cc5ffd99cfcbb3ab1b4e7b1b1290f898a52f4de86","sizeNum":1},{"pictureOrder":2,"downloadUrl":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=b20c4191e2f6148254ee290c7efe45291d5809bb4f2e7f4bf8906a3076dc518c","sizeNum":1},{"pictureOrder":3,"downloadUrl":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=da14c7a9f19d53ac7c6569319e6f3b72c164ac161b588765485dee744d513f67","sizeNum":1}]},{"propertyId":2,"propertyTitle":"test property 2","priceOnWeekdays":800,"priceOnWeekends":1200,"averageRating":5,"reviewCount":1,"districtId":181,"districtName":"宜蘭市","parentDistrictId":165,"parentDistrictName":"宜蘭縣","propertyImageList":[{"pictureOrder":1,"downloadUrl":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=220ed34f08c9139b799cbc6e10d4739b653be83c47608e98b11f20da657bc4cd","sizeNum":1},{"pictureOrder":2,"downloadUrl":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=3e649420bc95034965281d5d3710e43bcaff95e1e544dcd4a276fd1919c50815","sizeNum":1},{"pictureOrder":3,"downloadUrl":"https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=0769c4923dc9797e516cbc5eea7fecba37e03a6526b5c90f76ba6272938304fe","sizeNum":1}]}]}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/initial-page/init": {
+      "get": {
+        "summary": "取得首頁房源",
+        "deprecated": false,
+        "description": "",
+        "tags": ["initial-page"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "propertyId": {
+                        "type": "integer",
+                        "title": "房源 ID"
+                      },
+                      "propertyTitle": {
+                        "type": "string",
+                        "title": "房源描述"
+                      },
+                      "priceOnWeekdays": {
+                        "type": "integer",
+                        "title": "平日價格"
+                      },
+                      "priceOnWeekends": {
+                        "type": "integer",
+                        "title": "週末價格"
+                      },
+                      "averageRating": {
+                        "type": "integer",
+                        "title": "平均評價分數"
+                      },
+                      "reviewCount": {
+                        "type": "integer",
+                        "title": "評論數量"
+                      },
+                      "districtId": {
+                        "type": "integer",
+                        "title": "地區 ID"
+                      },
+                      "districtName": {
+                        "type": "string",
+                        "title": "地區名稱"
+                      },
+                      "parentDistrictId": {
+                        "type": "integer",
+                        "title": "父地區 ID"
+                      },
+                      "parentDistrictName": {
+                        "type": "string",
+                        "title": "父地區名稱"
+                      },
+                      "propertyImageList": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "pictureOrder": {
+                              "type": "integer",
+                              "title": "圖片順序"
+                            },
+                            "downloadUrl": {
+                              "type": "string",
+                              "title": "下載連結"
+                            },
+                            "sizeNum": {
+                              "type": "integer",
+                              "title": "圖片尺寸代號"
+                            }
+                          },
+                          "required": [
+                            "pictureOrder",
+                            "downloadUrl",
+                            "sizeNum"
+                          ]
+                        },
+                        "title": "房源圖片列表"
+                      }
+                    },
+                    "required": [
+                      "propertyId",
+                      "propertyTitle",
+                      "priceOnWeekdays",
+                      "priceOnWeekends",
+                      "averageRating",
+                      "reviewCount",
+                      "districtId",
+                      "districtName",
+                      "parentDistrictId",
+                      "parentDistrictName",
+                      "propertyImageList"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": [
+                      {
+                        "propertyId": 1,
+                        "propertyTitle": "test property 1",
+                        "priceOnWeekdays": 700,
+                        "priceOnWeekends": 1000,
+                        "averageRating": 5,
+                        "reviewCount": 1,
+                        "districtId": 181,
+                        "districtName": "宜蘭市",
+                        "parentDistrictId": 165,
+                        "parentDistrictName": "宜蘭縣",
+                        "propertyImageList": [
+                          {
+                            "pictureOrder": 1,
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=91d61d3564f9e4ebf7acfb3cc5ffd99cfcbb3ab1b4e7b1b1290f898a52f4de86",
+                            "sizeNum": 1
+                          },
+                          {
+                            "pictureOrder": 2,
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=b20c4191e2f6148254ee290c7efe45291d5809bb4f2e7f4bf8906a3076dc518c",
+                            "sizeNum": 1
+                          },
+                          {
+                            "pictureOrder": 3,
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=da14c7a9f19d53ac7c6569319e6f3b72c164ac161b588765485dee744d513f67",
+                            "sizeNum": 1
+                          }
+                        ]
+                      },
+                      {
+                        "propertyId": 2,
+                        "propertyTitle": "test property 2",
+                        "priceOnWeekdays": 800,
+                        "priceOnWeekends": 1200,
+                        "averageRating": 5,
+                        "reviewCount": 1,
+                        "districtId": 181,
+                        "districtName": "宜蘭市",
+                        "parentDistrictId": 165,
+                        "parentDistrictName": "宜蘭縣",
+                        "propertyImageList": [
+                          {
+                            "pictureOrder": 1,
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=220ed34f08c9139b799cbc6e10d4739b653be83c47608e98b11f20da657bc4cd",
+                            "sizeNum": 1
+                          },
+                          {
+                            "pictureOrder": 2,
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=3e649420bc95034965281d5d3710e43bcaff95e1e544dcd4a276fd1919c50815",
+                            "sizeNum": 1
+                          },
+                          {
+                            "pictureOrder": 3,
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=0769c4923dc9797e516cbc5eea7fecba37e03a6526b5c90f76ba6272938304fe",
+                            "sizeNum": 1
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}

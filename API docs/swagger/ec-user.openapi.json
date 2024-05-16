@@ -12,7 +12,7 @@
         "summary": "取得使用者願望房源",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["ec-user"],
         "parameters": [
           {
             "name": "ecUserId",
@@ -83,7 +83,7 @@
         "summary": "取得使用者住宿訂單",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["ec-user"],
         "parameters": [
           {
             "name": "ecUserId",
@@ -215,7 +215,7 @@
         "summary": "取得使用者房源",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["ec-user"],
         "parameters": [
           {
             "name": "ecUserId",
@@ -326,7 +326,7 @@
         "summary": "取得使用者圖片上傳連結",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["ec-user"],
         "parameters": [
           {
             "name": "ecUserId",
@@ -408,7 +408,7 @@
         "summary": "新增使用者圖片",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["ec-user"],
         "parameters": [
           {
             "name": "ecUserId",
@@ -479,7 +479,7 @@
         "summary": "取得使用者圖片下載連結",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["ec-user"],
         "parameters": [
           {
             "name": "ecUserId",
@@ -535,7 +535,7 @@
         "summary": "取得使用者資訊",
         "deprecated": false,
         "description": "",
-        "tags": [],
+        "tags": ["ec-user"],
         "parameters": [
           {
             "name": "ecUserId",

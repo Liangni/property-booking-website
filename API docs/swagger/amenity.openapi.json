@@ -1,1 +1,113 @@
-{"openapi":"3.0.1","info":{"title":"Property Booking Website","description":"","version":"1.0.0"},"tags":[],"paths":{"/api/v1/amenities":{"get":{"summary":"取得設施","deprecated":false,"description":"","tags":[],"parameters":[{"name":"amenityTypeId","in":"query","description":"設施類別 ID","required":true,"example":"1","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"","required":true,"example":"{{jwt_token}}","schema":{"type":"string"}}],"responses":{"200":{"description":"200","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"amenityId":{"type":"integer","title":"設施 ID"},"amenityName":{"type":"string","title":"設施名稱"},"amenityTypeId":{"type":"integer","title":"設施種類 ID"}},"required":["amenityId","amenityName","amenityTypeId"]}},"examples":{"1":{"summary":"200","value":[{"amenityId":1,"amenityName":"吹風機","amenityTypeId":1},{"amenityId":2,"amenityName":"沐浴乳","amenityTypeId":1},{"amenityId":3,"amenityName":"洗髮露","amenityTypeId":1},{"amenityId":4,"amenityName":"浴缸","amenityTypeId":1},{"amenityId":5,"amenityName":"熱水","amenityTypeId":1}]}}}}}},"security":[]}}},"components":{"schemas":{},"securitySchemes":{}},"servers":[]}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Property Booking Website",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/amenities": {
+      "get": {
+        "summary": "取得設施",
+        "deprecated": false,
+        "description": "",
+        "tags": ["amenity"],
+        "parameters": [
+          {
+            "name": "amenityTypeId",
+            "in": "query",
+            "description": "設施類別 ID",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "{{jwt_token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "amenityId": {
+                        "type": "integer",
+                        "title": "設施 ID"
+                      },
+                      "amenityName": {
+                        "type": "string",
+                        "title": "設施名稱"
+                      },
+                      "amenityTypeId": {
+                        "type": "integer",
+                        "title": "設施種類 ID"
+                      }
+                    },
+                    "required": [
+                      "amenityId",
+                      "amenityName",
+                      "amenityTypeId"
+                    ]
+                  }
+                },
+                "examples": {
+                  "1": {
+                    "summary": "200",
+                    "value": [
+                      {
+                        "amenityId": 1,
+                        "amenityName": "吹風機",
+                        "amenityTypeId": 1
+                      },
+                      {
+                        "amenityId": 2,
+                        "amenityName": "沐浴乳",
+                        "amenityTypeId": 1
+                      },
+                      {
+                        "amenityId": 3,
+                        "amenityName": "洗髮露",
+                        "amenityTypeId": 1
+                      },
+                      {
+                        "amenityId": 4,
+                        "amenityName": "浴缸",
+                        "amenityTypeId": 1
+                      },
+                      {
+                        "amenityId": 5,
+                        "amenityName": "熱水",
+                        "amenityTypeId": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": []
+}
