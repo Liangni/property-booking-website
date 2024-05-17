@@ -21,7 +21,7 @@
 * **RabbitMQ:** 消息列隊
 
 ## 資料庫實體關係圖 （ER-diagram)
-以下僅展示部分實體關係圖，完整線框稿請參考：https://drive.google.com/file/d/1mK7M9MpxyafCQAXavnaP_sSxkEMI-r0m/view?usp=sharing
+以下僅展示部分實體關係圖，完整線框稿請參考：https://github.com/Liangni/property-booking-website/blob/main/readme-materials/ER-diagram.png
 ### 房源與訂單、預定日期關係
 <div  align="center">    
 <img src="readme-materials/booking-order-erd.png" width = "460" height = "677"/>
