@@ -34,5 +34,5 @@
 </div>
 
 ## RabbitMQ 時序圖
-下圖展示消息隊列的消息傳遞：
+下圖展示第三方金流發送付款確認 API request 後，RabbitMQ 的消息傳遞過程：
 ![image](readme-materials/rabbitMQ.png)
