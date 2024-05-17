@@ -2,7 +2,7 @@
 這是一個使用 Java Spring Boot 開發的後端 API 專案，專為房屋短期租賃網站設計。
 
 ## 前端線框稿
-本專案以該線框稿為基礎發想製作，完整線框稿請參考：https://balsamiq.cloud/s4w2rn1/pb6j6td
+本專案以該線框稿為基礎發想製作，完整線框稿請參考：https://github.com/Liangni/property-booking-website/blob/main/readme-materials/wireframe.pdf
 
 ![image](readme-materials/homepage-wireframe.png)
 
