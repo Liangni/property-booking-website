@@ -94,13 +94,13 @@ public class JwtUtil {
     /**
      * 生成 JWT 字串。
      *
-     * @param user 使用者基本視圖對象
+     * @param username 使用者帳號
      * @return 生成的 JWT 字串。
      */
-    public String generateToken(EcUserBaseVo user) {
+    public String generateToken(String username) {
         return Jwts
                 .builder()
-                .subject(user.getEcUserUsername())
+                .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRE_IN_MS))
                 .signWith(getSignInKey())

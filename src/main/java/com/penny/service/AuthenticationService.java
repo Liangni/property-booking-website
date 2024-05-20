@@ -63,7 +63,7 @@ public class AuthenticationService {
         ecUserBaseVoMapper.insertSelective(ecUserBaseVo);
 
         // 使用 JWT 工具類生成 JWT 字串，用於新使用者的身份驗證
-        String token = jwtUtil.generateToken(ecUserBaseVo);
+        String token = jwtUtil.generateToken(ecUserBaseVo.getEcUserUsername());
 
         return new AuthenticationResponse(token);
     }
@@ -83,12 +83,8 @@ public class AuthenticationService {
                 )
         );
 
-        // 根據使用者名稱從資料庫中檢索使用者詳細資訊
-        EcUserVo ecUserVo = Optional.ofNullable(ecUserVoMapper.selectByUsername(request.getEcUserUsername()))
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-
         // 使用 JWT 工具類生成 JWT 字串，用於使用者的身份驗證
-        String token = jwtUtil.generateToken(ecUserVo);
+        String token = jwtUtil.generateToken(request.getEcUserUsername());
 
         // 返回身份驗證回應物件，其中包含生成的 JWT 字串
         return new AuthenticationResponse(token);
