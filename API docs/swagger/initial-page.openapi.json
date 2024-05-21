@@ -64,6 +64,14 @@
                         "type": "string",
                         "title": "父地區名稱"
                       },
+                      "startAvailableDate": {
+                        "type": "string",
+                        "title": "開始可預定日期"
+                      },
+                      "endAvailableDate": {
+                        "type": "string",
+                        "title": "結束可預定日期"
+                      },
                       "propertyImageList": {
                         "type": "array",
                         "items": {
@@ -102,7 +110,9 @@
                       "districtName",
                       "parentDistrictId",
                       "parentDistrictName",
-                      "propertyImageList"
+                      "propertyImageList",
+                      "startAvailableDate",
+                      "endAvailableDate"
                     ]
                   }
                 },
@@ -112,9 +122,9 @@
                     "value": [
                       {
                         "propertyId": 1,
-                        "propertyTitle": "test property 1",
-                        "priceOnWeekdays": 700,
-                        "priceOnWeekends": 1000,
+                        "propertyTitle": "森林小屋1",
+                        "priceOnWeekdays": 1500,
+                        "priceOnWeekends": 3000,
                         "averageRating": 5,
                         "reviewCount": 1,
                         "districtId": 181,
@@ -124,20 +134,22 @@
                         "propertyImageList": [
                           {
                             "pictureOrder": 1,
-                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=91d61d3564f9e4ebf7acfb3cc5ffd99cfcbb3ab1b4e7b1b1290f898a52f4de86",
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240520T125113Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240520%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=dff2d99411cefd0f9c342f194d0199578b6bbf6636e1427907bc55e9be58f606",
                             "sizeNum": 1
                           },
                           {
                             "pictureOrder": 2,
-                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=b20c4191e2f6148254ee290c7efe45291d5809bb4f2e7f4bf8906a3076dc518c",
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240520T125113Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240520%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=39754ca4907b6d1dc45121ccb8957e4cb7f6a90423d6ee20dd301321afbbb004",
                             "sizeNum": 1
                           },
                           {
                             "pictureOrder": 3,
-                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=da14c7a9f19d53ac7c6569319e6f3b72c164ac161b588765485dee744d513f67",
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/1/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240520T125113Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240520%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=eb3bf8b6baaccacfa0ecc2de321267b47d24e080896ac52b48edca3b22eaed9d",
                             "sizeNum": 1
                           }
-                        ]
+                        ],
+                        "startAvailableDate": "2024-05-20",
+                        "endAvailableDate": "2024-05-25"
                       },
                       {
                         "propertyId": 2,
@@ -153,20 +165,22 @@
                         "propertyImageList": [
                           {
                             "pictureOrder": 1,
-                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=220ed34f08c9139b799cbc6e10d4739b653be83c47608e98b11f20da657bc4cd",
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248f21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240520T125113Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240520%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=8955b0a270ef61ae1bc5785e09842e1c2dda4ad66800e97241a187bdb8f7f616",
                             "sizeNum": 1
                           },
                           {
                             "pictureOrder": 2,
-                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=3e649420bc95034965281d5d3710e43bcaff95e1e544dcd4a276fd1919c50815",
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248g21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240520T125113Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240520%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=dc4072f8bd536888c48f9402051f97265a024d7dbab7f0dc802b8d4a6773c374",
                             "sizeNum": 1
                           },
                           {
                             "pictureOrder": 3,
-                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240515T040757Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240515%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=0769c4923dc9797e516cbc5eea7fecba37e03a6526b5c90f76ba6272938304fe",
+                            "downloadUrl": "https://property-booking-website-customer.s3-ap-northeast-1.amazonaws.com/properties/2/size-1/d7640f50-66d4-4c3a-bb4f-f34837248h21.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240520T125113Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7199&X-Amz-Credential=%2A%2A%2A%2A%2A%2A%2A%2A%2F20240520%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Signature=026b7b3a700bd5bb2d0ce80d7e494055bf08d22c30342eafdad4e6ac5fe867fa",
                             "sizeNum": 1
                           }
-                        ]
+                        ],
+                        "startAvailableDate": "2024-05-20",
+                        "endAvailableDate": "2024-05-25"
                       }
                     ]
                   }
