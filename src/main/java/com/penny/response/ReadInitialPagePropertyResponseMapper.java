@@ -25,6 +25,8 @@ public class ReadInitialPagePropertyResponseMapper implements BiFunction<Propert
                 .parentDistrictId(propertyVo.getParentDistrictId())
                 .parentDistrictName(propertyVo.getParentDistrictName())
                 .propertyImageList(propertyImageUrlList)
+                .startAvailableDate(propertyVo.getStartAvailableDate())
+                .endAvailableDate(propertyVo.getEndAvailableDate())
                 .build();
     }
 

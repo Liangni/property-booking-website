@@ -3,6 +3,7 @@ package com.penny.response;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -30,4 +31,8 @@ public class ReadInitialPagePropertyResponse {
     private String parentDistrictName;
 
     private List<Map<String, Object>> propertyImageList;
+
+    private LocalDate startAvailableDate;
+
+    private LocalDate endAvailableDate;
 }
