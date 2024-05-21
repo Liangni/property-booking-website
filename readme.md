@@ -15,7 +15,7 @@
 </div>
 
 * **Spring Boot** 開發框架
-* **PostgreSQL:** 資料庫
+* **PostgreSQL:** 資料庫（搭配 ORM：Mybatis ）
 * **AWS S3:** 第三方儲存庫
 * **Redis:** 快取技術
 * **RabbitMQ:** 消息列隊
@@ -25,6 +25,12 @@
 ### 房源與訂單、預定日期關係
 <div  align="center">    
 <img src="readme-materials/booking-order-erd.png" width = "460" height = "677"/>
+</div>
+
+## AWS s3 時序圖
+下圖展示上傳房源圖片的流程：
+<div  align="center">    
+<img src="readme-materials/aws-s3.png" width = "547" height = "572"/>
 </div>
 
 ## Redis 時序圖
