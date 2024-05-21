@@ -78,17 +78,18 @@
             select
             property_id,
             date,
-            count(*) over (partition by property_id, available_period_group) as consecutive_available_days
+            -- 將子查詢結果按照房源ID及連續可預定期間的分組標籤分組，並計算每個房源在每個 available_period_batch_tag 的連續可用日期數量。
+            count(*) over (partition by property_id, available_period_batch_tag) as consecutive_available_days
         from
             (
                 -- 子查詢：計算每個房源的連續可預定天數分組
-                -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
-                -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_group）
                 select
                     property_id,
                     date,
+                    -- 將可預定日期按照房源ID分組，並按照日期排序，為每個日期分配一個行號（nth_available_day）
                     row_number() over (partition by property_id order by date) as nth_available_day,
-                    date - row_number() over (partition by property_id, is_booked order by date) * interval '1 DAY' as available_period_group
+                    -- 將可預定日期減去行號乘以一天的時間間隔，以生成連續可預定期間的分組標識（available_period_batch_tag）
+                    date - row_number() over (partition by property_id order by date) * interval '1 DAY' as available_period_batch_tag
                 from
                     booking_calendar_with_status
                 where
