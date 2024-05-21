@@ -20,7 +20,7 @@ import java.util.*;
 @SpringBootTest
 @Transactional
 @DisplayName("Property資料表測試")
-public class SearchPropertyRequestDTOMapperTest {
+public class PropertyVoMapperTest {
 
     @Autowired
     private PropertyBaseVoMapper propertyBaseVoMapper;
